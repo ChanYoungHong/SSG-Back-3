@@ -5,4 +5,7 @@ import com.spharosacademy.project.SSGBack.product.dto.CategoryLDto;
 
 public interface CategoryLService {
     CategoryL addCategoryL(CategoryLDto categoryLDto);
+
+    CategoryL getCategoryLId(Integer id);
+
 }
