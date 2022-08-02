@@ -5,7 +5,7 @@ import com.spharosacademy.project.SSGBack.product.dto.ProductDto;
 
 import java.util.List;
 
-public interface IProductService {
+public interface ProductService {
 
     Product addProduct(ProductDto productDto);
 

@@ -3,8 +3,7 @@ package com.spharosacademy.project.SSGBack.cart.service;
 import com.spharosacademy.project.SSGBack.cart.domain.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.CartDto;
 import com.spharosacademy.project.SSGBack.cart.repository.ICartRepository;
-import com.spharosacademy.project.SSGBack.product.repository.IProductRepository;
-import com.spharosacademy.project.SSGBack.product.service.IProductService;
+import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import java.util.List;
 public class ICartServiceimple implements ICartService {
     private final ICartRepository iCartRepository;
     private final IUserRepository iUserRepository;
-    private final IProductRepository iProductRepository;
+    private final ProductRepository iProductRepository;
 
     @Override
     public Cart addCart(CartDto cartDto) {

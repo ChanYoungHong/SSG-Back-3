@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LastCategory {
+@Data
+@Table(name = "CategoryM")
+public class CategoryM {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,6 @@ public class LastCategory {
     private String name;
 
     @ManyToOne
-    private SmallCategory smallCategory;
+    private CategoryL categoryL;
 
 }

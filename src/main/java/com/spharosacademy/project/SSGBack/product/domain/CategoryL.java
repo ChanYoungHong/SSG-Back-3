@@ -8,18 +8,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class MiddleCategory {
+@Builder
+@Table(name = "CategoryL")
+public class CategoryL {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
-
-    @ManyToOne
-    private Category category;
 
 }
