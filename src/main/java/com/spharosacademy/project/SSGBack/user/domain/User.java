@@ -1,5 +1,6 @@
-package com.spharosacademy.project.SSGBack.product.domain;
+package com.spharosacademy.project.SSGBack.user.domain;
 
+import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,11 +16,17 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Category {
+
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+    private String userId;
     private String name;
-
+    private String pwd;
+    private String phone;
+    private String email;
+    private String address;
+    private String gender;
 }

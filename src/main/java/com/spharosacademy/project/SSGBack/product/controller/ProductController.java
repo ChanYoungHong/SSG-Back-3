@@ -16,7 +16,7 @@ public class ProductController {
     private final IProductService iProductService;
 
     @PostMapping("/product/add")
-    public Product addProudct(@RequestBody ProductDto productDto){
+    public Product addProduct(@RequestBody ProductDto productDto){
         return iProductService.addProduct(productDto);
     }
 

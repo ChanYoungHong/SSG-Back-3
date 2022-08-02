@@ -5,15 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class LastCategoryDto {
 
     private Long id;
     private String name;
-    private Long price;
-    private int lastCategoryId;
-
+    private int smallCategoryId;
 }
