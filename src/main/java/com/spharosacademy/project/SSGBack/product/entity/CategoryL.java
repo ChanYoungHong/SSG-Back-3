@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.domain;
+package com.spharosacademy.project.SSGBack.product.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

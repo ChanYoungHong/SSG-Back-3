@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.domain;
+package com.spharosacademy.project.SSGBack.product.entity;
 
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -39,6 +39,6 @@ public class Product extends BaseTimeEntity {
     private int productSellAmt;
 
     @OneToOne
-    private CategoryS categoryS;
+    private CategorySS categorySS;
 
 }

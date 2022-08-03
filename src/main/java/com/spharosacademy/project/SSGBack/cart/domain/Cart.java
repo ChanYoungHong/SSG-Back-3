@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.cart.domain;
 
-import com.spharosacademy.project.SSGBack.product.domain.Product;
+import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;

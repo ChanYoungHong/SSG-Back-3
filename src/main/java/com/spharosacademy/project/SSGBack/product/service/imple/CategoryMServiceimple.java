@@ -1,10 +1,10 @@
-package com.spharosacademy.project.SSGBack.product.service;
+package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.spharosacademy.project.SSGBack.product.domain.CategoryL;
-import com.spharosacademy.project.SSGBack.product.domain.CategoryM;
-import com.spharosacademy.project.SSGBack.product.dto.CategoryMDto;
+import com.spharosacademy.project.SSGBack.product.entity.CategoryM;
+import com.spharosacademy.project.SSGBack.product.dto.input.CategoryMDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategoryLRepository;
 import com.spharosacademy.project.SSGBack.product.repository.CategoryMRepository;
+import com.spharosacademy.project.SSGBack.product.service.CategoryMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,8 @@ public class CategoryMServiceimple implements CategoryMService {
     private final CategoryLRepository categoryLRepository;
 
 
-
     @Override
     public CategoryM addCategoryM(CategoryMDto categoryMDto) {
-        List<CategoryM> categoryMList;
 
         return categoryMRepository.save(
                 CategoryM.builder()
@@ -32,8 +30,28 @@ public class CategoryMServiceimple implements CategoryMService {
     }
 
     @Override
+    public List<CategoryM> getAll() {
+        return categoryMRepository.findAll();
+    }
+
+    @Override
+    public void deleteCategoryMById(Integer id) {
+        categoryMRepository.deleteById(id);
+    }
+
+    @Override
     public CategoryM getCategoryMById(Integer id) {
-        return null;
+        return categoryMRepository.findById(id).get();
+    }
+
+    @Override
+    public CategoryM editCategoryM(Integer id, CategoryMDto categoryMDto) {
+        return categoryMRepository.save(
+                CategoryM.builder()
+                        .name(categoryMDto.getName())
+                        .id(categoryMDto.getId())
+                        .build()
+        );
     }
 
 }

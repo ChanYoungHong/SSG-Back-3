@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.dto;
+package com.spharosacademy.project.SSGBack.product.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +17,6 @@ public class ProductDto {
     private String productColor;
     private String productBrand;
     private int productCnt;
-    private int CategorySId;
+    private int CategorySSId;
 
 }

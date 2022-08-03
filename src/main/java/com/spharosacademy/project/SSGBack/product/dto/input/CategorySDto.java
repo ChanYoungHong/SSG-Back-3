@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.dto;
+package com.spharosacademy.project.SSGBack.product.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryLDto {
+public class CategorySDto {
 
     private int id;
     private String name;
+    private int CategoryMId;
 }
