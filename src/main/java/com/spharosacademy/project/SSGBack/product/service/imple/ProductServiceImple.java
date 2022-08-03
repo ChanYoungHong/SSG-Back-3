@@ -47,7 +47,7 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public Product editProductById(Long id, ProductDto productDto) {
+    public Product editProductById(Long productId, ProductDto productDto) {
         return productRepository.save(
                 Product.builder()
                         .productName(productDto.getProductName())

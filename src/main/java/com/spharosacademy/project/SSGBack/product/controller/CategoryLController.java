@@ -38,7 +38,7 @@ public class CategoryLController {
     }
 
     @PutMapping("/edit/{id}")
-    public CategoryL editCategoryLById(@RequestBody CategoryLDto categoryLDto) {
-        return categoryLService.editCategoryL(categoryLDto.getId(), categoryLDto);
+    public CategoryL editCategoryLById(@PathVariable Integer id, @RequestBody CategoryLDto categoryLDto) {
+        return categoryLService.editCategoryL(id, categoryLDto);
     }
 }

@@ -37,9 +37,9 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @PutMapping("/edit/")
-    public Product editProductById(@RequestBody ProductDto productDto) {
-        return productService.editProductById(productDto.getProductId(), productDto);
+    @PatchMapping("/edit/{productId}")
+    public Product editProductById(@RequestBody ProductDto productDto, @PathVariable Long productId) {
+        return productService.editProductById(productId, productDto);
     }
 
 }
