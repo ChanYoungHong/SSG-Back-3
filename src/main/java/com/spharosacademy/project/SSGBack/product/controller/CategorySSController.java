@@ -37,7 +37,7 @@ public class CategorySSController {
     }
 
     @PutMapping("/edit/{id}")
-    public CategorySS editCategorySS(@RequestBody CategorySSDto categorySSDto) {
-        return categorySSService.editCategorySS(categorySSDto.getId(), categorySSDto);
+    public CategorySS editCategorySS(@PathVariable Integer id, @RequestBody CategorySSDto categorySSDto) {
+        return categorySSService.editCategorySS(id, categorySSDto);
     }
 }

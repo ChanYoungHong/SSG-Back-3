@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,17 +48,24 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public Product editProductById(Long productId, ProductDto productDto) {
-        return productRepository.save(
-                Product.builder()
-                        .productName(productDto.getProductName())
-                        .productBrand(productDto.getProductBrand())
-                        .productId(productDto.getProductId())
-                        .productColor(productDto.getProductColor())
-                        .productCnt(productDto.getProductCnt())
-                        .price(productDto.getPrice())
-                        .build()
-        );
+    public void editProductById(Long productId, ProductDto productDto) {
+        productRepository.findById(productDto.getProductId())
+                        .ifPresent(Product -> {
+                            Product.setProductName(productDto.getProductName());
+                            productRepository.save(Product);
+                        });
+
+
+//                productRepository.save(
+//                Product.builder()
+//                        .productName(productDto.getProductName())
+//                        .productBrand(productDto.getProductBrand())
+//                        .productId(productDto.getProductId())
+//                        .productColor(productDto.getProductColor())
+//                        .productCnt(productDto.getProductCnt())
+//                        .price(productDto.getPrice())
+//                        .build()
+//        );
     }
 
     @Override

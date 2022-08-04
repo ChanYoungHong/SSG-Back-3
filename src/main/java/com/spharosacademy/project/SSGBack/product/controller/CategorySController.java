@@ -36,7 +36,7 @@ public class CategorySController {
     }
 
     @PutMapping("/edit/{id}")
-    public CategoryS editCategoryS(@RequestBody CategorySDto categorySDto) {
-        return categorySService.editCategoryS(categorySDto.getId(), categorySDto);
+    public CategoryS editCategoryS(@PathVariable Integer id, @RequestBody CategorySDto categorySDto) {
+        return categorySService.editCategoryS(id, categorySDto);
     }
 }

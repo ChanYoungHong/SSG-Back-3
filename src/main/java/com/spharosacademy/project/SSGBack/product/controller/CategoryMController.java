@@ -38,7 +38,7 @@ public class CategoryMController {
     }
 
     @PutMapping("/edit/{id}")
-    public CategoryM editCategoryM(@RequestBody CategoryMDto categoryMDto) {
-        return categoryMService.editCategoryM(categoryMDto.getId(), categoryMDto);
+    public CategoryM editCategoryM(@PathVariable Integer id, @RequestBody CategoryMDto categoryMDto) {
+        return categoryMService.editCategoryM(id, categoryMDto);
     }
 }

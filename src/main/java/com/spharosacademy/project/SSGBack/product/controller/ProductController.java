@@ -4,11 +4,14 @@ import com.spharosacademy.project.SSGBack.product.dto.input.CategoryLDto;
 import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.ProductDto;
+import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/Product")
@@ -37,9 +40,12 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @PatchMapping("/edit/{productId}")
-    public Product editProductById(@RequestBody ProductDto productDto, @PathVariable Long productId) {
-        return productService.editProductById(productId, productDto);
+    @PutMapping("/edit/{productId}")
+    public void editProductById(@PathVariable Long productId,
+                                   @RequestBody ProductDto productDto) {
+
+         productService.editProductById(productId, productDto);
     }
+
 
 }

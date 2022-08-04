@@ -17,6 +17,7 @@ public class CategoryLController {
 
     private final CategoryLService categoryLService;
 
+
     @PostMapping("/add")
     public CategoryL addCategoryL(@RequestBody CategoryLDto categoryLDto) {
         return categoryLService.addCategoryL(categoryLDto);

@@ -15,7 +15,7 @@ public interface ProductService {
 
     Product getProductById(Long id);
 
-    Product editProductById(Long productId, ProductDto productDto);
+    void editProductById(Long productId, ProductDto productDto);
 
     void deleteProductById(Long id);
 }
