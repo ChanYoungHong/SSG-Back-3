@@ -6,13 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategorySSDto {
+@Builder
+public class RequestCategoryMDto {
 
     private int id;
     private String name;
-    private int CategorySId;
-
+    private int categoryLId;
 }

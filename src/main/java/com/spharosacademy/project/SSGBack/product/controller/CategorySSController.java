@@ -1,8 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.controller;
 
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryLDto;
-import com.spharosacademy.project.SSGBack.product.dto.input.CategorySSDto;
-import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySSDto;
 import com.spharosacademy.project.SSGBack.product.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.product.service.CategorySSService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,7 @@ public class CategorySSController {
     private final CategorySSService categorySSService;
 
     @PostMapping("/add")
-    public CategorySS addCategorySS(@RequestBody CategorySSDto categorySSDto) {
+    public CategorySS addCategorySS(@RequestBody RequestCategorySSDto categorySSDto) {
         return categorySSService.addCategorySS(categorySSDto);
     }
 
@@ -36,8 +34,8 @@ public class CategorySSController {
         return categorySSService.getCategorySSById(id);
     }
 
-    @PutMapping("/edit/{id}")
-    public CategorySS editCategorySS(@PathVariable Integer id, @RequestBody CategorySSDto categorySSDto) {
-        return categorySSService.editCategorySS(id, categorySSDto);
+    @PutMapping("/edit")
+    public CategorySS editCategorySS(@RequestBody RequestCategorySSDto categorySSDto) {
+        return categorySSService.editCategorySS(categorySSDto);
     }
 }

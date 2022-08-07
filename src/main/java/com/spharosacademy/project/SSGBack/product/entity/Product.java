@@ -1,10 +1,7 @@
 package com.spharosacademy.project.SSGBack.product.entity;
 
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "product")
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Product extends BaseTimeEntity {
 
     @Id

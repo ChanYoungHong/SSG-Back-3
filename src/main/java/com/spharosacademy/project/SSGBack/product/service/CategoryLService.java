@@ -1,19 +1,18 @@
 package com.spharosacademy.project.SSGBack.product.service;
 
 import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryLDto;
-import com.spharosacademy.project.SSGBack.user.domain.User;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;
 
 import java.util.List;
 
 public interface CategoryLService {
-    CategoryL addCategoryL(CategoryLDto categoryLDto);
+    CategoryL addCategoryL(RequestCategoryLDto categoryLDto);
 
     List<CategoryL> getAll();
 
     CategoryL getCategoryLById(Integer id);
 
-    CategoryL editCategoryL(Integer id, CategoryLDto categoryLDto);
+    CategoryL editCategoryL(RequestCategoryLDto categoryLDto);
 
     void deleteCategoryLById(Integer id);
 

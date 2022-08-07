@@ -1,7 +1,8 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.product.entity.CategoryM;
 import com.spharosacademy.project.SSGBack.product.entity.CategoryS;
-import com.spharosacademy.project.SSGBack.product.dto.input.CategorySDto;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategoryMRepository;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySRepository;
 import com.spharosacademy.project.SSGBack.product.service.CategorySService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,7 +20,7 @@ public class CategorySServiceimple implements CategorySService {
     private final CategoryMRepository categoryMRepository;
 
     @Override
-    public CategoryS addCategoryS(CategorySDto categorySDto) {
+    public CategoryS addCategoryS(RequestCategorySDto categorySDto) {
         return categorySRepository.save(
                 CategoryS.builder()
                         .name(categorySDto.getName())
@@ -38,13 +40,18 @@ public class CategorySServiceimple implements CategorySService {
     }
 
     @Override
-    public CategoryS editCategoryS(Integer id, CategorySDto categorySDto) {
-        return categorySRepository.save(
-                CategoryS.builder()
-                        .name(categorySDto.getName())
-                        .id(categorySDto.getId())
-                        .build()
-        );
+    public CategoryS editCategoryS(RequestCategorySDto categorySDto) {
+
+        Optional<CategoryM> categoryS = categoryMRepository.findById(categorySDto.getId());
+        if (categoryS.isPresent()) {
+            categorySRepository.save(
+                    CategoryS.builder()
+                            .name(categorySDto.getName())
+                            .id(categorySDto.getId())
+                            .build()
+            );
+        }
+        return null;
     }
 
 

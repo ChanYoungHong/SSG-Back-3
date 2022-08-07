@@ -1,21 +1,21 @@
 package com.spharosacademy.project.SSGBack.product.service;
 
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryLDto;
-import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
+import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.product.dto.input.ProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 
 import java.util.List;
 
 public interface ProductService {
 
-    Product addProduct(ProductDto productDto);
+    Product addProduct(RequestProductDto requestProductDto);
 
     List<Product> getAll();
 
-    Product getProductById(Long id);
+    ResponseProductDto getProductById(Long id);
 
-    void editProductById(Long productId, ProductDto productDto);
+    UpdateProductDto editProductById(UpdateProductDto updateProductDto) throws Exception;
 
-    void deleteProductById(Long id);
+    void deleteProductById(Long id) throws Exception;
 }

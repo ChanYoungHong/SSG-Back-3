@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.spharosacademy.project.SSGBack.product.dto.input.CategorySSDto;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySSDto;
 import com.spharosacademy.project.SSGBack.product.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySRepository;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySSRepository;
@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class CategorySSServiceimple implements CategorySSService {
     private final CategorySSRepository categorySSRepository;
     private final CategorySRepository categorySRepository;
     @Override
-    public CategorySS addCategorySS(CategorySSDto categorySSDto) {
+    public CategorySS addCategorySS(RequestCategorySSDto categorySSDto) {
         return categorySSRepository.save(
                 CategorySS.builder()
                         .name(categorySSDto.getName())
@@ -38,13 +39,18 @@ public class CategorySSServiceimple implements CategorySSService {
     }
 
     @Override
-    public CategorySS editCategorySS(Integer id, CategorySSDto categorySSDto) {
-        return categorySSRepository.save(
-                CategorySS.builder()
-                        .name(categorySSDto.getName())
-                        .id(categorySSDto.getId())
-                        .build()
-        );
+    public CategorySS editCategorySS(RequestCategorySSDto categorySSDto) {
+        Optional<CategorySS> categorySS = categorySSRepository.findById(categorySSDto.getId());
+        if (categorySS.isPresent()) {
+            categorySSRepository.save(
+                    CategorySS.builder()
+                            .id(categorySSDto.getId())
+                            .name(categorySSDto.getName())
+                            .build()
+            );
+        }
+
+        return null;
     }
 
 

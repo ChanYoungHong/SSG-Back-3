@@ -1,13 +1,12 @@
 package com.spharosacademy.project.SSGBack.product.service;
 
-import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
 import com.spharosacademy.project.SSGBack.product.entity.CategoryM;
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryMDto;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryMDto;
 
 import java.util.List;
 
 public interface CategoryMService {
-    CategoryM addCategoryM(CategoryMDto categoryMDto);
+    CategoryM addCategoryM(RequestCategoryMDto categoryMDto);
 
     List<CategoryM> getAll();
 
@@ -15,5 +14,5 @@ public interface CategoryMService {
 
     CategoryM getCategoryMById(Integer id);
 
-    CategoryM editCategoryM(Integer id, CategoryMDto categoryMDto);
+    CategoryM editCategoryM(RequestCategoryMDto categoryMDto);
 }

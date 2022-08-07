@@ -10,23 +10,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class Cart extends BaseTimeEntity {
-
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@Entity
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private int qty;
+    
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
     private Product product;
-
 }

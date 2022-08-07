@@ -6,12 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CategoryMDto {
+public class RequestProductDto {
 
-    private int id;
-    private String name;
-    private int categoryLId;
+    private String productName;
+    private int price;
+    private String productColor;
+    private String productBrand;
+    private int productCnt;
+    private int CategorySSId;
 }

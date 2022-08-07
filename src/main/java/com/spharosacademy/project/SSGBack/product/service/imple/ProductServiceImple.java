@@ -1,13 +1,15 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.product.dto.input.ProductDto;
-import com.spharosacademy.project.SSGBack.product.repository.CategorySRepository;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 
 
@@ -23,54 +25,77 @@ public class ProductServiceImple implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public Product addProduct(ProductDto productDto) {
-
-        return productRepository.save(
+    public Product addProduct(RequestProductDto requestProductDto) {
+        productRepository.save(
                 Product.builder()
-                        .productName(productDto.getProductName())
-                        .price(productDto.getPrice())
-                        .productBrand(productDto.getProductBrand())
-                        .productColor(productDto.getProductColor())
-                        .productCnt(productDto.getProductCnt())
-                        .categorySS(categorySSRepository.findById(productDto.getCategorySSId()).get())
+                        .productName(requestProductDto.getProductName())
+                        .price(requestProductDto.getPrice())
+                        .productBrand(requestProductDto.getProductBrand())
+                        .productColor(requestProductDto.getProductColor())
+                        .productCnt(requestProductDto.getProductCnt())
+                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
                         .build()
         );
+        return null;
     }
 
     @Override
     public List<Product> getAll() {
-        return productRepository.findAll();
+        List<Product> ListProduct = productRepository.findAll();
+        return ListProduct;
     }
 
     @Override
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).get();
+    public ResponseProductDto getProductById(Long id) {
+        Product product = productRepository.findById(id).get();
+        ResponseProductDto responseProductDto = new ResponseProductDto();
+        responseProductDto.setPrice(product.getPrice());
+        responseProductDto.setProductName(product.getProductName());
+        responseProductDto.setProductCnt(product.getProductCnt());
+        responseProductDto.setProductBrand(product.getProductBrand());
+        responseProductDto.setProductId(product.getProductId());
+        responseProductDto.setProductColor(product.getProductColor());
+        responseProductDto.setCategorySSId(product.getCategorySS().getId());
+        responseProductDto.setSellAmount(product.getProductSellAmt());
+        return responseProductDto;
     }
 
     @Override
-    public void editProductById(Long productId, ProductDto productDto) {
-        productRepository.findById(productDto.getProductId())
-                        .ifPresent(Product -> {
-                            Product.setProductName(productDto.getProductName());
-                            productRepository.save(Product);
-                        });
-
-
-//                productRepository.save(
-//                Product.builder()
-//                        .productName(productDto.getProductName())
-//                        .productBrand(productDto.getProductBrand())
-//                        .productId(productDto.getProductId())
-//                        .productColor(productDto.getProductColor())
-//                        .productCnt(productDto.getProductCnt())
-//                        .price(productDto.getPrice())
-//                        .build()
-//        );
+    public UpdateProductDto editProductById(UpdateProductDto updateProductDto) throws Exception {
+        Optional<Product> product = productRepository.findById(updateProductDto.getProductId());
+        UpdateProductDto updateDto = new UpdateProductDto();
+        if (product.isPresent()) {
+//            productRepository.save(
+//                    Product.builder()
+//                            .productId(updateProductDto.getProductId())
+//                            .productName(requestProductDto.getProductName())
+//                            .price(requestProductDto.getPrice())
+//                            .productBrand(requestProductDto.getProductBrand())
+//                            .productColor(requestProductDto.getProductColor())
+//                            .productCnt(requestProductDto.getProductCnt())
+//                            .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
+//                            .build()
+//            );
+            updateDto.setProductId(updateProductDto.getProductId());
+            updateDto.setProductName(updateProductDto.getProductName());
+            updateDto.setPrice(updateProductDto.getPrice());
+            updateDto.setProductBrand(updateProductDto.getProductBrand());
+            updateDto.setProductColor(updateProductDto.getProductColor());
+            updateDto.setProductCnt(updateProductDto.getProductCnt());
+            updateDto.setCategorySSId(updateProductDto.getCategorySSId());
+            return updateDto;
+        } else {
+            throw new Exception();
+        }
     }
 
     @Override
-    public void deleteProductById(Long id) {
-        productRepository.deleteById(id);
+    public void deleteProductById(Long id) throws Exception {
+        Optional<Product> delbyid = productRepository.findById(id);
+        if (delbyid.isPresent()) {
+            productRepository.deleteById(id);
+        } else {
+            throw new Exception();
+        }
     }
-
 }

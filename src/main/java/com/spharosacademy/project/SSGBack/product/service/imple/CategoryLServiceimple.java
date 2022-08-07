@@ -1,13 +1,14 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
 import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryLDto;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategoryLRepository;
 import com.spharosacademy.project.SSGBack.product.service.CategoryLService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class CategoryLServiceimple implements CategoryLService {
     private final CategoryLRepository categoryLRepository;
 
     @Override
-    public CategoryL addCategoryL(CategoryLDto categoryLDto) {
+    public CategoryL addCategoryL(RequestCategoryLDto categoryLDto) {
         return categoryLRepository.save(
                 CategoryL.builder()
                         .name(categoryLDto.getName())
@@ -25,13 +26,17 @@ public class CategoryLServiceimple implements CategoryLService {
     }
 
     @Override
-    public CategoryL editCategoryL(Integer id, CategoryLDto categoryLDto) {
-        return categoryLRepository.save(
-                CategoryL.builder()
-                        .name(categoryLDto.getName())
-                        .id(categoryLDto.getId())
-                        .build()
-        );
+    public CategoryL editCategoryL(RequestCategoryLDto categoryLDto) {
+        Optional<CategoryL> categoryL = categoryLRepository.findById(categoryLDto.getId());
+        if (categoryL.isPresent()) {
+            return categoryLRepository.save(
+                    CategoryL.builder()
+                            .name(categoryLDto.getName())
+                            .id(categoryLDto.getId())
+                            .build()
+            );
+        }
+        return null;
     }
 
 

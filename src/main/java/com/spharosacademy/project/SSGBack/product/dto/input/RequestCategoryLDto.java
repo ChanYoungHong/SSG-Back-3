@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryLDto {
+public class RequestCategoryLDto {
 
     private int id;
     private String name;

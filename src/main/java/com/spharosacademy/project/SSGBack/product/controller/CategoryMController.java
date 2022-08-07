@@ -1,9 +1,7 @@
 package com.spharosacademy.project.SSGBack.product.controller;
 
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryLDto;
-import com.spharosacademy.project.SSGBack.product.entity.CategoryL;
 import com.spharosacademy.project.SSGBack.product.entity.CategoryM;
-import com.spharosacademy.project.SSGBack.product.dto.input.CategoryMDto;
+import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryMDto;
 import com.spharosacademy.project.SSGBack.product.service.CategoryMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,7 @@ public class CategoryMController {
     private final CategoryMService categoryMService;
 
     @PostMapping("/add")
-    public CategoryM addCategoryM(@RequestBody CategoryMDto categoryMDto){
+    public CategoryM addCategoryM(@RequestBody RequestCategoryMDto categoryMDto){
         return categoryMService.addCategoryM(categoryMDto);
     }
 
@@ -37,8 +35,8 @@ public class CategoryMController {
         return categoryMService.getCategoryMById(id);
     }
 
-    @PutMapping("/edit/{id}")
-    public CategoryM editCategoryM(@PathVariable Integer id, @RequestBody CategoryMDto categoryMDto) {
-        return categoryMService.editCategoryM(id, categoryMDto);
+    @PutMapping("/edit")
+    public CategoryM editCategoryM(@RequestBody RequestCategoryMDto categoryMDto) {
+        return categoryMService.editCategoryM(categoryMDto);
     }
 }
