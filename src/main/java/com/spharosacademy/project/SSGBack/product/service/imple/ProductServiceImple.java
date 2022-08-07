@@ -1,5 +1,8 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.cart.domain.Cart;
+import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
+import com.spharosacademy.project.SSGBack.cart.repository.CartRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
@@ -7,6 +10,7 @@ import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.Update;
@@ -23,6 +27,8 @@ public class ProductServiceImple implements ProductService {
 
     private final CategorySSRepository categorySSRepository;
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final IUserRepository iUserRepository;
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
@@ -97,5 +103,14 @@ public class ProductServiceImple implements ProductService {
         } else {
             throw new Exception();
         }
+    }
+
+    @Override
+    public Cart addProductToCart(CartInputDto cartInputDto) {
+        return cartRepository.save(Cart.builder().
+                product(productRepository.findById(cartInputDto.getProductId()).get())
+                .user(iUserRepository.findById(cartInputDto.getUserId()).get())
+                .qty(cartInputDto.getQty())
+                .build());
     }
 }

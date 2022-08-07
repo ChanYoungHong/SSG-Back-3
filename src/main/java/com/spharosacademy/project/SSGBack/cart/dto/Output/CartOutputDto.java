@@ -7,25 +7,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CartOutputDto {
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class CartDtoOutput {
 
         private Long id;
         private String productName;
+        private String productBrand;
+        private String productColor;
         private int price;
         private int qty;
 
-        public static CartDtoOutput of (Cart cart, Product product){
-            return CartDtoOutput.builder()
+        public static CartOutputDto of (Cart cart, Product product){
+            return CartOutputDto.builder()
                     .id(cart.getId())
                     .productName(cart.getProduct().getProductName())
+                    .productColor(cart.getProduct().getProductColor())
+                    .productBrand(cart.getProduct().getProductBrand())
                     .qty(cart.getQty())
                     .price(cart.getProduct().getPrice())
                     .build();
         }
     }
-}
+
