@@ -1,11 +1,12 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +21,8 @@ public class ResponseProductDto {
     private String productBrand;
     private int productCnt;
     private int CategorySSId;
+    private String titleImgUrl;
     private int sellAmount;
+
+    List<ProductDetailImage> productDetailImageList;
 }

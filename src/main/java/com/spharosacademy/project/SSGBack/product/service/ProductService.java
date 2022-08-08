@@ -15,11 +15,11 @@ public interface ProductService {
 
     List<Product> getAll();
 
-    ResponseProductDto getProductById(Long id);
+    ResponseProductDto getProductById(Long productId);
 
     UpdateProductDto editProductById(UpdateProductDto updateProductDto) throws Exception;
 
     void deleteProductById(Long id) throws Exception;
 
-    Cart addProductToCart(CartInputDto cartInputDto);
+//    Cart addProductToCart(CartInputDto cartInputDto);
 }

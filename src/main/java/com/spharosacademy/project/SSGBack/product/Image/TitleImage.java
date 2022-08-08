@@ -1,4 +1,4 @@
 package com.spharosacademy.project.SSGBack.product.Image;
 
-public class ProductImage {
+public class TitleImage {
 }

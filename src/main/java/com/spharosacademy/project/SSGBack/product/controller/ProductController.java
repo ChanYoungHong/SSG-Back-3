@@ -3,6 +3,8 @@ package com.spharosacademy.project.SSGBack.product.controller;
 import com.spharosacademy.project.SSGBack.cart.domain.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
+import com.spharosacademy.project.SSGBack.product.Image.service.ProductDetailImageService;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
@@ -22,6 +24,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final CartService cartService;
+    private final ProductDetailImageService productDetailImageService;
 
     //관리자페이지 만들어진다면 옮길 예정?!
     @PostMapping("/add")
@@ -41,26 +44,28 @@ public class ProductController {
     public void deleteProductById(@PathVariable Long id) throws Exception {
         productService.deleteProductById(id);
     }
-    
+
     //특정 상품 조회
     @GetMapping("/get/{id}")
-    public ResponseEntity<ResponseProductDto> getProductById(@PathVariable Long id) {
-        ResponseProductDto responseProductDto = productService.getProductById(id);
+    public ResponseEntity<ResponseProductDto> getProductById(@PathVariable Long productId) {
+        ResponseProductDto responseProductDto = productService.getProductById(productId);
+        List<ProductDetailImage> allByProductId = productDetailImageService.getAllByProductId(productId);
         return ResponseEntity.status(HttpStatus.OK).body(responseProductDto);
     }
 
     //특정 상품 수정 
     @PutMapping("/edit")
     public ResponseEntity<UpdateProductDto> editProduct
-            (@RequestBody UpdateProductDto updateProductDto) throws Exception {
+    (@RequestBody UpdateProductDto updateProductDto) throws Exception {
         UpdateProductDto updateDto = productService.editProductById(updateProductDto);
-        return ResponseEntity.status(HttpStatus.OK).body(updateProductDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updateDto);
     }
 
     //상품 상세페이지에서 장바구니 담기
     @PostMapping("/get/{id}/addCart")
     public Cart addCart(@PathVariable Long id, @RequestBody CartInputDto cartInputDto) {
-        return productService.addProductToCart(cartInputDto);
+//        return productService.addProductToCart(cartInputDto);
+        return cartService.addProductToCart(cartInputDto);
     }
 
 }

@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class CartInputDto {
     private Long userId;
     private Long productId;
+    //productId에 따른 수량 ??
     private int qty;
 }

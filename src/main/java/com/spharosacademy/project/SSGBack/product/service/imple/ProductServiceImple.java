@@ -1,19 +1,15 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.spharosacademy.project.SSGBack.cart.domain.Cart;
-import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
-import com.spharosacademy.project.SSGBack.cart.repository.CartRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySSRepository;
+import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImageRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 
 
@@ -27,8 +23,8 @@ public class ProductServiceImple implements ProductService {
 
     private final CategorySSRepository categorySSRepository;
     private final ProductRepository productRepository;
-    private final CartRepository cartRepository;
-    private final IUserRepository iUserRepository;
+    private final ProductDetailImageRepository productDetailImageRepository;
+
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
@@ -39,7 +35,7 @@ public class ProductServiceImple implements ProductService {
                         .productBrand(requestProductDto.getProductBrand())
                         .productColor(requestProductDto.getProductColor())
                         .productCnt(requestProductDto.getProductCnt())
-                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
+                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).orElseThrow())
                         .build()
         );
         return null;
@@ -52,44 +48,34 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public ResponseProductDto getProductById(Long id) {
-        Product product = productRepository.findById(id).get();
-        ResponseProductDto responseProductDto = new ResponseProductDto();
-        responseProductDto.setPrice(product.getPrice());
-        responseProductDto.setProductName(product.getProductName());
-        responseProductDto.setProductCnt(product.getProductCnt());
-        responseProductDto.setProductBrand(product.getProductBrand());
-        responseProductDto.setProductId(product.getProductId());
-        responseProductDto.setProductColor(product.getProductColor());
-        responseProductDto.setCategorySSId(product.getCategorySS().getId());
-        responseProductDto.setSellAmount(product.getProductSellAmt());
-        return responseProductDto;
+    public ResponseProductDto getProductById(Long productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        product.ifPresent(value -> ResponseProductDto.builder()
+                .ProductId(value.getProductId())
+                .productName(value.getProductName())
+                .productCnt(value.getProductCnt())
+                .productBrand(value.getProductBrand())
+                .productColor(value.getProductColor())
+                .productDetailImageList(productDetailImageRepository.findAllByProductId(productId))
+                .build());
+
+        return null;
     }
 
     @Override
     public UpdateProductDto editProductById(UpdateProductDto updateProductDto) throws Exception {
         Optional<Product> product = productRepository.findById(updateProductDto.getProductId());
-        UpdateProductDto updateDto = new UpdateProductDto();
         if (product.isPresent()) {
-//            productRepository.save(
-//                    Product.builder()
-//                            .productId(updateProductDto.getProductId())
-//                            .productName(requestProductDto.getProductName())
-//                            .price(requestProductDto.getPrice())
-//                            .productBrand(requestProductDto.getProductBrand())
-//                            .productColor(requestProductDto.getProductColor())
-//                            .productCnt(requestProductDto.getProductCnt())
-//                            .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
-//                            .build()
-//            );
-            updateDto.setProductId(updateProductDto.getProductId());
-            updateDto.setProductName(updateProductDto.getProductName());
-            updateDto.setPrice(updateProductDto.getPrice());
-            updateDto.setProductBrand(updateProductDto.getProductBrand());
-            updateDto.setProductColor(updateProductDto.getProductColor());
-            updateDto.setProductCnt(updateProductDto.getProductCnt());
-            updateDto.setCategorySSId(updateProductDto.getCategorySSId());
-            return updateDto;
+            UpdateProductDto.builder()
+                    .ProductId(updateProductDto.getProductId())
+                    .productName(updateProductDto.getProductName())
+                    .productColor(updateProductDto.getProductColor())
+                    .price(updateProductDto.getPrice())
+                    .productCnt(updateProductDto.getProductCnt())
+                    .productBrand(updateProductDto.getProductBrand())
+                    .CategorySSId(updateProductDto.getCategorySSId())
+                    .build();
+            return null;
         } else {
             throw new Exception();
         }
@@ -103,14 +89,5 @@ public class ProductServiceImple implements ProductService {
         } else {
             throw new Exception();
         }
-    }
-
-    @Override
-    public Cart addProductToCart(CartInputDto cartInputDto) {
-        return cartRepository.save(Cart.builder().
-                product(productRepository.findById(cartInputDto.getProductId()).get())
-                .user(iUserRepository.findById(cartInputDto.getUserId()).get())
-                .qty(cartInputDto.getQty())
-                .build());
     }
 }

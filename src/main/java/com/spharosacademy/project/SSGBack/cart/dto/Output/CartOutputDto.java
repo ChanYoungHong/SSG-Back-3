@@ -18,6 +18,7 @@ public class CartOutputDto {
         private String productBrand;
         private String productColor;
         private int price;
+        private int totalprice;
         private int qty;
 
         public static CartOutputDto of (Cart cart, Product product){
@@ -28,6 +29,7 @@ public class CartOutputDto {
                     .productBrand(cart.getProduct().getProductBrand())
                     .qty(cart.getQty())
                     .price(cart.getProduct().getPrice())
+                    .totalprice(product.getPrice())
                     .build();
         }
     }
