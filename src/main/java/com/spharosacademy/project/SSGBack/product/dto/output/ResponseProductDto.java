@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
+import com.spharosacademy.project.SSGBack.product.Image.service.ProductDetailImgService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +28,5 @@ public class ResponseProductDto {
     private String explanation;
 
     List<ProductDetailImage> productDetailImageList;
+
 }

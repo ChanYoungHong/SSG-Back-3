@@ -3,6 +3,7 @@ package com.spharosacademy.project.SSGBack.product.controller;
 import com.spharosacademy.project.SSGBack.cart.domain.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.Image.service.ProductDetailImgService;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
@@ -29,6 +30,7 @@ public class ProductController {
     @PostMapping("/add")
     public Product addProduct(
             @RequestBody RequestProductDto requestProductDto) {
+        productDetailImgService.addDetailImg(requestProductDto.getDetailImgUrl());
         return productService.addProduct(requestProductDto);
     }
 

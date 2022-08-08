@@ -25,7 +25,6 @@ public class ProductServiceImple implements ProductService {
     private final ProductRepository productRepository;
     private final ProductDetailImgRepository productDetailImgRepository;
 
-
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
         productRepository.save(
@@ -37,6 +36,7 @@ public class ProductServiceImple implements ProductService {
                         .productCnt(requestProductDto.getProductCnt())
                         .detailImgUrl(requestProductDto.getDetailImgUrl())
                         .titleImgUrl(requestProductDto.getTitleImgUrl())
+                        .detailImgUrl(requestProductDto.getDetailImgUrl())
                         .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).orElseThrow())
                         .build()
         );
@@ -60,7 +60,6 @@ public class ProductServiceImple implements ProductService {
                 .productColor(value.getProductColor())
                 .productDetailImageList(productDetailImgRepository.findAllByProductId(productId))
                 .build());
-
         return null;
     }
 

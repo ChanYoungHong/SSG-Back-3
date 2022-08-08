@@ -5,6 +5,8 @@ import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetail
 import com.spharosacademy.project.SSGBack.product.Image.service.ProductDetailImgService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
+
 
 import java.util.List;
 
@@ -13,14 +15,21 @@ import java.util.List;
 public class ProductDetailImgServiceImpl implements ProductDetailImgService {
 
     private final ProductDetailImgRepository productDetailImgRepository;
+    private final ProductRepository productRepository;
+
     @Override
-    public List<ProductDetailImage> getImgByProductId(Long productId) {
+    public ProductDetailImage addDetailImg(String detailImgUrl) {
+        productDetailImgRepository.save(
+                ProductDetailImage.builder()
+                        .imageUrl(detailImgUrl)
+                        .build()
+        );
         return null;
     }
 
+    @Override
+    public List<ProductDetailImage> getImgByProductId(Long productId) {
+        return productDetailImgRepository.findAllByProductId(productId);
+    }
 
-//    @Override
-//    public List<ProductDetailImage> getAllByProductId(Long productId) {
-//        return productDetailImageRepository.findAllByProductId(productId);
-//    }
 }
