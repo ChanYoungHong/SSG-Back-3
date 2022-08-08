@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @MappedSuperclass
 @Getter
 @EntityListeners(value = {AuditingEntityListener.class})
-abstract class BaseEntity {
+public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
