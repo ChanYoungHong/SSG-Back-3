@@ -4,6 +4,7 @@ import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImag
 
 import java.util.List;
 
-public interface ProductDetailImgRepository extends JpaRepository<ProductDetailImage, Long>{
+public interface ProductDetailImgRepository extends {
     List<ProductDetailImage> findAllByProductId(Long productId);
 }
+JpaRepository<ProductDetailImage, Long>
