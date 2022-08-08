@@ -22,6 +22,7 @@ public class ProductDetailImage {
     private Long Id;
     private String imageUrl;
     private String Txt;
+    private Long productId;
 
     @ManyToOne
     private Product product;

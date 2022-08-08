@@ -15,7 +15,7 @@ public interface ProductService {
 
     ResponseProductDto getProductById(Long productId);
 
-    UpdateProductDto editProductById(UpdateProductDto updateProductDto) throws Exception;
+    Product editProductById(UpdateProductDto updateProductDto) throws Exception;
 
     void deleteProductById(Long id) throws Exception;
 

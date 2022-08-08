@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.dto.input;
 
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class RequestProductDto {
     private int productCnt;
     private int CategorySSId;
     private String titleImgUrl;
-    private String detailImgUrl;
+
 }

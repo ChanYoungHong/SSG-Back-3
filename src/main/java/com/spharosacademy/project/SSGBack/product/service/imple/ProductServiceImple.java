@@ -27,20 +27,17 @@ public class ProductServiceImple implements ProductService {
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
-        productRepository.save(
+        return productRepository.save(
                 Product.builder()
                         .productName(requestProductDto.getProductName())
                         .price(requestProductDto.getPrice())
                         .productBrand(requestProductDto.getProductBrand())
                         .productColor(requestProductDto.getProductColor())
                         .productCnt(requestProductDto.getProductCnt())
-                        .detailImgUrl(requestProductDto.getDetailImgUrl())
                         .titleImgUrl(requestProductDto.getTitleImgUrl())
-                        .detailImgUrl(requestProductDto.getDetailImgUrl())
                         .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).orElseThrow())
                         .build()
         );
-        return null;
     }
 
     @Override
@@ -58,28 +55,29 @@ public class ProductServiceImple implements ProductService {
                 .productCnt(value.getProductCnt())
                 .productBrand(value.getProductBrand())
                 .productColor(value.getProductColor())
-                .productDetailImageList(productDetailImgRepository.findAllByProductId(productId))
+                .productDetailImageList(productDetailImgRepository.findAllByproductId(productId))
                 .build());
         return null;
     }
 
     @Override
-    public UpdateProductDto editProductById(UpdateProductDto updateProductDto) throws Exception {
+    public Product editProductById(UpdateProductDto updateProductDto) throws Exception {
         Optional<Product> product = productRepository.findById(updateProductDto.getProductId());
         if (product.isPresent()) {
-            UpdateProductDto.builder()
-                    .ProductId(updateProductDto.getProductId())
-                    .productName(updateProductDto.getProductName())
-                    .productColor(updateProductDto.getProductColor())
-                    .price(updateProductDto.getPrice())
-                    .productCnt(updateProductDto.getProductCnt())
-                    .productBrand(updateProductDto.getProductBrand())
-                    .CategorySSId(updateProductDto.getCategorySSId())
-                    .build();
-            return null;
+            productRepository.save(
+                    Product.builder()
+                            .productId(updateProductDto.getProductId())
+                            .productName(updateProductDto.getProductName())
+                            .productColor(updateProductDto.getProductColor())
+                            .price(updateProductDto.getPrice())
+                            .productCnt(updateProductDto.getProductCnt())
+                            .productBrand(updateProductDto.getProductBrand())
+                            .categorySS(categorySSRepository.findById(updateProductDto.getCategorySSId()).get())
+                            .build()
+            );
         } else {
             throw new Exception();
-        }
+        } return null;
     }
 
     @Override

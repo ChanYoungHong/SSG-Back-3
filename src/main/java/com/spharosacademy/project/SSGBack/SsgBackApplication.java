@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@EnableJpaRepositories
 public class SsgBackApplication {
 
     public static void main(String[] args) {

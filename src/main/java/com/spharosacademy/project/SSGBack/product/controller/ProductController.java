@@ -30,7 +30,6 @@ public class ProductController {
     @PostMapping("/add")
     public Product addProduct(
             @RequestBody RequestProductDto requestProductDto) {
-        productDetailImgService.addDetailImg(requestProductDto.getDetailImgUrl());
         return productService.addProduct(requestProductDto);
     }
 
@@ -56,10 +55,10 @@ public class ProductController {
 
     //특정 상품 수정 
     @PutMapping("/update")
-    public ResponseEntity<UpdateProductDto> editProduct
+    public Product editProduct
     (@RequestBody UpdateProductDto updateProductDto) throws Exception {
-        UpdateProductDto updateDto = productService.editProductById(updateProductDto);
-        return ResponseEntity.status(HttpStatus.OK).body(updateDto);
+        return productService.editProductById(updateProductDto);
+
     }
 
     //상품 상세페이지에서 장바구니 담기
