@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Data
 @Builder
 @Table(name = "product")
-
 public class Product {
 
     @Id
