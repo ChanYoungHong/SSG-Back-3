@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class ResponseProductDto {
 
-    private Long ProductId;
+    private Long productId;
     private String productName;
     private int price;
     private String productColor;
@@ -22,7 +22,9 @@ public class ResponseProductDto {
     private int productCnt;
     private int CategorySSId;
     private String titleImgUrl;
+    private String detailImgUrl;
     private int sellAmount;
+    private String explanation;
 
     List<ProductDetailImage> productDetailImageList;
 }

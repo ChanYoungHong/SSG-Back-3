@@ -38,6 +38,10 @@ public class Product extends BaseTimeEntity {
     @Column(name="product_sell_amt")
     private int productSellAmt;
 
+    private String titleImgUrl;
+
+    private String detailImgUrl;
+
     @OneToOne
     private CategorySS categorySS;
 

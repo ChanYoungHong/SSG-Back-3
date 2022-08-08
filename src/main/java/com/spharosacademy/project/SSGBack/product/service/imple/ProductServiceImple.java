@@ -1,11 +1,11 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.repository.CategorySSRepository;
-import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImageRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ProductServiceImple implements ProductService {
 
     private final CategorySSRepository categorySSRepository;
     private final ProductRepository productRepository;
-    private final ProductDetailImageRepository productDetailImageRepository;
+    private final ProductDetailImgRepository productDetailImgRepository;
 
 
     @Override
@@ -35,6 +35,8 @@ public class ProductServiceImple implements ProductService {
                         .productBrand(requestProductDto.getProductBrand())
                         .productColor(requestProductDto.getProductColor())
                         .productCnt(requestProductDto.getProductCnt())
+                        .detailImgUrl(requestProductDto.getDetailImgUrl())
+                        .titleImgUrl(requestProductDto.getTitleImgUrl())
                         .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).orElseThrow())
                         .build()
         );
@@ -51,12 +53,12 @@ public class ProductServiceImple implements ProductService {
     public ResponseProductDto getProductById(Long productId) {
         Optional<Product> product = productRepository.findById(productId);
         product.ifPresent(value -> ResponseProductDto.builder()
-                .ProductId(value.getProductId())
+                .productId(value.getProductId())
                 .productName(value.getProductName())
                 .productCnt(value.getProductCnt())
                 .productBrand(value.getProductBrand())
                 .productColor(value.getProductColor())
-                .productDetailImageList(productDetailImageRepository.findAllByProductId(productId))
+                .productDetailImageList(productDetailImgRepository.findAllByProductId(productId))
                 .build());
 
         return null;

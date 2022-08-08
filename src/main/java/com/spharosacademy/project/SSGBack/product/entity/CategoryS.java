@@ -23,4 +23,5 @@ public class CategoryS {
     @ManyToOne
     private CategoryM categoryM;
 
+
 }

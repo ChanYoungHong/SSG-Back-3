@@ -17,4 +17,6 @@ public class RequestProductDto {
     private String productBrand;
     private int productCnt;
     private int CategorySSId;
+    private String titleImgUrl;
+    private String detailImgUrl;
 }
