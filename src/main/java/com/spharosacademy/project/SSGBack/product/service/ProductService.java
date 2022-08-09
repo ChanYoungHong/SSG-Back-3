@@ -12,9 +12,9 @@ public interface ProductService {
 
     Product addProduct(RequestProductDto requestProductDto);
 
-    List<Product> getAll();
+    List<ResponseProductDto> getAll();
 
-    Product getProductById(Long id);
+    List<ResponseProductDto> getProductById(Long id);
 
     Product editProductById(UpdateProductDto updateProductDto) throws Exception;
 

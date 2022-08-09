@@ -34,11 +34,12 @@ public class CartServiceimple implements CartService {
         Optional<User> user = iUserRepository.findById(cartInputDto.getUserId());
         try {
             if (product.isPresent() && user.isPresent()) {
-                return cartRepository.save(Cart.builder()
-                        .product(product.get())
-                        .user(user.get())
-                        .qty(cartInputDto.getQty())
-                        .build());
+                return cartRepository.save(
+                        Cart.builder()
+                                .product(product.get())
+                                .user(user.get())
+                                .qty(cartInputDto.getQty())
+                                .build());
             }
         } catch (ProductNotFoundException e) {
             e.printStackTrace();

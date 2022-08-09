@@ -23,6 +23,8 @@ public class RequestProductDto {
     private int categorySSId;
     private String titleImgUrl;
     private String titleImgTxt;
+    private String explanation;
+
 
     List<ProductDetailImage> productDetailImageList;
     List<ProductTitleImage> productTitleImageList;

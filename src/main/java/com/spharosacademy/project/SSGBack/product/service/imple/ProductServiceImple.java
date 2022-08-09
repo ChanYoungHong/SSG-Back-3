@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,47 +39,82 @@ public class ProductServiceImple implements ProductService {
                         .titleImgUrl(requestProductDto.getTitleImgUrl())
                         .titleImgTxt(requestProductDto.getTitleImgTxt())
                         .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
+                        .explanation(requestProductDto.getExplanation())
                         .build()
 
         );
 
-        requestProductDto.getProductDetailImageList().forEach(productDetailImage -> {
-            productDetailImgRepository.save(ProductDetailImage.builder()
-                    .imgUrl(productDetailImage.getImgUrl())
-                    .imgTxt(productDetailImage.getImgTxt())
-                    .product(product)
-                    .build()
-            );
-        });
+        requestProductDto.getProductDetailImageList().forEach(
+                productDetailImage -> {
+                    productDetailImgRepository.save(ProductDetailImage.builder()
+                            .imgUrl(productDetailImage.getImgUrl())
+                            .imgTxt(productDetailImage.getImgTxt())
+                            .product(product)
+                            .build()
+                    );
+                });
         return product;
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<ResponseProductDto> getAll() {
         List<Product> ListProduct = productRepository.findAll();
-        return ListProduct;
+        List<ResponseProductDto> responseProductDtoList = new ArrayList<>();
+
+        ListProduct.forEach(product -> {
+            responseProductDtoList.add(ResponseProductDto.builder()
+                    .id(product.getId())
+                    .productName(product.getName())
+                    .price(product.getPrice())
+                    .productColor(product.getColor())
+                    .productBrand(product.getBrand())
+                    .productCnt(product.getCnt())
+                    .CategorySSId(product.getCategorySS().getId())
+                    .titleImgUrl(product.getTitleImgUrl())
+                    .sellAmount(product.getSellAmt())
+                    .explanation(product.getExplanation())
+                    .productDetailImageList(productDetailImgRepository.findAllByproductId(product.getId()))
+                    .build());
+        });
+        return responseProductDtoList;
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public List<ResponseProductDto> getProductById(Long id) {
         Product product = productRepository.findById(id).get();
-        return product;
+        List<ResponseProductDto> responseProductDtoList = new ArrayList<>();
+        responseProductDtoList.add(
+                ResponseProductDto.builder()
+                        .id(product.getId())
+                        .productName(product.getName())
+                        .price(product.getPrice())
+                        .productColor(product.getColor())
+                        .productBrand(product.getBrand())
+                        .productCnt(product.getCnt())
+                        .titleImgUrl(product.getTitleImgUrl())
+                        .sellAmount(product.getSellAmt())
+                        .explanation(product.getExplanation())
+                        .productDetailImageList(productDetailImgRepository.findAllByproductId(product.getId()))
+                        .CategorySSId(product.getCategorySS().getId())
+                        .build()
+        );
+        return responseProductDtoList;
     }
 
     @Override
     public Product editProductById(UpdateProductDto updateProductDto) throws Exception {
         Product product = productRepository.findById(updateProductDto.getProductId()).get();
-            productRepository.save(
-                    Product.builder()
-                            .id(updateProductDto.getProductId())
-                            .name(updateProductDto.getProductName())
-                            .color(updateProductDto.getProductColor())
-                            .price(updateProductDto.getPrice())
-                            .cnt(updateProductDto.getProductCnt())
-                            .brand(updateProductDto.getProductBrand())
-                            .categorySS(categorySSRepository.findById(updateProductDto.getCategorySSId()).get())
-                            .build()
-            );
+        productRepository.save(
+                Product.builder()
+                        .id(updateProductDto.getProductId())
+                        .name(updateProductDto.getProductName())
+                        .color(updateProductDto.getProductColor())
+                        .price(updateProductDto.getPrice())
+                        .cnt(updateProductDto.getProductCnt())
+                        .brand(updateProductDto.getProductBrand())
+                        .categorySS(categorySSRepository.findById(updateProductDto.getCategorySSId()).get())
+                        .build()
+        );
         return product;
     }
 

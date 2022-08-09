@@ -39,6 +39,7 @@ public class Product extends BaseTimeEntity {
 
     private String titleImgUrl;
     private String titleImgTxt;
+    private String explanation;
 
     @OneToOne
     private CategorySS categorySS;

@@ -31,7 +31,7 @@ public class ProductController {
 
     //모든 상품들에 대한 정보 조회
     @GetMapping("/all")
-    public List<Product> getAll() {
+    public List<ResponseProductDto> getAll() {
         return productService.getAll();
     }
 
@@ -43,7 +43,7 @@ public class ProductController {
 
     //특정 상품 조회
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public List<ResponseProductDto> getProductById(@PathVariable Long id) {
         productDetailImgService.getImgByProductId(id);
         return productService.getProductById(id);
     }
