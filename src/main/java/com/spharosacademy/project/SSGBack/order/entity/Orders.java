@@ -1,0 +1,73 @@
+package com.spharosacademy.project.SSGBack.order.entity;
+
+import com.spharosacademy.project.SSGBack.Cart;
+import com.spharosacademy.project.SSGBack.Product;
+import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Builder
+@Table(name = "orders") // Order이라는 어노테이션이 있어서 Orders로 표기함
+public class Orders extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderId;
+
+    @Column(name = "order_state")
+    private Boolean orderState;
+
+    @Column(name = "order_msg")
+    private String orderMsg;
+
+    @Column(name = "order_decidedDate")
+    private LocalDateTime orderDecidedDate;
+
+    @Column(name = "order_receiver")
+    private String orderReceiver;
+
+    @Column(name = "order_AnOrderer")
+    private String orderAnOrderer;
+
+    @Column(name = "order_list")
+    private String orderList;   // 리스트 형태로 바꿔야하는 것은 아닌지?
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+
+
+
+
+
+
+
+
+
+
+
+}
