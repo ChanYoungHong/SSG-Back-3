@@ -15,10 +15,10 @@ import org.hibernate.validator.constraints.Length;
 public class UserInputDto {
 
 
-    private Long memberId;
+//    private Long memberId;
 
     @NotBlank(message = "아이디를 입력해주세요.")
-    private int userId;
+    private Long userId;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String userPwd;

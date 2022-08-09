@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     private Long memberId;
 
     @Column(name = "user_id")
-    private int userId;
+    private Long userId;
 
     @Column(name = "user_pwd", nullable = false)
     private String userPwd;
@@ -54,5 +54,16 @@ public class User extends BaseEntity {
 
     @Column(name = "user_birthdate")
     private LocalDateTime userBirthDate;
+
+    @Column(name = "user_drop_check")
+    private Boolean userDropCheck;
+
+//    public void changeUserPhone(String userPhone) {
+//        this.userPhone = userPhone;
+//    }
+//
+//    public void changeUserEmail(String userEmail) {
+//        this.userEmail = userEmail;
+//    }
 
 }

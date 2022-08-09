@@ -1,43 +1,35 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServieImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserServieImpl(
-        UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     @Transactional
-    public User addUser(UserInputDto userInputDto) {
-
-//        User entity = dtoToEntity(userInputDto);
-//        log.info(String.valueOf(userInputDto));
-//        System.out.println("===========================");
-//        log.info(String.valueOf(entity));
-//
-//        return null;
-
+    public User registerUser(UserInputDto userInputDto) {
 
         return userRepository.save(
             User.builder()
-                .memberId(userInputDto.getMemberId())
+//                .memberId(userInputDto.getMemberId())
                 .userId(userInputDto.getUserId())
                 .userPwd(userInputDto.getUserPwd())
                 .userAddress(userInputDto.getUserAddress())
@@ -55,6 +47,47 @@ public class UserServieImpl implements UserService {
     @Override
     public List<User> getAllUser() {
         return userRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public User modifyUserInfo(UserOutputDto userOutputDto) {
+
+        Optional<User> result = userRepository.findById(userOutputDto.getMemberId());
+
+        if (result.isPresent()) {
+            return userRepository.save(
+                User.builder()
+                    .memberId(userOutputDto.getMemberId())
+                    .userId(userOutputDto.getUserId())
+                    .userPwd(userOutputDto.getUserPwd())
+                    .userAddress(userOutputDto.getUserAddress())
+                    .userName(userOutputDto.getUserName())
+                    .userEmail(userOutputDto.getUserEmail())
+                    .userBirthDate(userOutputDto.getUserBirthDate())
+                    .gender(userOutputDto.getGender())
+                    .role(userOutputDto.getRole())
+                    .memberType(userOutputDto.getMemberType())
+                    .build()
+            );
+        }
+        return null;
+    }
+
+    @Override
+    public User removeUserInfo(Long memberId, UserOutputDto userOutputDto) {
+
+        Optional<User> check =
+            Optional.ofNullable(userRepository.findById(userOutputDto.getMemberId()).orElseThrow(
+                MemberIdNotfound::new));
+
+        if (check.isPresent()) {
+            if (userOutputDto.getUserDropCheck().equals(true)) {
+                userRepository.deleteById(userOutputDto.getMemberId());
+            }
+        }
+
+        return null;
     }
 
 

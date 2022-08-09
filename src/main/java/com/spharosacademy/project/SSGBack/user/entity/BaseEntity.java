@@ -17,11 +17,11 @@ public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     public LocalDateTime createdAt;
 
-    @LastModifiedBy
+    @LastModifiedBy // 최종 수정 시간을 자동으로 처리해줌
     @Column(name = "updated_at")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     public LocalDateTime updatedAt;
 }
