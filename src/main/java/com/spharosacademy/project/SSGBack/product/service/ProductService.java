@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
@@ -13,7 +14,7 @@ public interface ProductService {
 
     List<Product> getAll();
 
-    ResponseProductDto getProductById(Long productId);
+    Product getProductById(Long id);
 
     Product editProductById(UpdateProductDto updateProductDto) throws Exception;
 

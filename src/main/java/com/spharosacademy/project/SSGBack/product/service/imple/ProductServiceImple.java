@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
@@ -27,17 +28,29 @@ public class ProductServiceImple implements ProductService {
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
-        return productRepository.save(
+        Product product = productRepository.save(
                 Product.builder()
-                        .productName(requestProductDto.getProductName())
+                        .name(requestProductDto.getName())
                         .price(requestProductDto.getPrice())
-                        .productBrand(requestProductDto.getProductBrand())
-                        .productColor(requestProductDto.getProductColor())
-                        .productCnt(requestProductDto.getProductCnt())
+                        .brand(requestProductDto.getBrand())
+                        .color(requestProductDto.getColor())
+                        .cnt(requestProductDto.getCnt())
                         .titleImgUrl(requestProductDto.getTitleImgUrl())
-                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).orElseThrow())
+                        .titleImgTxt(requestProductDto.getTitleImgTxt())
+                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
                         .build()
+
         );
+
+        requestProductDto.getProductDetailImageList().forEach(productDetailImage -> {
+            productDetailImgRepository.save(ProductDetailImage.builder()
+                    .imgUrl(productDetailImage.getImgUrl())
+                    .imgTxt(productDetailImage.getImgTxt())
+                    .product(product)
+                    .build()
+            );
+        });
+        return product;
     }
 
     @Override
@@ -47,37 +60,26 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public ResponseProductDto getProductById(Long productId) {
-        Optional<Product> product = productRepository.findById(productId);
-        product.ifPresent(value -> ResponseProductDto.builder()
-                .productId(value.getProductId())
-                .productName(value.getProductName())
-                .productCnt(value.getProductCnt())
-                .productBrand(value.getProductBrand())
-                .productColor(value.getProductColor())
-                .productDetailImageList(productDetailImgRepository.findAllByproductId(productId))
-                .build());
-        return null;
+    public Product getProductById(Long id) {
+        Product product = productRepository.findById(id).get();
+        return product;
     }
 
     @Override
     public Product editProductById(UpdateProductDto updateProductDto) throws Exception {
-        Optional<Product> product = productRepository.findById(updateProductDto.getProductId());
-        if (product.isPresent()) {
+        Product product = productRepository.findById(updateProductDto.getProductId()).get();
             productRepository.save(
                     Product.builder()
-                            .productId(updateProductDto.getProductId())
-                            .productName(updateProductDto.getProductName())
-                            .productColor(updateProductDto.getProductColor())
+                            .id(updateProductDto.getProductId())
+                            .name(updateProductDto.getProductName())
+                            .color(updateProductDto.getProductColor())
                             .price(updateProductDto.getPrice())
-                            .productCnt(updateProductDto.getProductCnt())
-                            .productBrand(updateProductDto.getProductBrand())
+                            .cnt(updateProductDto.getProductCnt())
+                            .brand(updateProductDto.getProductBrand())
                             .categorySS(categorySSRepository.findById(updateProductDto.getCategorySSId()).get())
                             .build()
             );
-        } else {
-            throw new Exception();
-        } return null;
+        return product;
     }
 
     @Override

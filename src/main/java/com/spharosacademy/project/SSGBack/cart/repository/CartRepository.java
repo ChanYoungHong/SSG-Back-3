@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    List<Cart> findAllByUserId(Long id);
+    //사용자 id에 따른 장바구니를 전부 가져온다
+    List<Cart> findAllByUserId(Long userid);
+
 }

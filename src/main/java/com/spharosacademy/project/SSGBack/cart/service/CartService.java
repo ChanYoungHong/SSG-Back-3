@@ -10,9 +10,7 @@ public interface CartService {
 
     Cart addProductToCart(CartInputDto cartInputDto);
 
-//    Product addCartProduct(Long productId);
+    List<CartOutputDto> getAllCart();
 
-    List<Cart> getAllCart();
-
-    CartOutputDto getAllCartByUserId(Long id);
+    List<CartOutputDto> getAllCartByUserId(Long userid);
 }

@@ -20,9 +20,8 @@ public class ProductDetailImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    private String imageUrl;
-    private String Txt;
-    private Long productId;
+    private String imgUrl;
+    private String imgTxt;
 
     @ManyToOne
     private Product product;
