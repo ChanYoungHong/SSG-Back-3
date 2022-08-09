@@ -16,6 +16,7 @@ public class QnaServiceImpl implements QnaService {
 
     private final QnaRepo qnaRepo;
 
+    // 질문하기
     @Override
     public Qna addQna(QnaDto qnaDto) {
         return qnaRepo.save(Qna.builder()
@@ -26,6 +27,8 @@ public class QnaServiceImpl implements QnaService {
                 .qnaUpdate(qnaDto.getQnaUpdate())
                 .build());
     }
+
+    // 조회하기
 
     @Override
     public List<Qna> getAll() {

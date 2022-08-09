@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface QnaService {
 
+
+    // 질문하기
     Qna addQna(QnaDto qnaDto);
+
+    //질문 조회하기
     List<Qna> getAll();
 }

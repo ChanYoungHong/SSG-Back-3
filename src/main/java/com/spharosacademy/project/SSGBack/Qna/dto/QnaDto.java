@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +24,9 @@ public class QnaDto {
 
     private String qnaContent;
 
-    private Date qnaReg;
+    private LocalDateTime qnaReg;
 
-    private Date qnaUpdate;
+    private LocalDateTime qnaUpdate;
 
 
 }
