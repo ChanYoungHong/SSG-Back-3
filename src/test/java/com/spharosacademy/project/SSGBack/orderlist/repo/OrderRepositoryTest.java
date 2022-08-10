@@ -1,13 +1,10 @@
-package com.spharosacademy.project.SSGBack.order.repo;
+package com.spharosacademy.project.SSGBack.orderlist.repo;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.spharosacademy.project.SSGBack.order.entity.Orders;
+import com.spharosacademy.project.SSGBack.orderlist.entity.Orders;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @SpringBootTest
 class OrderRepositoryTest {

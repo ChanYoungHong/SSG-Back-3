@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.order.entity;
+package com.spharosacademy.project.SSGBack.orderlist.entity;
 
 import com.spharosacademy.project.SSGBack.Cart;
 import com.spharosacademy.project.SSGBack.Product;
@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-@Table(name = "orders") // Order이라는 어노테이션이 있어서 Orders로 표기함
-public class Orders extends BaseEntity {
+@Table(name = "order_list") // Order이라는 어노테이션이 있어서 Orders로 표기함
+public class OrderList extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +45,8 @@ public class Orders extends BaseEntity {
     @Column(name = "order_AnOrderer")
     private String orderAnOrderer;
 
-    @Column(name = "order_list")
-    private String orderList;   // 리스트 형태로 바꿔야하는 것은 아닌지?
+//    @Column(name = "order_list")
+//    private String orderList;   // 리스트 형태로 바꿔야하는 것은 아닌지?
 
     @ManyToOne
     @JoinColumn(name = "member_id")
