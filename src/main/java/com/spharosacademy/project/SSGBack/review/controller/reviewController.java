@@ -28,19 +28,19 @@ public class reviewController {
     }
 
     // 모든 상품 조회 하기
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public List<Review> getAll() {
         return reviewService.getAll();
     }
 
     // 특정 리뷰 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteReviewById(@PathVariable BigInteger id) throws Exception {
         reviewService.deleteReviewById(id);
     }
 
     // 특정 리뷰 수정
-    @PutMapping("/update")
+    @PutMapping("/edit/{id}")
     public Review editReview(@RequestBody ResponseReviewDto responseReviewDto) throws Exception {
         return reviewService.editReviewById(responseReviewDto);
     }
