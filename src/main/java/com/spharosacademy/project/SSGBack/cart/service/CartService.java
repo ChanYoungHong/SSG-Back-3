@@ -12,5 +12,5 @@ public interface CartService {
 
     List<CartOutputDto> getAllCart();
 
-    List<CartOutputDto> getAllCartByUserId(Long userid);
+    CartOutputDto getCartByUserId(Long userid);
 }

@@ -1,14 +1,12 @@
 package com.spharosacademy.project.SSGBack.product.Image.entity;
 
+import com.spharosacademy.project.SSGBack.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
@@ -19,8 +17,11 @@ public class ProductTitleImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String ProductTitleImgUrl;
-    private String ProductTitleImgTxt;
+    private Long Id;
+    private String productTitleImgUrl;
+    private String productTitleImgTxt;
+
+    @ManyToOne
+    private Product product;
 
 }

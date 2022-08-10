@@ -16,7 +16,9 @@ public class Product extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String mallText;
     private int price;
+    private String priceText;
     private String color;
     private String brand;
     private int cnt;
@@ -24,5 +26,4 @@ public class Product extends BaseTimeEntity {
     private String titleImgUrl;
     private String titleImgTxt;
     private String explanation;
-
 }

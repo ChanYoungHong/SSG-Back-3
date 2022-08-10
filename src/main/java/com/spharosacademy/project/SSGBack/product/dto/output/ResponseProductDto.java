@@ -18,10 +18,11 @@ public class ResponseProductDto {
     private Long id;
     private String productName;
     private int price;
+    private String priceText;
     private String productColor;
     private String productBrand;
     private int productCnt;
-    private CategoryProductList categoryProductList;
+    private String mallTxt;
     private String titleImgUrl;
     private String titleImgTxt;
     private int sellAmount;

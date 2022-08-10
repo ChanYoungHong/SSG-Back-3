@@ -2,11 +2,11 @@ package com.spharosacademy.project.SSGBack.product.service;
 
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
@@ -20,5 +20,6 @@ public interface ProductService {
 
     void deleteProductById(Long id) throws Exception;
 
-//    Cart addProductToCart(CartInputDto cartInputDto);
+    ResponseRecommendProductDto getRecommendProductById(Long id);
+
 }

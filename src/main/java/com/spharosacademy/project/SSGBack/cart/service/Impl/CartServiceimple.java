@@ -60,6 +60,7 @@ public class CartServiceimple implements CartService {
                     .productid(cart.getProduct().getId())
                     .productName(cart.getProduct().getName())
                     .price(cart.getProduct().getPrice())
+                    .titleImgUrl(cart.getProduct().getTitleImgUrl())
                     .productBrand(cart.getProduct().getBrand())
                     .productColor(cart.getProduct().getColor())
                     .qty(cart.getQty())
@@ -69,25 +70,22 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
-    public List<CartOutputDto> getAllCartByUserId(Long userid) {
-        List<Cart> cartList = cartRepository.findAllByUserId(userid);
-        List<CartOutputDto> cartOutputDtoList = new ArrayList<>();
+    public CartOutputDto getCartByUserId(Long userid) {
+        Cart cart = cartRepository.findByUserId(userid).get(0);
 
-        cartList.forEach(cart -> {
-            cartOutputDtoList.add(CartOutputDto.builder()
-                    .id(cart.getId())
-                    .price(cart.getProduct().getPrice())
-                    .username(cart.getUser().getName())
-                    .useraddress(cart.getUser().getAddress())
-                    .qty(cart.getQty())
-                    .productid(cart.getProduct().getId())
-                    .productBrand(cart.getProduct().getBrand())
-                    .productName(cart.getProduct().getName())
-                    .productColor(cart.getProduct().getColor())
-                    .build());
-        });
-
-        return cartOutputDtoList;
+        return CartOutputDto.builder()
+                .id(cart.getId())
+                .price(cart.getProduct().getPrice())
+                .username(cart.getUser().getName())
+                .useraddress(cart.getUser().getAddress())
+                .titleImgUrl(cart.getProduct().getTitleImgUrl())
+                .qty(cart.getQty())
+                .productid(cart.getProduct().getId())
+                .productBrand(cart.getProduct().getBrand())
+                .productName(cart.getProduct().getName())
+                .productColor(cart.getProduct().getColor())
+                .build();
     }
-
 }
+
+

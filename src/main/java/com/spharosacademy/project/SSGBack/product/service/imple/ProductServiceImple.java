@@ -3,9 +3,12 @@ package com.spharosacademy.project.SSGBack.product.service.imple;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryProductList;
 import com.spharosacademy.project.SSGBack.category.repository.*;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductTitleImage;
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
+import com.spharosacademy.project.SSGBack.product.Image.repository.ProductTitleImgRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
@@ -31,16 +34,21 @@ public class ProductServiceImple implements ProductService {
     private final CategoryMRepository categoryMRepository;
     private final CategorySRepository categorySRepository;
     private final CategoryLRepository categoryLRepository;
+    private final ProductTitleImgRepository productTitleImgRepository;
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
         Product product = productRepository.save(
                 Product.builder()
                         .name(requestProductDto.getName())
+                        .sellAmt(requestProductDto.getSellAmount())
+                        .priceText(requestProductDto.getPriceText())
+                        .mallText(requestProductDto.getMallTxt())
                         .price(requestProductDto.getPrice())
                         .brand(requestProductDto.getBrand())
                         .color(requestProductDto.getColor())
                         .cnt(requestProductDto.getCnt())
+                        .sellAmt(requestProductDto.getSellAmount())
                         .titleImgUrl(requestProductDto.getTitleImgUrl())
                         .titleImgTxt(requestProductDto.getTitleImgTxt())
                         .explanation(requestProductDto.getExplanation())
@@ -65,6 +73,13 @@ public class ProductServiceImple implements ProductService {
                             .build()
                     );
                 });
+
+
+        productTitleImgRepository.save(ProductTitleImage.builder()
+                .productTitleImgUrl(product.getTitleImgUrl())
+                .productTitleImgTxt(product.getTitleImgTxt())
+                .product(product)
+                .build());
         return product;
     }
 
@@ -77,6 +92,8 @@ public class ProductServiceImple implements ProductService {
                     .id(product.getId())
                     .productName(product.getName())
                     .price(product.getPrice())
+                    .priceText(product.getPriceText())
+                    .mallTxt(product.getMallText())
                     .productColor(product.getColor())
                     .productBrand(product.getBrand())
                     .productCnt(product.getCnt())
@@ -91,6 +108,24 @@ public class ProductServiceImple implements ProductService {
         return responseProductDtoList;
     }
 
+
+    @Override
+    public ResponseRecommendProductDto getRecommendProductById(Long id) {
+        Product recproduct = productRepository.findById(id).get();
+
+        return ResponseRecommendProductDto.builder()
+                .id(recproduct.getId())
+                .name(recproduct.getName())
+                .titleImgUrl(recproduct.getTitleImgUrl())
+                .mallText(recproduct.getMallText())
+                .brand(recproduct.getBrand())
+                .priceText(recproduct.getPriceText())
+                .price(recproduct.getPrice())
+                .build();
+    }
+
+    ;
+
     @Override
     public ResponseProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).get();
@@ -104,12 +139,14 @@ public class ProductServiceImple implements ProductService {
                 .productColor(product.getColor())
                 .productBrand(product.getBrand())
                 .productCnt(product.getCnt())
+                .priceText(product.getPriceText())
+                .mallTxt(product.getMallText())
                 .titleImgUrl(product.getTitleImgUrl())
                 .titleImgTxt(product.getTitleImgTxt())
                 .sellAmount(product.getSellAmt())
                 .explanation(product.getExplanation())
                 .productDetailImageList(productDetailImgRepository.findAllByproductId(product.getId()))
-                .categoryProductList(categoryProductList)
+                .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
                 .build();
     }
 

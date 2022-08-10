@@ -21,7 +21,5 @@ public class CartOutputDto {
         private int price;
         private int qty;
         private String titleImgUrl;
-
-
     }
 
