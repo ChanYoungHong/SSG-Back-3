@@ -27,50 +27,6 @@ public class CartServiceimple implements CartService {
     private final CartRepository cartRepository;
 
 
-//    @Override
-//    public Cart addCart(CartInputDto cartInputDto) {
-//        return cartRepository.save(Cart.builder().
-//                product(productRepository.findById(cartInputDto.getProductId()).get())
-//                .user(iUserRepository.findById(cartInputDto.getUserId()).get())
-//                .qty(cartInputDto.getQty())
-//                .build());
-//    }
-
-//    @Override
-//    public List<CartDtoOutput> getAll() {
-//        List<Cart> cartList = iCartRepository.findAll();
-//        List<CartDtoOutput> cartDtoOutputList = new ArrayList<>();
-//
-//        cartDtoOutputList = (List<CartDtoOutput>) cartList.stream().map(cart -> {
-//            return Cart.add(
-//                    CartDtoOutput.builder()
-//                            .id(cart.getId())
-//                            .productName(cart.getProduct().getName())
-//                            .qty(cart.getQty())
-//                            .price(cart.getProduct().getPrice())
-//                            .build()
-//            );
-//        });
-//
-//
-//    }
-
-//    @Override
-//    public CartOutputDto getCartById(Long id) {
-//        Cart cart = cartRepository.findById(id).get();
-//        return cart.builder()
-//                .id(cart.getId())
-//                .productName(cart.getProduct().getProductName())
-//                .qty(cart.getQty())
-//                .price(cart.getProduct().getPrice())
-//                .build();
-//    }
-
-//    @Override
-//    public Product addCartProduct(Long productId) {
-//        return null;
-//    }
-
     @Override
     public Cart addProductToCart(CartInputDto cartInputDto) {
         //상품의 존재 여부를 판단한다
@@ -91,37 +47,46 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
-    public List<Cart> getAllCart() {
-        return null;
+    public List<CartOutputDto> getAllCart() {
+        List<Cart> ListCart = cartRepository.findAll();
+        List<CartOutputDto> cartOutputDtoList = new ArrayList<>();
+
+        ListCart.forEach(cart -> {
+            cartOutputDtoList.add(CartOutputDto.builder()
+                    .id(cart.getId())
+                    .username(cart.getUser().getName())
+                    .useraddress(cart.getUser().getAddress())
+                    .productid(cart.getProduct().getId())
+                    .productName(cart.getProduct().getName())
+                    .price(cart.getProduct().getPrice())
+                    .productBrand(cart.getProduct().getBrand())
+                    .productColor(cart.getProduct().getColor())
+                    .qty(cart.getQty())
+                    .build());
+        });
+        return cartOutputDtoList;
     }
 
     @Override
-    public CartOutputDto getAllCartByUserId(Long id) {
+    public List<CartOutputDto> getAllCartByUserId(Long userid) {
+        List<Cart> cartList = cartRepository.findAllByUserId(userid);
+        List<CartOutputDto> cartOutputDtoList = new ArrayList<>();
 
-        Optional<Cart> cart = cartRepository.findById(id);
-        if (cart.isPresent()) {
-            return CartOutputDto.builder()
-                    .id(cart.get().getId())
-                    .productName(cart.get().getProduct().getProductName())
-                    .price(cart.get().getProduct().getPrice())
-                    .productBrand(cart.get().getProduct().getProductBrand())
-                    .qty(cart.get().getQty())
-                    .productColor(cart.get().getProduct().getProductColor())
-                    .build();
-        } else {
-            return null;
-        }
+        cartList.forEach(cart -> {
+            cartOutputDtoList.add(CartOutputDto.builder()
+                    .id(cart.getId())
+                    .price(cart.getProduct().getPrice())
+                    .username(cart.getUser().getName())
+                    .useraddress(cart.getUser().getAddress())
+                    .qty(cart.getQty())
+                    .productid(cart.getProduct().getId())
+                    .productBrand(cart.getProduct().getBrand())
+                    .productName(cart.getProduct().getName())
+                    .productColor(cart.getProduct().getColor())
+                    .build());
+        });
+
+        return cartOutputDtoList;
     }
-//        List<CartOutputDto> cartOutputDto = new ArrayList<>();
-//        cartOutputDto = (List<CartOutputDto>) cartOutputDto.stream().map(cart -> {
-//            return cartOutputDto.add(
-//                    CartOutputDto.builder()
-//                            .id(cart.getId())
-//                            .productName(cart.getProductName())
-//                            .qty(cart.getQty())
-//                            .price(cart.getPrice())
-//                            .build()
-//            );
-//        });
-//    };
+
 }

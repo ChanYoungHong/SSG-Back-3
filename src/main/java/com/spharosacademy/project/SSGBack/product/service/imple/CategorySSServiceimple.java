@@ -18,6 +18,7 @@ public class CategorySSServiceimple implements CategorySSService {
 
     private final CategorySSRepository categorySSRepository;
     private final CategorySRepository categorySRepository;
+    
     @Override
     public CategorySS addCategorySS(RequestCategorySSDto categorySSDto) {
         return categorySSRepository.save(

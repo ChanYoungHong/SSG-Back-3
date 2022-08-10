@@ -4,7 +4,8 @@ import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImag
 
 import java.util.List;
 
-public interface ProductDetailImageService {
+public interface ProductDetailImgService {
+//    Product addDetailImg(RequestProductDto requestProductDto);
 
-    List<ProductDetailImage> getAllByProductId(Long Id);
+    List<ProductDetailImage> getImgByProductId(Long productId);
 }

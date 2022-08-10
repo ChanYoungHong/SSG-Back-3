@@ -17,28 +17,32 @@ public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long productId;
+    private Long id;
 
     @Column(name="product_name")
-    private String productName;
+    private String name;
 
     @Column(name = "product_price")
     private int price;
 
     @Column(name="product_color")
-    private String productColor;
+    private String color;
 
     @Column(name="product_brand")
-    private String productBrand;
+    private String brand;
 
     @Column(name="product_cnt")
-    private int productCnt;
+    private int cnt;
 
     @Column(name="product_sell_amt")
-    private int productSellAmt;
+    private int sellAmt;
+
+    private String titleImgUrl;
+    private String titleImgTxt;
 
     @OneToOne
     private CategorySS categorySS;
+
+
 
 }

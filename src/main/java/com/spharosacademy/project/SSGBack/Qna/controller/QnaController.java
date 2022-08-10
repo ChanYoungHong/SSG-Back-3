@@ -1,7 +1,8 @@
 package com.spharosacademy.project.SSGBack.Qna.controller;
 
+import com.spharosacademy.project.SSGBack.Qna.dto.ResponseQnaDto;
 import com.spharosacademy.project.SSGBack.Qna.entity.Qna;
-import com.spharosacademy.project.SSGBack.Qna.dto.QnaDto;
+import com.spharosacademy.project.SSGBack.Qna.dto.RequestQnaDto;
 import com.spharosacademy.project.SSGBack.Qna.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,8 @@ public class QnaController {
 
     //문의 등록
     @PostMapping("/add")
-    public Qna addQna(@RequestBody QnaDto qnaDto) {
-        return qnaService.addQna(qnaDto);
+    public Qna addQna(@RequestBody RequestQnaDto requestQnaDto) {
+        return qnaService.addQna(requestQnaDto);
     }
 
     //전체 Q&A 목록 조회
@@ -32,23 +33,17 @@ public class QnaController {
     }
 
 
-    //문의 수정
-    @PutMapping("/edit")
-    public ResponseEntity<Void> qnaEdit(@Valid @RequestBody QnaDto qnaDto {
-        qnaService.Editqan()
+    //특정 문의 수정
+    @PutMapping("/edit/{qnaId}")
+    public Qna editQna(@RequestBody ResponseQnaDto responseQnaDto) throws Exception {
+        return qnaService.editQnaById(responseQnaDto);
 
     }
 
     //문의 삭제
     @DeleteMapping("/delete/{qnaId}")
-    public ResponseEntity<Void> qnaDelete(@PathVariable int qnaId) {
-        qnaService.deleteQna(qnaId);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType((MediaType.APPLICATION_JSON)
-                        .build();
+    public void deleteQnaById(@PathVariable int qnaId ) throws Exception {
+        qnaService.deleteQnaById(qnaId);
     }
-
-
 
 }

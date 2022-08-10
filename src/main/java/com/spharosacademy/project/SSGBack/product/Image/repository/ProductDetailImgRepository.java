@@ -4,8 +4,6 @@ import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImag
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-
-public interface ProductDetailImageRepository  extends JpaRepository<ProductDetailImage, Long> {
-    //상품 id별로 이미지를 찾는 메소드 추가
-    List<ProductDetailImage> findAllByProductId(Long productId);
+public interface ProductDetailImgRepository extends JpaRepository<ProductDetailImage, Long>{
+    List<ProductDetailImage> findAllByproductId(Long productId);
 }

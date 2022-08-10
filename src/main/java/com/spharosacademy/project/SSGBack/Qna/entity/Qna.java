@@ -44,10 +44,6 @@ public class Qna {
 
     // Boolean추가 사항?
 
-    @Column(name = "is_product")
-    @NotNull
-    private Boolean isProduct;
-
     @Column(name = "is_Secret")
     @NotNull
     private Boolean isSecret;

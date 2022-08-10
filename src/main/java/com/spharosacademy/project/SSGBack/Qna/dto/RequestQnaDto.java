@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 
-public class QnaDto {
+public class RequestQnaDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
