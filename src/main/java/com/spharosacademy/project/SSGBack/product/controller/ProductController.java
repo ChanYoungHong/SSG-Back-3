@@ -30,21 +30,20 @@ public class ProductController {
     }
 
     //모든 상품들에 대한 정보 조회
-    @GetMapping("/all")
+    @GetMapping("/getall")
     public List<ResponseProductDto> getAll() {
         return productService.getAll();
     }
 
     //특정 상품 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteProductById(@PathVariable Long id) throws Exception {
         productService.deleteProductById(id);
     }
 
     //특정 상품 조회
-    @GetMapping("/{id}")
-    public List<ResponseProductDto> getProductById(@PathVariable Long id) {
-        productDetailImgService.getImgByProductId(id);
+    @GetMapping("/get/{id}")
+    public ResponseProductDto getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 

@@ -1,8 +1,8 @@
 package com.spharosacademy.project.SSGBack.product.controller;
 
-import com.spharosacademy.project.SSGBack.product.entity.CategoryS;
+import com.spharosacademy.project.SSGBack.category.entity.CategoryS;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySDto;
-import com.spharosacademy.project.SSGBack.product.service.CategorySService;
+import com.spharosacademy.project.SSGBack.category.service.CategorySService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

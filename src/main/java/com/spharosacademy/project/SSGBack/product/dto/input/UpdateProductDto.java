@@ -17,5 +17,8 @@ public class UpdateProductDto {
     private String productColor;
     private String productBrand;
     private int productCnt;
-    private int CategorySSId;
+    private int categorySSId;
+    private int categorySId;
+    private int categoryMId;
+    private int categoryLId;
 }

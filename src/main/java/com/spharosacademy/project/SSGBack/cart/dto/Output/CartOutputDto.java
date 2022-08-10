@@ -1,7 +1,5 @@
 package com.spharosacademy.project.SSGBack.cart.dto.Output;
 
-import com.spharosacademy.project.SSGBack.cart.domain.Cart;
-import com.spharosacademy.project.SSGBack.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +20,8 @@ public class CartOutputDto {
         private String productColor;
         private int price;
         private int qty;
+        private String titleImgUrl;
+
 
     }
 

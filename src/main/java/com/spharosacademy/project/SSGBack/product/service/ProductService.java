@@ -14,7 +14,7 @@ public interface ProductService {
 
     List<ResponseProductDto> getAll();
 
-    List<ResponseProductDto> getProductById(Long id);
+    ResponseProductDto getProductById(Long id);
 
     Product editProductById(UpdateProductDto updateProductDto) throws Exception;
 

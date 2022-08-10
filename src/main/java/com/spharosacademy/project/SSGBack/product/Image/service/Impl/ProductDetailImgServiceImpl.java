@@ -18,9 +18,9 @@ public class ProductDetailImgServiceImpl implements ProductDetailImgService {
     private final ProductDetailImgRepository productDetailImgRepository;
 
 
-    @Override
-    public List<ProductDetailImage> getImgByProductId(Long productId) {
-        return productDetailImgRepository.findAllByproductId(productId);
-    }
+//    @Override
+//    public List<ProductDetailImage> getImgByProductId(Long productId) {
+//        return productDetailImgRepository.findAllByproductId(productId);
+//    }
 
 }

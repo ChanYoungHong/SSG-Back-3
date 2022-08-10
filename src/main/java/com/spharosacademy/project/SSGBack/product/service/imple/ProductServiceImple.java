@@ -1,12 +1,13 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.category.entity.CategoryProductList;
+import com.spharosacademy.project.SSGBack.category.repository.*;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
-import com.spharosacademy.project.SSGBack.product.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,13 @@ import java.util.Optional;
 @Slf4j
 public class ProductServiceImple implements ProductService {
 
-    private final CategorySSRepository categorySSRepository;
     private final ProductRepository productRepository;
     private final ProductDetailImgRepository productDetailImgRepository;
+    private final CategoryProductListRepository categoryProductListRepository;
+    private final CategorySSRepository categorySSRepository;
+    private final CategoryMRepository categoryMRepository;
+    private final CategorySRepository categorySRepository;
+    private final CategoryLRepository categoryLRepository;
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
@@ -38,11 +43,18 @@ public class ProductServiceImple implements ProductService {
                         .cnt(requestProductDto.getCnt())
                         .titleImgUrl(requestProductDto.getTitleImgUrl())
                         .titleImgTxt(requestProductDto.getTitleImgTxt())
-                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
                         .explanation(requestProductDto.getExplanation())
                         .build()
-
         );
+
+        categoryProductListRepository.save(CategoryProductList.builder()
+                .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
+                .categoryS(categorySRepository.findById(requestProductDto.getCategorySId()).get())
+                .categoryM(categoryMRepository.findById(requestProductDto.getCategoryMId()).get())
+                .categoryL(categoryLRepository.findById(requestProductDto.getCategoryLId()).get())
+                .product(product)
+                .build());
+
 
         requestProductDto.getProductDetailImageList().forEach(
                 productDetailImage -> {
@@ -60,7 +72,6 @@ public class ProductServiceImple implements ProductService {
     public List<ResponseProductDto> getAll() {
         List<Product> ListProduct = productRepository.findAll();
         List<ResponseProductDto> responseProductDtoList = new ArrayList<>();
-
         ListProduct.forEach(product -> {
             responseProductDtoList.add(ResponseProductDto.builder()
                     .id(product.getId())
@@ -69,10 +80,11 @@ public class ProductServiceImple implements ProductService {
                     .productColor(product.getColor())
                     .productBrand(product.getBrand())
                     .productCnt(product.getCnt())
-                    .CategorySSId(product.getCategorySS().getId())
                     .titleImgUrl(product.getTitleImgUrl())
+                    .titleImgTxt(product.getTitleImgTxt())
                     .sellAmount(product.getSellAmt())
                     .explanation(product.getExplanation())
+                    .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
                     .productDetailImageList(productDetailImgRepository.findAllByproductId(product.getId()))
                     .build());
         });
@@ -80,25 +92,25 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<ResponseProductDto> getProductById(Long id) {
+    public ResponseProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).get();
-        List<ResponseProductDto> responseProductDtoList = new ArrayList<>();
-        responseProductDtoList.add(
-                ResponseProductDto.builder()
-                        .id(product.getId())
-                        .productName(product.getName())
-                        .price(product.getPrice())
-                        .productColor(product.getColor())
-                        .productBrand(product.getBrand())
-                        .productCnt(product.getCnt())
-                        .titleImgUrl(product.getTitleImgUrl())
-                        .sellAmount(product.getSellAmt())
-                        .explanation(product.getExplanation())
-                        .productDetailImageList(productDetailImgRepository.findAllByproductId(product.getId()))
-                        .CategorySSId(product.getCategorySS().getId())
-                        .build()
-        );
-        return responseProductDtoList;
+        CategoryProductList categoryProductList = categoryProductListRepository.findAllByProductId(id).get(0);
+        log.info("{}", categoryProductList);
+
+        return ResponseProductDto.builder()
+                .id(product.getId())
+                .productName(product.getName())
+                .price(product.getPrice())
+                .productColor(product.getColor())
+                .productBrand(product.getBrand())
+                .productCnt(product.getCnt())
+                .titleImgUrl(product.getTitleImgUrl())
+                .titleImgTxt(product.getTitleImgTxt())
+                .sellAmount(product.getSellAmt())
+                .explanation(product.getExplanation())
+                .productDetailImageList(productDetailImgRepository.findAllByproductId(product.getId()))
+                .categoryProductList(categoryProductList)
+                .build();
     }
 
     @Override
@@ -112,7 +124,6 @@ public class ProductServiceImple implements ProductService {
                         .price(updateProductDto.getPrice())
                         .cnt(updateProductDto.getProductCnt())
                         .brand(updateProductDto.getProductBrand())
-                        .categorySS(categorySSRepository.findById(updateProductDto.getCategorySSId()).get())
                         .build()
         );
         return product;
