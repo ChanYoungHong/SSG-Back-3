@@ -1,6 +1,6 @@
-package com.spharosacademy.project.SSGBack.product.service;
+package com.spharosacademy.project.SSGBack.category.service;
 
-import com.spharosacademy.project.SSGBack.product.entity.CategoryM;
+import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryMDto;
 
 import java.util.List;

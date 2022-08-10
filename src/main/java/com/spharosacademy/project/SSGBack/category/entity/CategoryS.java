@@ -1,5 +1,6 @@
-package com.spharosacademy.project.SSGBack.product.entity;
+package com.spharosacademy.project.SSGBack.category.entity;
 
+import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +10,11 @@ import javax.persistence.*;
 
 @Entity
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Table(name = "CategoryM")
-public class CategoryM {
+@Table(name = "CategoryS")
+public class CategoryS {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,7 @@ public class CategoryM {
     private String name;
 
     @ManyToOne
-    private CategoryL categoryL;
+    private CategoryM categoryM;
+
 
 }

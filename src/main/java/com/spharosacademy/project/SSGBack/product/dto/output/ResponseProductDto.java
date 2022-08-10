@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
+import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
-import com.spharosacademy.project.SSGBack.product.Image.service.ProductDetailImgService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,18 +15,18 @@ import java.util.List;
 @Builder
 public class ResponseProductDto {
 
-    private Long productId;
+    private Long id;
     private String productName;
     private int price;
     private String productColor;
     private String productBrand;
     private int productCnt;
-    private int CategorySSId;
+    private CategoryProductList categoryProductList;
     private String titleImgUrl;
-    private String detailImgUrl;
+    private String titleImgTxt;
     private int sellAmount;
     private String explanation;
 
     List<ProductDetailImage> productDetailImageList;
-
+    List<CategoryProductList> categoryProductLists;
 }

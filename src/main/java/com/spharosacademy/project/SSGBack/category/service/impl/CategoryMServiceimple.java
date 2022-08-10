@@ -1,10 +1,10 @@
-package com.spharosacademy.project.SSGBack.product.service.imple;
+package com.spharosacademy.project.SSGBack.category.service.impl;
 
-import com.spharosacademy.project.SSGBack.product.entity.CategoryM;
+import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryMDto;
-import com.spharosacademy.project.SSGBack.product.repository.CategoryLRepository;
-import com.spharosacademy.project.SSGBack.product.repository.CategoryMRepository;
-import com.spharosacademy.project.SSGBack.product.service.CategoryMService;
+import com.spharosacademy.project.SSGBack.category.repository.CategoryLRepository;
+import com.spharosacademy.project.SSGBack.category.repository.CategoryMRepository;
+import com.spharosacademy.project.SSGBack.category.service.CategoryMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

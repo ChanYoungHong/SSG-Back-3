@@ -7,5 +7,5 @@ import java.util.List;
 public interface ProductDetailImgService {
 //    Product addDetailImg(RequestProductDto requestProductDto);
 
-    List<ProductDetailImage> getImgByProductId(Long productId);
+//    List<ProductDetailImage> getImgByProductId(Long productId);
 }
