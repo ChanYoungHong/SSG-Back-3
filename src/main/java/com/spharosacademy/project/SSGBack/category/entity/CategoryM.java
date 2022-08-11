@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.category.entity;
 
-import com.spharosacademy.project.SSGBack.category.entity.CategoryL;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

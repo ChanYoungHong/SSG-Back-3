@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.controller;
+package com.spharosacademy.project.SSGBack.category.controller;
 
 import com.spharosacademy.project.SSGBack.category.entity.CategoryL;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;

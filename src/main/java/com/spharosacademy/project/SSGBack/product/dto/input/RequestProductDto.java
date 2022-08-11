@@ -19,11 +19,11 @@ public class RequestProductDto {
     private String name;
     private int price;
     private String priceText;
-    private String color;
     private String brand;
     private int cnt;
-    private String titleImgUrl;
-    private String titleImgTxt;
+    private Long colorId;
+    private Long sizeId;
+    private Long titleImgId;
     private String explanation;
     private int sellAmount;
     private String mallTxt;
@@ -31,7 +31,4 @@ public class RequestProductDto {
     private int categorySId;
     private int categoryMId;
     private int categoryLId;
-
-    List<ProductDetailImage> productDetailImageList;
-    List<ProductTitleImage> productTitleImageList;
 }

@@ -14,12 +14,11 @@ public interface ProductService {
 
     List<ResponseProductDto> getAll();
 
-    ResponseProductDto getProductById(Long id);
+    ResponseProductDto getByProductId(Long id);
 
     Product editProductById(UpdateProductDto updateProductDto) throws Exception;
 
     void deleteProductById(Long id) throws Exception;
 
     ResponseRecommendProductDto getRecommendProductById(Long id);
-
 }

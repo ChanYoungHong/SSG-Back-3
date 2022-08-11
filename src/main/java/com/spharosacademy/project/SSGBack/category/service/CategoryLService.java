@@ -15,5 +15,4 @@ public interface CategoryLService {
     CategoryL editCategoryL(RequestCategoryLDto categoryLDto);
 
     void deleteCategoryLById(Integer id);
-
 }

@@ -19,11 +19,10 @@ public class Product extends BaseTimeEntity {
     private String mallText;
     private int price;
     private String priceText;
-    private String color;
     private String brand;
     private int cnt;
     private int sellAmt;
-    private String titleImgUrl;
-    private String titleImgTxt;
     private String explanation;
+    private Long titleImgId;
+
 }

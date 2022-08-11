@@ -1,11 +1,9 @@
 package com.spharosacademy.project.SSGBack.product.Image.service;
 
-import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
-
-import java.util.List;
+import com.spharosacademy.project.SSGBack.product.Image.dto.CreateDetailImgDto;
 
 public interface ProductDetailImgService {
-//    Product addDetailImg(RequestProductDto requestProductDto);
 
-//    List<ProductDetailImage> getImgByProductId(Long productId);
+    void createDetailImg(CreateDetailImgDto createDetailImgDto);
+
 }

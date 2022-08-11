@@ -60,9 +60,7 @@ public class CartServiceimple implements CartService {
                     .productid(cart.getProduct().getId())
                     .productName(cart.getProduct().getName())
                     .price(cart.getProduct().getPrice())
-                    .titleImgUrl(cart.getProduct().getTitleImgUrl())
                     .productBrand(cart.getProduct().getBrand())
-                    .productColor(cart.getProduct().getColor())
                     .qty(cart.getQty())
                     .build());
         });
@@ -78,12 +76,10 @@ public class CartServiceimple implements CartService {
                 .price(cart.getProduct().getPrice())
                 .username(cart.getUser().getName())
                 .useraddress(cart.getUser().getAddress())
-                .titleImgUrl(cart.getProduct().getTitleImgUrl())
                 .qty(cart.getQty())
                 .productid(cart.getProduct().getId())
                 .productBrand(cart.getProduct().getBrand())
                 .productName(cart.getProduct().getName())
-                .productColor(cart.getProduct().getColor())
                 .build();
     }
 }

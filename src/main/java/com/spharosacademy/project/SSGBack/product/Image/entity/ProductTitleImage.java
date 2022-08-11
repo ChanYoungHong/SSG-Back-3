@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.product.Image.entity;
 
-import com.spharosacademy.project.SSGBack.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +18,7 @@ public class ProductTitleImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String productTitleImgUrl;
-    private String productTitleImgTxt;
+    private Long productId;
 
-    @ManyToOne
-    private Product product;
 
 }

@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.category.service.impl;
 
 import com.spharosacademy.project.SSGBack.category.entity.CategoryL;
+import com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryLRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategoryLService;
@@ -55,4 +56,5 @@ public class CategoryLServiceimple implements CategoryLService {
     public void deleteCategoryLById(Integer id) {
         categoryLRepository.deleteById(id);
     }
-}
+    }
+

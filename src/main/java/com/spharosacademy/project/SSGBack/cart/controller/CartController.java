@@ -33,9 +33,4 @@ public class CartController {
         return cartService.getCartByUserId(userid);
 
     }
-
-    @GetMapping("/search/{searchWord}")
-    String searchList(@PathVariable String searchWord){
-        return null;
-    }
 }

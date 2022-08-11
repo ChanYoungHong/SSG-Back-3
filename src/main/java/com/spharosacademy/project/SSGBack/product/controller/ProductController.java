@@ -39,7 +39,7 @@ public class ProductController {
     //특정 상품 조회
     @GetMapping("/get/{id}")
     public ResponseProductDto getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+        return productService.getByProductId(id);
     }
 
     //특정 상품 수정 
@@ -54,4 +54,5 @@ public class ProductController {
     public ResponseRecommendProductDto getRecommendProductById(@PathVariable Long id){
         return productService.getRecommendProductById(id);
     }
+
 }
