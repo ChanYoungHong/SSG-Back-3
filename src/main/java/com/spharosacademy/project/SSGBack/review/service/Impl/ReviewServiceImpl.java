@@ -33,7 +33,6 @@ public class ReviewServiceImpl implements ReviewService {
                         .reviewAuthorId(requestReviewDto.getReviewAuthorId())
                         .reviewContent(requestReviewDto.getReviewContent())
                         .reviewScore(requestReviewDto.getReviewScore())
-                        .reviewRegDate(requestReviewDto.getReviewRegDate())
                 .build());
 
         requestReviewDto.getReviewImageList().forEach(reviewImage -> {
@@ -55,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewAuthorId(responseReviewDto.getReviewAuthorId())
                 .reviewContent(responseReviewDto.getReviewContent())
                 .reviewScore(responseReviewDto.getReviewScore())
-                .reviewModDate(responseReviewDto.getReviewModDate())
+//                .reviewModDate(responseReviewDto.getReviewModDate())
                 .build());
         return review;
     }

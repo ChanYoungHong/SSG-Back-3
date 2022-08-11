@@ -40,8 +40,8 @@ public class reviewController {
     }
 
     // 특정 리뷰 수정
-    @PutMapping("/edit/{id}")
-    public Review editReview(@RequestBody ResponseReviewDto responseReviewDto) throws Exception {
+    @PutMapping("/edit/")
+    public Review editReviewById(@RequestBody ResponseReviewDto responseReviewDto) throws Exception {
         return reviewService.editReviewById(responseReviewDto);
     }
 

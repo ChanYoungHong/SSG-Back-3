@@ -20,51 +20,78 @@ public class QnaServiceImpl implements QnaService {
 
     private final QnaRepo qnaRepo;
 
-    // 질문작성하기 서비스
     @Override
-    public Qna addQna(RequestQnaDto requestQnaDto) {
-        Qna qna = qnaRepo.save(Qna.builder()
-                .qnaId(requestQnaDto.getQnaId())
-                .qnaTitle(requestQnaDto.getQnaTitle())
-                .qnaContent(requestQnaDto.getQnaContent())
-                .qnaReg(requestQnaDto.getQnaReg())
-                .build());
+    public Long addQna(RequestQnaDto requestQnaDto) {
 
-        return qna;
+//        Product product = Product.builder().productId(productId).build();
+        List<Qna> result = qnaRepo.findById(Integer ID)
+
+        return null;
     }
 
-    // 질문 조회하기
     @Override
-    public List<Qna> getAll() {
-        List<Qna> ListQna = qnaRepo.findAll();
-        return ListQna;
+    public List<RequestQnaDto> getListOfQna(Long productId) {
+        return null;
     }
 
-    //질문 수정하기
     @Override
-    public Qna editQnaById(ResponseQnaDto responseQnaDto) throws Exception {
-        Qna qna = qnaRepo.findById(responseQnaDto.getQnaId()).get();
-        qnaRepo.save(Qna.builder()
-                        .qnaId(responseQnaDto.getQnaId())
-                        .qnaTitle(responseQnaDto.getQnaTitle())
-                        .qnaContent(responseQnaDto.getQnaContent())
-                        .qnaUpdate(responseQnaDto.getQnaUpdate())
-//                        .isSecret(editQnaById())
-
-                .build());
-        return qna;
-    }
-
-    // 질문 삭제하기
-    @Override
-    public void deleteQnaById(int qnaId) throws Exception {
-        Optional<Qna> deleteById = qnaRepo.findById(qnaId);
-        if (deleteById.isPresent()) {
-            qnaRepo.deleteById(qnaId);
-        } else {
-            throw new Exception();
-        }
+    public void editQna(RequestQnaDto requestQnaDto) {
 
     }
 
+    @Override
+    public void deleteQna(Integer qnaId) {
+
+    }
 }
+
+
+
+
+// 질문작성하기 서비스
+//    @Override
+//    public Qna addQna(RequestQnaDto requestQnaDto) {
+//        Qna qna = qnaRepo.save(Qna.builder()
+//                .qnaId(requestQnaDto.getQnaId())
+//                .qnaTitle(requestQnaDto.getQnaTitle())
+//                .qnaContent(requestQnaDto.getQnaContent())
+//                .build());
+//
+//        return qna;
+//    }
+//
+//    // 질문 조회하기
+//
+//    @Override
+//    public List<Qna> getAll() {
+//        List<Qna> ListQna = qnaRepo.findAll();
+//        return ListQna;
+//    }
+//
+//    //질문 수정하기
+//    @Override
+//    public Qna editQna(ResponseQnaDto responseQnaDto) throws Exception {
+//        Qna qna = qnaRepo.findById(responseQnaDto.getQnaId()).get();
+//        qnaRepo.save(Qna.builder()
+//                        .qnaId(responseQnaDto.getQnaId())
+//                        .qnaTitle(responseQnaDto.getQnaTitle())
+//                        .qnaContent(responseQnaDto.getQnaContent())
+////                        .isSecret(editQnaById())
+//
+//                .build());
+//        return qna;
+//    }
+//
+//    // 질문 삭제하기
+//    @Override
+//    public void deleteQna(int qnaId) throws Exception {
+//        Optional<Qna> deleteById = qnaRepo.findById(qnaId);
+//        if (deleteById.isPresent()) {
+//            qnaRepo.deleteById(qnaId);
+//        } else {
+//            throw new Exception();
+//        }
+//
+//    }
+//
+//}

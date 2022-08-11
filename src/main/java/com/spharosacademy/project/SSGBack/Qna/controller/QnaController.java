@@ -34,10 +34,9 @@ public class QnaController {
 
 
     //특정 문의 수정
-    @PutMapping("/edit/{qnaId}")
+    @PutMapping("/edit")
     public Qna editQna(@RequestBody ResponseQnaDto responseQnaDto) throws Exception {
         return qnaService.editQnaById(responseQnaDto);
-
     }
 
     //문의 삭제

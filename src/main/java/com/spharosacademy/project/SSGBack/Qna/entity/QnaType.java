@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 @Entity
 public class QnaType extends Qna{
 
-    private String productQna;
-    private String DeliveryQna;
-    private String OtherQna;
+    private String qnaTypeProduct;
+    private String qnaTypeDelivery;
+    private String qnaTypeOthers;
 }

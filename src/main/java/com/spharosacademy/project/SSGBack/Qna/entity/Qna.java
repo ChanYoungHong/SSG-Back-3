@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.Qna.entity;
-import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.user.entity.User;
+
+import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,44 +18,42 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "qna")
 
-public class Qna {
+public class Qna extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Column(name = "qna_id")
-    @NotNull
+//    @Column(name = "qna_id")
     private int qnaId;
 
-    @Column(name = "qna_title")
-    @NotNull
+//    @Column(name = "qna_title")
     private String qnaTitle;
 
-    @Column(name = "qna_content")
-    @NotNull
+//    @Column(name = "qna_content")
     private String qnaContent;
-
-    @Column(name="qna_reg")
-    @NotNull
-    private LocalDateTime qnaReg;
-
-    @Column(name = "qna_update")
-    @NotNull
-    private LocalDateTime qnaUpdate;
 
     // Boolean추가 사항?
 
-    @Column(name = "is_Secret")
-    @NotNull
+ //   @Column(name = "is_Secret")
     private Boolean isSecret;
 
+    public void changeQnaTitle(String qnaTitle) {
+        this.qnaTitle = qnaTitle;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    public void changeQnaContent(String qnaContent) {
+        this.qnaContent = qnaContent;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private User user;
+
+//나중에추가
+
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    private Product product;
+
+//    @ManyToOne
+//    @JoinColumn(name = "member_id")
+//    private User user;
 
 }
 
