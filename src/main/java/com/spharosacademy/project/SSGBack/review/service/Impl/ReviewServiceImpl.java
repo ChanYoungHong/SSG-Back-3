@@ -30,17 +30,18 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review addReview(RequestReviewDto requestReviewDto) {
         Review review = reviewRepo.save(Review.builder()
+                        .reviewId(requestReviewDto.getReviewId())
                         .reviewAuthorId(requestReviewDto.getReviewAuthorId())
                         .reviewContent(requestReviewDto.getReviewContent())
                         .reviewScore(requestReviewDto.getReviewScore())
                 .build());
 
-        requestReviewDto.getReviewImageList().forEach(reviewImage -> {
-            reviewImageRepo.save(ReviewImage.builder()
-                            .imgUrl(reviewImage.getImgUrl())
-                            .review(review)
-                    .build());
-        });
+//        requestReviewDto.getReviewImageList().forEach(reviewImage -> {
+//            reviewImageRepo.save(ReviewImage.builder()
+//                            .imgUrl(reviewImage.getImgUrl())
+//                            .review(review)
+//                    .build());
+//        });
         return review;
     }
 
@@ -62,12 +63,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     // 리뷰 삭제하기
     @Override
-    public void deleteReviewById(BigInteger id) throws Exception {
+    public void deleteReviewById(Long id) throws Exception {
         Optional<Review> deleteById = reviewRepo.findById(id);
         if (deleteById.isPresent()) {
             reviewRepo.deleteById(id);
         } else {
-            throw  new Exception();
+            throw new Exception();
         }
 
     }

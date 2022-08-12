@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ResponseReviewDto {
 
-    private BigInteger reviewId;
+    private Long reviewId;
     private String reviewContent;
     private String reviewAuthorId;
     private int reviewScore;

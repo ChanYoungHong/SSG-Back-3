@@ -22,15 +22,16 @@ import java.time.LocalDateTime;
 
 public class Review extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger reviewId;
+    private Long reviewId;
     private String reviewContent;
     private String reviewAuthorId;
 
     //별점 어떻게 구현하지?
-    @Min(value = 1, message = "별점은 1이상 5이하 여야 합니다")
-    @Max(value = 5, message = "별점은 1이상 5이하 여야 합니다")
+//    @Min(value = 1, message = "별점은 1이상 5이하 여야 합니다")
+//    @Max(value = 5, message = "별점은 1이상 5이하 여야 합니다")
     private int reviewScore;
-    private BigInteger review_cnt;
+
+    private BigInteger reviewCnt;
 
 //    @ManyToOne
 //    @JoinColumn(name = "product_id")

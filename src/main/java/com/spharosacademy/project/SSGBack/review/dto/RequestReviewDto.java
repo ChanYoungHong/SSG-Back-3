@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RequestReviewDto {
 
-    private BigInteger reviewId;
+    private Long reviewId;
     private String reviewContent;
     private String reviewAuthorId;
     private int reviewScore;

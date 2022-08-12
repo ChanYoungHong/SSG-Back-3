@@ -17,7 +17,7 @@ public interface ReviewService {
     Review editReviewById(ResponseReviewDto responseReviewDto) throws Exception;
 
     //상품평 제거 서비스
-    void deleteReviewById(BigInteger id) throws Exception;
+    void deleteReviewById(Long id) throws Exception;
 
 
     // 상품평 전체 조회

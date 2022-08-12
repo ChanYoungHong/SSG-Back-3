@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @RestController
-@RequestMapping("review")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class reviewController {
 
@@ -35,7 +35,7 @@ public class reviewController {
 
     // 특정 리뷰 삭제
     @DeleteMapping("/delete/{id}")
-    public void deleteReviewById(@PathVariable BigInteger id) throws Exception {
+    public void deleteReviewById(@PathVariable Long id) throws Exception {
         reviewService.deleteReviewById(id);
     }
 

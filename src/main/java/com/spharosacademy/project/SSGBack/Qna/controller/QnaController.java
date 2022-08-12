@@ -44,6 +44,7 @@ public class QnaController {
     @DeleteMapping("/delete/{qnaId}")
     public void deleteQnaById(@PathVariable int qnaId ) throws Exception {
         qnaService.deleteQnaById(qnaId);
+
     }
 
 }
