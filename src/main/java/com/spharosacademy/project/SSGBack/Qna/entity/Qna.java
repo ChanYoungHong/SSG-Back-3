@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.Qna.entity;
 
+
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,7 +49,7 @@ public class Qna extends BaseTimeEntity {
 //나중에추가
 
 //    @ManyToOne
-//    @JoinColumn(name = "product_id")
+//    @JoinColumn(name = "productId")
 //    private Product product;
 
 //    @ManyToOne
