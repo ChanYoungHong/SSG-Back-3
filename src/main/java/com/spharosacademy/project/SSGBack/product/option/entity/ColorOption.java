@@ -21,4 +21,5 @@ public class ColorOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String colorType;
+    private Long productId;
 }

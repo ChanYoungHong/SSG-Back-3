@@ -23,6 +23,6 @@ public class Product extends BaseTimeEntity {
     private int cnt;
     private int sellAmt;
     private String explanation;
-    private Long titleImgId;
+    private String titleImgUrl;
 
 }

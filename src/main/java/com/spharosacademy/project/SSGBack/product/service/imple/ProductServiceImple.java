@@ -13,7 +13,9 @@ import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
+import com.spharosacademy.project.SSGBack.product.option.entity.ColorOption;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
+import com.spharosacademy.project.SSGBack.product.option.entity.SizeOption;
 import com.spharosacademy.project.SSGBack.product.option.repository.ColorOptionRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionListRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.SizeOptionRepository;
@@ -58,10 +60,10 @@ public class ProductServiceImple implements ProductService {
                         .mallText(requestProductDto.getMallTxt())
                         .price(requestProductDto.getPrice())
                         .brand(requestProductDto.getBrand())
-                        .titleImgId(requestProductDto.getTitleImgId())
                         .cnt(requestProductDto.getCnt())
                         .sellAmt(requestProductDto.getSellAmount())
                         .explanation(requestProductDto.getExplanation())
+                        .titleImgUrl(requestProductDto.getTitleImgUrl())
                         .build()
         );
 
@@ -73,11 +75,25 @@ public class ProductServiceImple implements ProductService {
                 .product(product)
                 .build());
 
-        optionListRepository.save(OptionList.builder()
-                .colorOption(colorOptionRepository.findById(requestProductDto.getColorId()).get())
-                .sizeOption(sizeOptionRepository.findById(requestProductDto.getSizeId()).get())
-                .product(product)
-                .build());
+        requestProductDto.getColorOptionList().forEach(colorOption -> {
+            colorOptionRepository.save(
+                    ColorOption.builder()
+                            .colorType(colorOption.getColorType())
+                            .productId(product.getId())
+                            .build()
+            );
+        });
+
+        requestProductDto.getSizeOptionList().forEach(sizeOption -> {
+            sizeOptionRepository.save(
+                    SizeOption.builder()
+                            .sizeType(sizeOption.getSizeType())
+                            .productId(product.getId())
+                            .build()
+            );
+        });
+        List<ColorOption> colorOptions = colorOptionRepository.findAllByProductId(product.getId());
+        List<SizeOption> sizeOptions = sizeOptionRepository.findAllByProductId(product.getId());
 
         requestProductDto.getProductDetailImageList().forEach(productDetailImage -> {
             productDetailImgRepository.save(
@@ -95,6 +111,7 @@ public class ProductServiceImple implements ProductService {
                     .productId(product.getId())
                     .build());
         });
+
         List<ProductDetailImage> allByProductId = productDetailImgRepository.findAllByProductId(product.getId());
         List<ProductTitleImage> productTitleImgRepositoryAllByProductId = productTitleImgRepository.findAllByProductId(product.getId());
         imageListRepository.save(ImageList.builder()
@@ -121,8 +138,10 @@ public class ProductServiceImple implements ProductService {
                     .productCnt(product.getCnt())
                     .sellAmount(product.getSellAmt())
                     .explanation(product.getExplanation())
+                    .titleImgUrl(product.getTitleImgUrl())
                     .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
-                    .optionLists(optionListRepository.findAllByProductId(product.getId()))
+                    .colorOptionList(colorOptionRepository.findAllByProductId(product.getId()))
+                    .sizeOptionList(sizeOptionRepository.findAllByProductId(product.getId()))
                     .productDetailImageList(productDetailImgRepository.findAllByProductId(product.getId()))
                     .productTitleImageList(productTitleImgRepository.findAllByProductId(product.getId()))
                     .build());
@@ -158,12 +177,14 @@ public class ProductServiceImple implements ProductService {
                 .productCnt(product.getCnt())
                 .priceText(product.getPriceText())
                 .mallTxt(product.getMallText())
+                .titleImgUrl(product.getTitleImgUrl())
                 .sellAmount(product.getSellAmt())
                 .explanation(product.getExplanation())
-                .optionLists(optionListRepository.findAllByProductId(product.getId()))
                 .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
                 .productDetailImageList(productDetailImgRepository.findAllByProductId(product.getId()))
                 .productTitleImageList(productTitleImgRepository.findAllByProductId(product.getId()))
+                .colorOptionList(colorOptionRepository.findAllByProductId(product.getId()))
+                .sizeOptionList(sizeOptionRepository.findAllByProductId(product.getId()))
                 .build();
     }
 

@@ -21,4 +21,5 @@ public class SizeOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String sizeType;
+    private Long productId;
 }
