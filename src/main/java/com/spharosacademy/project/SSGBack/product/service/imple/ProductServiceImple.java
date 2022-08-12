@@ -27,9 +27,7 @@ import org.hibernate.query.criteria.internal.expression.function.AggregationFunc
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -92,8 +90,7 @@ public class ProductServiceImple implements ProductService {
                             .build()
             );
         });
-        List<ColorOption> colorOptions = colorOptionRepository.findAllByProductId(product.getId());
-        List<SizeOption> sizeOptions = sizeOptionRepository.findAllByProductId(product.getId());
+
 
         requestProductDto.getProductDetailImageList().forEach(productDetailImage -> {
             productDetailImgRepository.save(
@@ -104,6 +101,9 @@ public class ProductServiceImple implements ProductService {
                             .build());
         });
 
+        List<ProductDetailImage> productDetailImgRepositoryAll = productDetailImgRepository.findAll();
+        Set<ProductDetailImage> productDetailImages = new HashSet<>(productDetailImgRepositoryAll);
+
         requestProductDto.getProductTitleImageList().forEach(productTitleImage -> {
             productTitleImgRepository.save(ProductTitleImage.builder()
                     .productTitleImgUrl(productTitleImage.getProductTitleImgUrl())
@@ -112,11 +112,10 @@ public class ProductServiceImple implements ProductService {
                     .build());
         });
 
-        List<ProductDetailImage> allByProductId = productDetailImgRepository.findAllByProductId(product.getId());
-        List<ProductTitleImage> productTitleImgRepositoryAllByProductId = productTitleImgRepository.findAllByProductId(product.getId());
+        List<ProductTitleImage> productTitleImgRepositoryAll = productTitleImgRepository.findAll();
+
+
         imageListRepository.save(ImageList.builder()
-                .productDetailImage(allByProductId.get(0))
-                .productTitleImage(productTitleImgRepositoryAllByProductId.get(0))
                 .product(product)
                 .build());
 
@@ -166,8 +165,6 @@ public class ProductServiceImple implements ProductService {
     @Override
     public ResponseProductDto getByProductId(Long id) {
         Product product = productRepository.findById(id).get();
-        CategoryProductList categoryProductList = categoryProductListRepository.findAllByProductId(id).get(0);
-        log.info("{}", categoryProductList);
 
         return ResponseProductDto.builder()
                 .id(product.getId())

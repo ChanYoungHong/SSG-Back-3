@@ -20,11 +20,14 @@ public class OptionList {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "colorOption_id")
     private ColorOption colorOption;
 
     @ManyToOne
+    @JoinColumn(name = "sizeOption_id")
     private SizeOption sizeOption;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 }

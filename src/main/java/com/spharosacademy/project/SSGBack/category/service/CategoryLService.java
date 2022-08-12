@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.category.service;
 
 import com.spharosacademy.project.SSGBack.category.entity.CategoryL;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseCategoryLDto;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface CategoryLService {
 
     List<CategoryL> getAll();
 
-    CategoryL getCategoryLById(Integer id);
+    ResponseCategoryLDto getCategoryLById(Integer id);
 
     CategoryL editCategoryL(RequestCategoryLDto categoryLDto);
 

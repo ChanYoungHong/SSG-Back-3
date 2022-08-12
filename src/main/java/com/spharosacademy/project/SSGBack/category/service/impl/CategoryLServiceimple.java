@@ -1,13 +1,17 @@
 package com.spharosacademy.project.SSGBack.category.service.impl;
 
 import com.spharosacademy.project.SSGBack.category.entity.CategoryL;
+import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
+import com.spharosacademy.project.SSGBack.category.repository.CategoryMRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryLRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategoryLService;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseCategoryLDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +20,8 @@ import java.util.Optional;
 public class CategoryLServiceimple implements CategoryLService {
 
     private final CategoryLRepository categoryLRepository;
+    private final CategoryMRepository categoryMRepository;
+    private final CategoryProductListRepository categoryProductListRepository;
 
     @Override
     public CategoryL addCategoryL(RequestCategoryLDto categoryLDto) {
@@ -47,8 +53,16 @@ public class CategoryLServiceimple implements CategoryLService {
     }
 
     @Override
-    public CategoryL getCategoryLById(Integer id) {
-        return categoryLRepository.findById(id).get();
+    public ResponseCategoryLDto getCategoryLById(Integer id) {
+        CategoryL categoryL = categoryLRepository.findById(id).get();
+        CategoryM categoryMlist = categoryMRepository.findAllByCategoryLId(id).get(0);
+        return ResponseCategoryLDto.builder()
+                .id(categoryL.getId())
+                .name(categoryL.getName())
+                .categoryMS(categoryMRepository.findAllByCategoryLId(categoryL.getId()))
+                .build();
+
+
     }
 
 
@@ -56,5 +70,5 @@ public class CategoryLServiceimple implements CategoryLService {
     public void deleteCategoryLById(Integer id) {
         categoryLRepository.deleteById(id);
     }
-    }
+}
 
