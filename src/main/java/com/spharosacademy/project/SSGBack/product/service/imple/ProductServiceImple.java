@@ -21,6 +21,7 @@ import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.criteria.internal.expression.function.AggregationFunction;
 import org.springframework.stereotype.Service;
 
 
@@ -78,11 +79,27 @@ public class ProductServiceImple implements ProductService {
                 .product(product)
                 .build());
 
-        ProductDetailImage productDetailImage = productDetailImgRepository.findByProductId(pro);
-        ProductTitleImage productTitleImage = productTitleImgRepository.findByProductId(product.getId());
+        requestProductDto.getProductDetailImageList().forEach(productDetailImage -> {
+            productDetailImgRepository.save(
+                    ProductDetailImage.builder()
+                            .productDetailImgUrl(productDetailImage.getProductDetailImgUrl())
+                            .productDetailImgTxt(productDetailImage.getProductDetailImgTxt())
+                            .productId(product.getId())
+                            .build());
+        });
+
+        requestProductDto.getProductTitleImageList().forEach(productTitleImage -> {
+            productTitleImgRepository.save(ProductTitleImage.builder()
+                    .productTitleImgUrl(productTitleImage.getProductTitleImgUrl())
+                    .productTitleImgTxt(productTitleImage.getProductTitleImgTxt())
+                    .productId(product.getId())
+                    .build());
+        });
+        List<ProductDetailImage> allByProductId = productDetailImgRepository.findAllByProductId(product.getId());
+        List<ProductTitleImage> productTitleImgRepositoryAllByProductId = productTitleImgRepository.findAllByProductId(product.getId());
         imageListRepository.save(ImageList.builder()
-                .productDetailImage(productDetailImgRepository.findByProductId(productDetailImage.getProductId()))
-                .productTitleImage(productTitleImgRepository.findByProductId(productTitleImage.getId()))
+                .productDetailImage(allByProductId.get(0))
+                .productTitleImage(productTitleImgRepositoryAllByProductId.get(0))
                 .product(product)
                 .build());
 
@@ -106,7 +123,8 @@ public class ProductServiceImple implements ProductService {
                     .explanation(product.getExplanation())
                     .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
                     .optionLists(optionListRepository.findAllByProductId(product.getId()))
-                    .imageLists(imageListRepository.findAllByProductId(product.getId()))
+                    .productDetailImageList(productDetailImgRepository.findAllByProductId(product.getId()))
+                    .productTitleImageList(productTitleImgRepository.findAllByProductId(product.getId()))
                     .build());
         });
         return responseProductDtoList;
@@ -143,8 +161,9 @@ public class ProductServiceImple implements ProductService {
                 .sellAmount(product.getSellAmt())
                 .explanation(product.getExplanation())
                 .optionLists(optionListRepository.findAllByProductId(product.getId()))
-                .imageLists(imageListRepository.findAllByProductId(product.getId()))
                 .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
+                .productDetailImageList(productDetailImgRepository.findAllByProductId(product.getId()))
+                .productTitleImageList(productTitleImgRepository.findAllByProductId(product.getId()))
                 .build();
     }
 

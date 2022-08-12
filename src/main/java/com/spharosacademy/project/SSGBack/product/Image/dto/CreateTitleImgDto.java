@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class CreateTitleImgDto {
 
     private String titleImgUrl;
-    private String titleImgTXT;
-    private Long ProductId;
+    private String titleImgTxt;
 }

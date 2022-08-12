@@ -19,6 +19,7 @@ public class ProductDetailImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String productDetailImgUrl;
+    private String productDetailImgTxt;
     private Long productId;
 
 }

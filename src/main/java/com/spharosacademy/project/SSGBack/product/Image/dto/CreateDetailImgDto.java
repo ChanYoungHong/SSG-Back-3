@@ -14,5 +14,4 @@ public class CreateDetailImgDto {
 
     private String detailImgUrl;
     private String detailImgTxt;
-    private Long ProductId;
 }

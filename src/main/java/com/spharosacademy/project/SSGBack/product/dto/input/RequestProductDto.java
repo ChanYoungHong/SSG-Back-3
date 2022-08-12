@@ -31,4 +31,8 @@ public class RequestProductDto {
     private int categorySId;
     private int categoryMId;
     private int categoryLId;
+
+    List<ProductDetailImage> productDetailImageList;
+    List<ProductTitleImage> productTitleImageList;
+
 }

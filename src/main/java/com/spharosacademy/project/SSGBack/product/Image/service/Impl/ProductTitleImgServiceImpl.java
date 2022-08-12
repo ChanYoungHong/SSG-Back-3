@@ -20,7 +20,7 @@ public class ProductTitleImgServiceImpl implements ProductTitleImgService {
         return productTitleImgRepository.save(
                 ProductTitleImage.builder()
                         .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
-                        .productId(createTitleImgDto.getProductId())
+                        .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
                         .build()
         );
     }
