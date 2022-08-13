@@ -1,17 +1,19 @@
-package com.spharosacademy.project.SSGBack.product.dto.input;
+package com.spharosacademy.project.SSGBack.category.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class RequestCategoryMDto {
+public class CategorySSDto {
 
     private int id;
     private String name;
-    private int categoryLId;
+    List<ProductOfCategory> productOfCategoryList;
 }

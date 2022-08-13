@@ -1,14 +1,21 @@
 package com.spharosacademy.project.SSGBack.category.service.impl;
 
+import com.spharosacademy.project.SSGBack.category.dto.output.CategorySDto;
+import com.spharosacademy.project.SSGBack.category.dto.output.CategorySSOfCategorySDto;
+import com.spharosacademy.project.SSGBack.category.dto.output.ProductOfCategory;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
+import com.spharosacademy.project.SSGBack.category.entity.CategoryProductList;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryS;
-import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySDto;
+import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategorySDto;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryMRepository;
+import com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategorySRepository;
+import com.spharosacademy.project.SSGBack.category.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategorySService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +25,7 @@ public class CategorySServiceimple implements CategorySService {
 
     private final CategorySRepository categorySRepository;
     private final CategoryMRepository categoryMRepository;
+    private final CategoryProductListRepository categoryProductListRepository;
 
     @Override
     public CategoryS addCategoryS(RequestCategorySDto categorySDto) {
@@ -56,8 +64,36 @@ public class CategorySServiceimple implements CategorySService {
 
 
     @Override
-    public CategoryS getCategorySById(Integer id) {
-        return categorySRepository.findById(id).get();
+    public CategorySDto getCategorySById(Integer id) {
+        CategoryS categoryS = categorySRepository.findById(id).get();
+
+        List<CategoryProductList> categoryProductLists = categoryProductListRepository.findAllByCategoryS(categoryS);
+        List<CategorySSOfCategorySDto> categorySDtos = new ArrayList<>();
+
+        for (CategoryProductList categoryProductList : categoryProductLists) {
+            categorySDtos.add(CategorySSOfCategorySDto.builder()
+                    .id(categoryProductList.getCategoryS().getId())
+                    .name(categoryProductList.getCategoryS().getName())
+                    .build());
+        }
+        List<ProductOfCategory> productOfCategoryList = new ArrayList<>();
+        for (CategoryProductList categoryProductList : categoryProductLists) {
+            productOfCategoryList.add(ProductOfCategory.builder()
+                    .id(categoryProductList.getProduct().getId())
+                    .name(categoryProductList.getProduct().getName())
+                    .id(categoryProductList.getProduct().getId())
+                    .brand(categoryProductList.getProduct().getBrand())
+                    .mallTxt(categoryProductList.getProduct().getMallText())
+                    .price(categoryProductList.getProduct().getPrice())
+                    .thumbnailUrl(categoryProductList.getProduct().getThumbnailUrl())
+                    .build());
+        }
+        return CategorySDto.builder()
+                .name(categoryS.getName())
+                .id(categoryS.getId())
+                .productOfCategoryList(productOfCategoryList)
+                .categorySSOfCategorySDtoList(categorySDtos)
+                .build();
     }
 
 

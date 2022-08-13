@@ -22,7 +22,7 @@ public class RequestProductDto {
     private String priceText;
     private String brand;
     private int cnt;
-    private String titleImgUrl;
+    private String thumbnailUrl;
     private String explanation;
     private int sellAmount;
     private String mallTxt;

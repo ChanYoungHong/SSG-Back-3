@@ -1,7 +1,8 @@
 package com.spharosacademy.project.SSGBack.category.service;
 
+import com.spharosacademy.project.SSGBack.category.dto.output.CategorySDto;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryS;
-import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySDto;
+import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategorySDto;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface CategorySService {
 
     CategoryS editCategoryS(RequestCategorySDto categorySDto);
 
-    CategoryS getCategorySById(Integer id);
+    CategorySDto getCategorySById(Integer id);
 }

@@ -1,5 +1,5 @@
-package com.spharosacademy.project.SSGBack.product.dto.output;
-;
+package com.spharosacademy.project.SSGBack.category.dto.output;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +11,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseCategoryLDto {
+public class CategoryMDto {
 
     private int id;
     private String name;
-    List<ResponseCategoryMDto> responseCategoryMDtos;
+    List<CategorySofCategoryMDto> categorySofCategoryMDtoList;
+    List<ProductOfCategory> productOfCategoryList;
 }

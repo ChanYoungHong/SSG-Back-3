@@ -1,7 +1,8 @@
 package com.spharosacademy.project.SSGBack.category.controller;
 
+import com.spharosacademy.project.SSGBack.category.dto.output.CategoryMDto;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
-import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryMDto;
+import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategoryMDto;
 import com.spharosacademy.project.SSGBack.category.service.CategoryMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class CategoryMController {
     }
 
     @GetMapping("/get/{id}")
-    public CategoryM categoryM(@PathVariable Integer id) {
+    public CategoryMDto categoryM(@PathVariable Integer id) {
         return categoryMService.getCategoryMById(id);
     }
 

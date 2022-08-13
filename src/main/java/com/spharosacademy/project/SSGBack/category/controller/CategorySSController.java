@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.category.controller;
 
-import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategorySSDto;
+import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategorySSDto;
+import com.spharosacademy.project.SSGBack.category.dto.output.CategorySSDto;
 import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.category.service.CategorySSService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class CategorySSController {
     }
 
     @GetMapping("/get/{id}")
-    public CategorySS categorySS(@PathVariable Integer id) {
+    public CategorySSDto categorySS(@PathVariable Integer id) {
         return categorySSService.getCategorySSById(id);
     }
 

@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.service;
 
+import com.spharosacademy.project.SSGBack.category.dto.input.CreateCategoryListDto;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
@@ -10,7 +11,8 @@ import java.util.List;
 
 public interface ProductService {
 
-    Product addProduct(RequestProductDto requestProductDto);
+    Product addProduct(RequestProductDto requestProductDto, CreateCategoryListDto createCategoryListDto);
+
 
     List<ResponseProductDto> getAll();
 

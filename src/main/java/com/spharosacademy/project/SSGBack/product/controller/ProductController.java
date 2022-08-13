@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.controller;
 
+import com.spharosacademy.project.SSGBack.category.dto.input.CreateCategoryListDto;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
@@ -20,8 +21,9 @@ public class ProductController {
 
     @PostMapping("/add")
     public Product addProduct(
-            @RequestBody RequestProductDto requestProductDto) {
-        return productService.addProduct(requestProductDto);
+            @RequestBody RequestProductDto requestProductDto,
+            CreateCategoryListDto createCategoryListDto) {
+        return productService.addProduct(requestProductDto, createCategoryListDto);
     }
 
     //모든 상품들에 대한 정보 조회
@@ -51,7 +53,7 @@ public class ProductController {
 
     //추천 상품들에 해당하는 상품 조회
     @GetMapping("/recommend/{id}")
-    public ResponseRecommendProductDto getRecommendProductById(@PathVariable Long id){
+    public ResponseRecommendProductDto getRecommendProductById(@PathVariable Long id) {
         return productService.getRecommendProductById(id);
     }
 

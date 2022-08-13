@@ -1,8 +1,11 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.spharosacademy.project.SSGBack.category.entity.CategoryProductList;
+import com.spharosacademy.project.SSGBack.category.dto.input.CreateCategoryListDto;
+import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategoryLDto;
+import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.repository.*;
-import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageResponseDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageDetailDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageTitleDto;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductTitleImage;
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
@@ -12,6 +15,8 @@ import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseColorDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseSizeDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.ColorOption;
 import com.spharosacademy.project.SSGBack.product.option.entity.SizeOption;
 import com.spharosacademy.project.SSGBack.product.option.repository.ColorOptionRepository;
@@ -43,7 +48,8 @@ public class ProductServiceImple implements ProductService {
 
 
     @Override
-    public Product addProduct(RequestProductDto requestProductDto) {
+    public Product addProduct(RequestProductDto requestProductDto
+            , CreateCategoryListDto createCategoryListDto) {
         Product product = productRepository.save(
                 Product.builder()
                         .name(requestProductDto.getName())
@@ -55,7 +61,7 @@ public class ProductServiceImple implements ProductService {
                         .cnt(requestProductDto.getCnt())
                         .sellAmt(requestProductDto.getSellAmount())
                         .explanation(requestProductDto.getExplanation())
-                        .titleImgUrl(requestProductDto.getTitleImgUrl())
+                        .thumbnailUrl(requestProductDto.getThumbnailUrl())
                         .build()
         );
 
@@ -113,9 +119,43 @@ public class ProductServiceImple implements ProductService {
         List<ResponseProductDto> responseProductDtoList = new ArrayList<>();
 
         ListProduct.forEach(product -> {
+            List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
+            List<ImageDetailDto> detailDtoList = new ArrayList<>();
 
+            for (ProductDetailImage detailImage : detailImageList) {
+                detailDtoList.add(ImageDetailDto.builder()
+                        .productDetailImgTxt(detailImage.getProductDetailImgTxt())
+                        .productDetailImgUrl(detailImage.getProductDetailImgUrl())
+                        .build());
+            }
 
+            List<ImageTitleDto> titleDtoList = new ArrayList<>();
+            List<ProductTitleImage> titleImageList = productTitleImgRepository.findAllByProduct(product);
 
+            for (ProductTitleImage productTitleImage : titleImageList) {
+                titleDtoList.add(ImageTitleDto.builder()
+                        .productTitleImgTxt(productTitleImage.getProductTitleImgTxt())
+                        .productTitleImgUrl(productTitleImage.getProductTitleImgUrl())
+                        .build());
+            }
+
+            List<ResponseColorDto> colorDtoList = new ArrayList<>();
+            List<ColorOption> colorOptionList = colorOptionRepository.findAllByProduct(product);
+
+            for (ColorOption colorOption : colorOptionList) {
+                colorDtoList.add(ResponseColorDto.builder()
+                        .color(colorOption.getColorType())
+                        .build());
+            }
+
+            List<ResponseSizeDto> sizeDtoList = new ArrayList<>();
+            List<SizeOption> sizeOptionList = sizeOptionRepository.findAllByProduct(product);
+
+            for (SizeOption sizeOption : sizeOptionList) {
+                sizeDtoList.add(ResponseSizeDto.builder()
+                        .size(sizeOption.getSizeType())
+                        .build());
+            }
             responseProductDtoList.add(ResponseProductDto.builder()
                     .id(product.getId())
                     .productName(product.getName())
@@ -126,10 +166,12 @@ public class ProductServiceImple implements ProductService {
                     .productCnt(product.getCnt())
                     .sellAmount(product.getSellAmt())
                     .explanation(product.getExplanation())
-                    .titleImgUrl(product.getTitleImgUrl())
-                    .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
-                    .colorOptionList(colorOptionRepository.findAllByProductId(product.getId()))
-                    .sizeOptionList(sizeOptionRepository.findAllByProductId(product.getId()))
+                    .thumbnailImgUrl(product.getThumbnailUrl())
+                    .categoryProductLists(categoryProductListRepository.findAllByProductId(product))
+                    .imageDetailDtos(detailDtoList)
+                    .imageTitleDtos(titleDtoList)
+                    .responseColorDtos(colorDtoList)
+                    .responseSizeDtos(sizeDtoList)
                     .build());
         });
         return responseProductDtoList;
@@ -146,12 +188,51 @@ public class ProductServiceImple implements ProductService {
                 .brand(recproduct.getBrand())
                 .priceText(recproduct.getPriceText())
                 .price(recproduct.getPrice())
+                .titleImgUrl(recproduct.getThumbnailUrl())
                 .build();
     }
 
     @Override
     public ResponseProductDto getByProductId(Long id) {
         Product product = productRepository.findById(id).get();
+
+        List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
+        List<ImageDetailDto> detailDtoList = new ArrayList<>();
+
+        for (ProductDetailImage detailImage : detailImageList) {
+            detailDtoList.add(ImageDetailDto.builder()
+                    .productDetailImgTxt(detailImage.getProductDetailImgTxt())
+                    .productDetailImgUrl(detailImage.getProductDetailImgUrl())
+                    .build());
+        }
+
+        List<ImageTitleDto> titleDtoList = new ArrayList<>();
+        List<ProductTitleImage> titleImageList = productTitleImgRepository.findAllByProduct(product);
+
+        for (ProductTitleImage productTitleImage : titleImageList) {
+            titleDtoList.add(ImageTitleDto.builder()
+                    .productTitleImgTxt(productTitleImage.getProductTitleImgTxt())
+                    .productTitleImgUrl(productTitleImage.getProductTitleImgUrl())
+                    .build());
+        }
+
+        List<ResponseColorDto> colorDtoList = new ArrayList<>();
+        List<ColorOption> colorOptionList = colorOptionRepository.findAllByProduct(product);
+
+        for (ColorOption colorOption : colorOptionList) {
+            colorDtoList.add(ResponseColorDto.builder()
+                    .color(colorOption.getColorType())
+                    .build());
+        }
+
+        List<ResponseSizeDto> sizeDtoList = new ArrayList<>();
+        List<SizeOption> sizeOptionList = sizeOptionRepository.findAllByProduct(product);
+
+        for (SizeOption sizeOption : sizeOptionList) {
+            sizeDtoList.add(ResponseSizeDto.builder()
+                    .size(sizeOption.getSizeType())
+                    .build());
+        }
 
         return ResponseProductDto.builder()
                 .id(product.getId())
@@ -161,12 +242,14 @@ public class ProductServiceImple implements ProductService {
                 .productCnt(product.getCnt())
                 .priceText(product.getPriceText())
                 .mallTxt(product.getMallText())
-                .titleImgUrl(product.getTitleImgUrl())
+                .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
                 .explanation(product.getExplanation())
-                .categoryProductLists(categoryProductListRepository.findAllByProductId(product.getId()))
-                .colorOptionList(colorOptionRepository.findAllByProductId(product.getId()))
-                .sizeOptionList(sizeOptionRepository.findAllByProductId(product.getId()))
+                .categoryProductLists(categoryProductListRepository.findAllByProductId(product))
+                .imageDetailDtos(detailDtoList)
+                .imageTitleDtos(titleDtoList)
+                .responseSizeDtos(sizeDtoList)
+                .responseColorDtos(colorDtoList)
                 .build();
     }
 
@@ -195,3 +278,5 @@ public class ProductServiceImple implements ProductService {
         }
     }
 }
+
+
