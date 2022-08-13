@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
-
-import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
+;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +15,5 @@ public class ResponseCategoryLDto {
 
     private int id;
     private String name;
-
-    List<CategoryM> categoryMS;
+    List<ResponseCategoryMDto> responseCategoryMDtos;
 }

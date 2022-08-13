@@ -1,10 +1,9 @@
 package com.spharosacademy.project.SSGBack.product.dto.input;
 
-import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
-import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
-import com.spharosacademy.project.SSGBack.product.Image.entity.ProductTitleImage;
-import com.spharosacademy.project.SSGBack.product.option.entity.ColorOption;
-import com.spharosacademy.project.SSGBack.product.option.entity.SizeOption;
+import com.spharosacademy.project.SSGBack.product.Image.dto.input.CreateDetailImgDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.input.CreateTitleImgDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.input.CreateColorDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.input.CreateSizeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,9 +31,9 @@ public class RequestProductDto {
     private int categoryMId;
     private int categoryLId;
 
-    List<ProductDetailImage> productDetailImageList;
-    List<ProductTitleImage> productTitleImageList;
-    List<ColorOption> colorOptionList;
-    List<SizeOption> sizeOptionList;
+    List<CreateDetailImgDto> createDetailImgDtoList;
+    List<CreateTitleImgDto> createTitleImgDtoList;
+    List<CreateColorDto> createColorDtos;
+    List<CreateSizeDto> createSizeDtos;
 
 }

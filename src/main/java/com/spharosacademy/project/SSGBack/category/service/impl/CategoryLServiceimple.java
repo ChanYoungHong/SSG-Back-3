@@ -8,6 +8,7 @@ import com.spharosacademy.project.SSGBack.product.dto.input.RequestCategoryLDto;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryLRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategoryLService;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseCategoryLDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.ResponseCategoryMDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,6 @@ public class CategoryLServiceimple implements CategoryLService {
 
     private final CategoryLRepository categoryLRepository;
     private final CategoryMRepository categoryMRepository;
-    private final CategoryProductListRepository categoryProductListRepository;
 
     @Override
     public CategoryL addCategoryL(RequestCategoryLDto categoryLDto) {
@@ -55,14 +55,12 @@ public class CategoryLServiceimple implements CategoryLService {
     @Override
     public ResponseCategoryLDto getCategoryLById(Integer id) {
         CategoryL categoryL = categoryLRepository.findById(id).get();
-        CategoryM categoryMlist = categoryMRepository.findAllByCategoryLId(id).get(0);
+
         return ResponseCategoryLDto.builder()
-                .id(categoryL.getId())
                 .name(categoryL.getName())
-                .categoryMS(categoryMRepository.findAllByCategoryLId(categoryL.getId()))
+                .id(categoryL.getId())
+                .responseCategoryMDtos(categoryMRepository.findAllByCategoryLId(id))
                 .build();
-
-
     }
 
 

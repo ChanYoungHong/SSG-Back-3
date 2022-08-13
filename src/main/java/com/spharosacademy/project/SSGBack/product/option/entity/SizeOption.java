@@ -1,14 +1,12 @@
 package com.spharosacademy.project.SSGBack.product.option.entity;
 
+import com.spharosacademy.project.SSGBack.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -21,5 +19,7 @@ public class SizeOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String sizeType;
-    private Long productId;
+
+    @ManyToOne
+    Product product;
 }

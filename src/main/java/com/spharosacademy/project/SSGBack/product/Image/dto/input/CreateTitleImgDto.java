@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.Image.dto;
+package com.spharosacademy.project.SSGBack.product.Image.dto.input;
 
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateDetailImgDto {
+public class CreateTitleImgDto {
 
-    private String detailImgUrl;
-    private String detailImgTxt;
+    private String titleImgUrl;
+    private String titleImgTxt;
 }

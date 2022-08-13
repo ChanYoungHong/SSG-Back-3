@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.option.dto;
+package com.spharosacademy.project.SSGBack.product.option.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

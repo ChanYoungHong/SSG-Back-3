@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
     //사용자 id에 따른 장바구니를 전부 가져온다
-    List<Cart> findByUserId(Long userid);
+    Cart findByUserId(Long userid);
 
 }

@@ -69,7 +69,7 @@ public class CartServiceimple implements CartService {
 
     @Override
     public CartOutputDto getCartByUserId(Long userid) {
-        Cart cart = cartRepository.findByUserId(userid).get(0);
+        Cart cart = cartRepository.findByUserId(userid);
 
         return CartOutputDto.builder()
                 .id(cart.getId())
