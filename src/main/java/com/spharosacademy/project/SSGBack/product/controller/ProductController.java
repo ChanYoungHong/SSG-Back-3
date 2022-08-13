@@ -21,9 +21,8 @@ public class ProductController {
 
     @PostMapping("/add")
     public Product addProduct(
-            @RequestBody RequestProductDto requestProductDto,
-            CreateCategoryListDto createCategoryListDto) {
-        return productService.addProduct(requestProductDto, createCategoryListDto);
+            @RequestBody RequestProductDto requestProductDto) {
+        return productService.addProduct(requestProductDto);
     }
 
     //모든 상품들에 대한 정보 조회

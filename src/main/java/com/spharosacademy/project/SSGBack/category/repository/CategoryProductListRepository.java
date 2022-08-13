@@ -13,7 +13,7 @@ public interface CategoryProductListRepository extends JpaRepository<CategoryPro
 
     List<CategoryProductList> findAllByCategoryM(CategoryM categoryM);
 
-    List<CategoryProductList> findAllByProductId(Product product);
+    List<CategoryProductList> findAllByProduct(Product product);
 
     List<CategoryProductList> findAllByCategoryS(CategoryS categoryS);
 

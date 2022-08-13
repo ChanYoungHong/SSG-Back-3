@@ -1,12 +1,9 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
-import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageDetailDto;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageTitleDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseColorDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseSizeDto;
-import com.spharosacademy.project.SSGBack.product.option.entity.ColorOption;
-import com.spharosacademy.project.SSGBack.product.option.entity.SizeOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +27,10 @@ public class ResponseProductDto {
     private String thumbnailImgUrl;
     private int sellAmount;
     private String explanation;
-    List<CategoryProductList> categoryProductLists;
+    List<PofCategorySS> pofCategorySSList;
+    List<PofCategoryS> pofCategorySList;
+    List<PofCategoryM> pofCategoryMList;
+    List<PofCategoryL> pofCategoryLList;
     List<ImageDetailDto> imageDetailDtos;
     List<ImageTitleDto> imageTitleDtos;
     List<ResponseColorDto> responseColorDtos;

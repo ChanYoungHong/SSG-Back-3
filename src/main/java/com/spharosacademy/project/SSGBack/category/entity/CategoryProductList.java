@@ -18,6 +18,10 @@ public class CategoryProductList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String Lname;
+    private String Mname;
+    private String Sname;
+    private String SSname;
 
     @ManyToOne
     private CategorySS categorySS;

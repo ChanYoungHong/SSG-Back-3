@@ -9,6 +9,8 @@ import com.spharosacademy.project.SSGBack.category.repository.CategoryProductLis
 import com.spharosacademy.project.SSGBack.category.repository.CategorySRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategorySSService;
+import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

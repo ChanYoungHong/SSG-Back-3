@@ -58,17 +58,17 @@ public class CategoryMServiceimple implements CategoryMService {
         CategoryM categoryM = categoryMRepository.findById(id).get();
         List<CategoryS> categorySList = categorySRepository.findAllByCategoryM(categoryM);
         List<CategoryProductList> productList = categoryProductListRepository.findAllByCategoryM(categoryM);
+
         List<CategorySofCategoryMDto> categorySofCategoryMDtoList = new ArrayList<>();
 
         for (CategoryS categoryS : categorySList) {
             categorySofCategoryMDtoList.add(CategorySofCategoryMDto.builder()
-                    .id(categorySList.get(0))
-                    .name(categoryProductList.getCategoryS().getName())
+                    .id(categoryS.getId())
+                    .name(categoryS.getName())
                     .build());
         }
 
         List<ProductOfCategory> productOfCategoryList = new ArrayList<>();
-
         for (CategoryProductList categoryProductList : productList) {
             productOfCategoryList.add(ProductOfCategory.builder()
                     .name(categoryProductList.getProduct().getName())

@@ -1,7 +1,5 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.spharosacademy.project.SSGBack.category.dto.input.CreateCategoryListDto;
-import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategoryLDto;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.repository.*;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageDetailDto;
@@ -11,8 +9,7 @@ import com.spharosacademy.project.SSGBack.product.Image.entity.ProductTitleImage
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductTitleImgRepository;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseColorDto;
@@ -48,8 +45,7 @@ public class ProductServiceImple implements ProductService {
 
 
     @Override
-    public Product addProduct(RequestProductDto requestProductDto
-            , CreateCategoryListDto createCategoryListDto) {
+    public Product addProduct(RequestProductDto requestProductDto) {
         Product product = productRepository.save(
                 Product.builder()
                         .name(requestProductDto.getName())
@@ -62,6 +58,7 @@ public class ProductServiceImple implements ProductService {
                         .sellAmt(requestProductDto.getSellAmount())
                         .explanation(requestProductDto.getExplanation())
                         .thumbnailUrl(requestProductDto.getThumbnailUrl())
+                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
                         .build()
         );
 
@@ -70,6 +67,10 @@ public class ProductServiceImple implements ProductService {
                 .categoryS(categorySRepository.findById(requestProductDto.getCategorySId()).get())
                 .categoryM(categoryMRepository.findById(requestProductDto.getCategoryMId()).get())
                 .categoryL(categoryLRepository.findById(requestProductDto.getCategoryLId()).get())
+                .Lname(categoryLRepository.findById(requestProductDto.getCategoryLId()).get().getName())
+                .Mname(categoryMRepository.findById(requestProductDto.getCategoryMId()).get().getName())
+                .Sname(categorySRepository.findById(requestProductDto.getCategorySId()).get().getName())
+                .SSname(categorySSRepository.findById(requestProductDto.getCategorySSId()).get().getName())
                 .product(product)
                 .build());
 
@@ -156,6 +157,45 @@ public class ProductServiceImple implements ProductService {
                         .size(sizeOption.getSizeType())
                         .build());
             }
+
+
+            List<CategoryProductList> lists = categoryProductListRepository.findAllByProduct(product);
+            List<PofCategoryL> categoryLlist = new ArrayList<>();
+
+            for (CategoryProductList categoryProductList : lists) {
+                categoryLlist.add(PofCategoryL.builder()
+                        .id(categoryProductList.getCategoryL().getId())
+                        .name(categoryProductList.getLname())
+                        .build());
+            }
+
+
+            List<PofCategoryM> categoryMList = new ArrayList<>();
+
+            for (CategoryProductList categoryProductList : lists) {
+                categoryMList.add(PofCategoryM.builder()
+                        .id(categoryProductList.getCategoryM().getId())
+                        .name(categoryProductList.getMname())
+                        .build());
+            }
+
+            List<PofCategoryS> categorySList = new ArrayList<>();
+            for (CategoryProductList categoryProductList : lists) {
+                categorySList.add(PofCategoryS.builder()
+                        .id(categoryProductList.getCategoryS().getId())
+                        .name(categoryProductList.getSname())
+                        .build());
+            }
+
+            List<PofCategorySS> categorySSList = new ArrayList<>();
+            for (CategoryProductList categoryProductList : lists) {
+                categorySSList.add(PofCategorySS.builder()
+                        .id(categoryProductList.getCategorySS().getId())
+                        .name(categoryProductList.getSSname())
+                        .build());
+            }
+
+
             responseProductDtoList.add(ResponseProductDto.builder()
                     .id(product.getId())
                     .productName(product.getName())
@@ -167,7 +207,10 @@ public class ProductServiceImple implements ProductService {
                     .sellAmount(product.getSellAmt())
                     .explanation(product.getExplanation())
                     .thumbnailImgUrl(product.getThumbnailUrl())
-                    .categoryProductLists(categoryProductListRepository.findAllByProductId(product))
+                    .pofCategoryLList(categoryLlist)
+                    .pofCategoryMList(categoryMList)
+                    .pofCategorySList(categorySList)
+                    .pofCategorySSList(categorySSList)
                     .imageDetailDtos(detailDtoList)
                     .imageTitleDtos(titleDtoList)
                     .responseColorDtos(colorDtoList)
@@ -234,6 +277,41 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
+        List<CategoryProductList> lists = categoryProductListRepository.findAllByProduct(product);
+        List<PofCategoryL> categoryLlist = new ArrayList<>();
+
+        for (CategoryProductList categoryProductList : lists) {
+            categoryLlist.add(PofCategoryL.builder()
+                    .id(categoryProductList.getCategoryL().getId())
+                    .name(categoryProductList.getLname())
+                    .build());
+        }
+
+        List<PofCategoryM> categoryMList = new ArrayList<>();
+
+        for (CategoryProductList categoryProductList : lists) {
+            categoryMList.add(PofCategoryM.builder()
+                    .id(categoryProductList.getCategoryM().getId())
+                    .name(categoryProductList.getMname())
+                    .build());
+        }
+
+        List<PofCategoryS> categorySList = new ArrayList<>();
+        for (CategoryProductList categoryProductList : lists) {
+            categorySList.add(PofCategoryS.builder()
+                    .id(categoryProductList.getCategoryS().getId())
+                    .name(categoryProductList.getSname())
+                    .build());
+        }
+
+        List<PofCategorySS> categorySSList = new ArrayList<>();
+        for (CategoryProductList categoryProductList : lists) {
+            categorySSList.add(PofCategorySS.builder()
+                    .id(categoryProductList.getCategorySS().getId())
+                    .name(categoryProductList.getSSname())
+                    .build());
+        }
+
         return ResponseProductDto.builder()
                 .id(product.getId())
                 .productName(product.getName())
@@ -245,7 +323,10 @@ public class ProductServiceImple implements ProductService {
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
                 .explanation(product.getExplanation())
-                .categoryProductLists(categoryProductListRepository.findAllByProductId(product))
+                .pofCategoryLList(categoryLlist)
+                .pofCategoryMList(categoryMList)
+                .pofCategorySList(categorySList)
+                .pofCategorySSList(categorySSList)
                 .imageDetailDtos(detailDtoList)
                 .imageTitleDtos(titleDtoList)
                 .responseSizeDtos(sizeDtoList)

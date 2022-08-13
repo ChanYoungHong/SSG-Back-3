@@ -7,6 +7,7 @@ import com.spharosacademy.project.SSGBack.category.entity.CategoryM;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryProductList;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryS;
 import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategorySDto;
+import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryMRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategorySRepository;
@@ -26,6 +27,7 @@ public class CategorySServiceimple implements CategorySService {
     private final CategorySRepository categorySRepository;
     private final CategoryMRepository categoryMRepository;
     private final CategoryProductListRepository categoryProductListRepository;
+    private final CategorySSRepository categorySSRepository;
 
     @Override
     public CategoryS addCategoryS(RequestCategorySDto categorySDto) {
@@ -68,12 +70,13 @@ public class CategorySServiceimple implements CategorySService {
         CategoryS categoryS = categorySRepository.findById(id).get();
 
         List<CategoryProductList> categoryProductLists = categoryProductListRepository.findAllByCategoryS(categoryS);
+        List<CategorySS> ssList = categorySSRepository.findAllByCategoryS(categoryS);
         List<CategorySSOfCategorySDto> categorySDtos = new ArrayList<>();
 
-        for (CategoryProductList categoryProductList : categoryProductLists) {
+        for (CategorySS categorySSob : ssList) {
             categorySDtos.add(CategorySSOfCategorySDto.builder()
-                    .id(categoryProductList.getCategoryS().getId())
-                    .name(categoryProductList.getCategoryS().getName())
+                    .id(categorySSob.getCategoryS().getId())
+                    .name(categorySSob.getCategoryS().getName())
                     .build());
         }
         List<ProductOfCategory> productOfCategoryList = new ArrayList<>();

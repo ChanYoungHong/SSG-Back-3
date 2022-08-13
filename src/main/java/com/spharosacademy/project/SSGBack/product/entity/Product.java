@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.entity;
 
+import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.*;
 
@@ -24,5 +25,8 @@ public class Product extends BaseTimeEntity {
     private int sellAmt;
     private String explanation;
     private String thumbnailUrl;
+
+    @ManyToOne
+    CategorySS categorySS;
 
 }
