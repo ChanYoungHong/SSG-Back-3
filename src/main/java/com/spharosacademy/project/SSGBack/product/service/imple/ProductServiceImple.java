@@ -12,12 +12,10 @@ import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
-import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseColorDto;
-import com.spharosacademy.project.SSGBack.product.option.dto.output.ResponseSizeDto;
-import com.spharosacademy.project.SSGBack.product.option.entity.ColorOption;
-import com.spharosacademy.project.SSGBack.product.option.entity.SizeOption;
-import com.spharosacademy.project.SSGBack.product.option.repository.ColorOptionRepository;
-import com.spharosacademy.project.SSGBack.product.option.repository.SizeOptionRepository;
+import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
+import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +38,7 @@ public class ProductServiceImple implements ProductService {
     private final CategorySRepository categorySRepository;
     private final CategoryLRepository categoryLRepository;
     private final ProductTitleImgRepository productTitleImgRepository;
-    private final ColorOptionRepository colorOptionRepository;
-    private final SizeOptionRepository sizeOptionRepository;
+    private final OptionRepository optionRepository;
 
 
     @Override
@@ -74,19 +71,21 @@ public class ProductServiceImple implements ProductService {
                 .product(product)
                 .build());
 
-        requestProductDto.getCreateColorDtos().forEach(createColorDto -> {
-            colorOptionRepository.save(
-                    ColorOption.builder()
-                            .colorType(createColorDto.getName())
-                            .product(product)
-                            .build()
-            );
-        });
+        List<OptionInputDto> optionInputDtos = new ArrayList<>();
+        for (OptionInputDto optionInputDto : requestProductDto.getOptionInputDtoList()) {
+            optionInputDtos.add(OptionInputDto.builder()
+                    .color(optionInputDto.getColor())
+                    .size(optionInputDto.getSize())
+                    .stock(optionInputDto.getStock())
+                    .build());
+        }
 
-        requestProductDto.getCreateSizeDtos().forEach(createSizeDto -> {
-            sizeOptionRepository.save(
-                    SizeOption.builder()
-                            .sizeType(createSizeDto.getSize())
+        optionInputDtos.forEach(optionInputDto -> {
+            optionRepository.save(
+                    OptionList.builder()
+                            .color(optionInputDto.getColor())
+                            .size(optionInputDto.getSize())
+                            .stock(optionInputDto.getStock())
                             .product(product)
                             .build()
             );
@@ -140,21 +139,14 @@ public class ProductServiceImple implements ProductService {
                         .build());
             }
 
-            List<ResponseColorDto> colorDtoList = new ArrayList<>();
-            List<ColorOption> colorOptionList = colorOptionRepository.findAllByProduct(product);
+            List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
+            List<OptionList> optionList = optionRepository.findAllByProduct(product);
 
-            for (ColorOption colorOption : colorOptionList) {
-                colorDtoList.add(ResponseColorDto.builder()
-                        .color(colorOption.getColorType())
-                        .build());
-            }
-
-            List<ResponseSizeDto> sizeDtoList = new ArrayList<>();
-            List<SizeOption> sizeOptionList = sizeOptionRepository.findAllByProduct(product);
-
-            for (SizeOption sizeOption : sizeOptionList) {
-                sizeDtoList.add(ResponseSizeDto.builder()
-                        .size(sizeOption.getSizeType())
+            for (OptionList option : optionList) {
+                optionOutputDtoList.add(OptionOutputDto.builder()
+                        .color(option.getColor())
+                        .size(option.getSize())
+                        .stock(option.getStock())
                         .build());
             }
 
@@ -212,8 +204,7 @@ public class ProductServiceImple implements ProductService {
                     .pofCategorySSList(categorySSList)
                     .imageDetailDtos(detailDtoList)
                     .imageTitleDtos(titleDtoList)
-                    .responseColorDtos(colorDtoList)
-                    .responseSizeDtos(sizeDtoList)
+                    .optionOutputDtos(optionOutputDtoList)
                     .build());
         });
         return responseProductDtoList;
@@ -257,21 +248,14 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
-        List<ResponseColorDto> colorDtoList = new ArrayList<>();
-        List<ColorOption> colorOptionList = colorOptionRepository.findAllByProduct(product);
+        List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
+        List<OptionList> optionList = optionRepository.findAllByProduct(product);
 
-        for (ColorOption colorOption : colorOptionList) {
-            colorDtoList.add(ResponseColorDto.builder()
-                    .color(colorOption.getColorType())
-                    .build());
-        }
-
-        List<ResponseSizeDto> sizeDtoList = new ArrayList<>();
-        List<SizeOption> sizeOptionList = sizeOptionRepository.findAllByProduct(product);
-
-        for (SizeOption sizeOption : sizeOptionList) {
-            sizeDtoList.add(ResponseSizeDto.builder()
-                    .size(sizeOption.getSizeType())
+        for (OptionList option : optionList) {
+            optionOutputDtoList.add(OptionOutputDto.builder()
+                    .color(option.getColor())
+                    .size(option.getSize())
+                    .stock(option.getStock())
                     .build());
         }
 
@@ -327,8 +311,7 @@ public class ProductServiceImple implements ProductService {
                 .pofCategorySSList(categorySSList)
                 .imageDetailDtos(detailDtoList)
                 .imageTitleDtos(titleDtoList)
-                .responseSizeDtos(sizeDtoList)
-                .responseColorDtos(colorDtoList)
+                .optionOutputDtos(optionOutputDtoList)
                 .build();
     }
 

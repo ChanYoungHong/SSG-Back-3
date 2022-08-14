@@ -2,8 +2,7 @@ package com.spharosacademy.project.SSGBack.product.dto.input;
 
 import com.spharosacademy.project.SSGBack.product.Image.dto.input.CreateDetailImgDto;
 import com.spharosacademy.project.SSGBack.product.Image.dto.input.CreateTitleImgDto;
-import com.spharosacademy.project.SSGBack.product.option.dto.input.CreateColorDto;
-import com.spharosacademy.project.SSGBack.product.option.dto.input.CreateSizeDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,6 @@ public class RequestProductDto {
 
     List<CreateDetailImgDto> createDetailImgDtoList;
     List<CreateTitleImgDto> createTitleImgDtoList;
-    List<CreateColorDto> createColorDtos;
-    List<CreateSizeDto> createSizeDtos;
+    List<OptionInputDto> optionInputDtoList;
 
 }

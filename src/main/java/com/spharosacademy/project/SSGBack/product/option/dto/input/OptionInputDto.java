@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateColorDto {
-    private String name;
+public class OptionInputDto {
+    
+    private String color;
+    private String size;
+    private int stock;
 }

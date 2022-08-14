@@ -5,10 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseSizeDto {
+public class OptionOutputDto {
+
+    private String color;
     private String size;
+    private int stock;
 }
