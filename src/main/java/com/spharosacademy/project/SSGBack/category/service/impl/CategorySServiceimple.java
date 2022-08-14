@@ -79,6 +79,7 @@ public class CategorySServiceimple implements CategorySService {
                     .name(categorySSob.getCategoryS().getName())
                     .build());
         }
+
         List<ProductOfCategory> productOfCategoryList = new ArrayList<>();
         for (CategoryProductList categoryProductList : categoryProductLists) {
             productOfCategoryList.add(ProductOfCategory.builder()

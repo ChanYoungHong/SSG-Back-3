@@ -2,24 +2,22 @@ package com.spharosacademy.project.SSGBack.product.option.entity;
 
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class SizeOption {
+
+public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String sizeType;
+    private String color;
+    private String size;
+    private int stock;
 
     @ManyToOne
     Product product;

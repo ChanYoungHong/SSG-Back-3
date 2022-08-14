@@ -195,7 +195,6 @@ public class ProductServiceImple implements ProductService {
                         .build());
             }
 
-
             responseProductDtoList.add(ResponseProductDto.builder()
                     .id(product.getId())
                     .productName(product.getName())
@@ -219,7 +218,6 @@ public class ProductServiceImple implements ProductService {
         });
         return responseProductDtoList;
     }
-
 
     @Override
     public ResponseRecommendProductDto getRecommendProductById(Long id) {
@@ -249,8 +247,8 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
-        List<ImageTitleDto> titleDtoList = new ArrayList<>();
         List<ProductTitleImage> titleImageList = productTitleImgRepository.findAllByProduct(product);
+        List<ImageTitleDto> titleDtoList = new ArrayList<>();
 
         for (ProductTitleImage productTitleImage : titleImageList) {
             titleDtoList.add(ImageTitleDto.builder()
