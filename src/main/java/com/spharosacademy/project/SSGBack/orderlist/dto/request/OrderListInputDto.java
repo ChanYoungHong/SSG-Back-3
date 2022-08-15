@@ -24,6 +24,7 @@ public class OrderListInputDto { // 가격, 옵션 - 색상, 사이즈, 제품 �
     private String productName;
 
 
+
     public static OrderListInputDto of(Product product, OrderList orderList, User user){
 
         return OrderListInputDto.builder()

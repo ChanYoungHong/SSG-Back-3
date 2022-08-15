@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-@Table(name = "order_list") // Order이라는 어노테이션이 있어서 Orders로 표기함
+@Table(name = "order_list") // Order이라는 어노테이션이 있어서 OrderList로 표기함
 public class OrderList extends BaseEntity {
 
     @Id
