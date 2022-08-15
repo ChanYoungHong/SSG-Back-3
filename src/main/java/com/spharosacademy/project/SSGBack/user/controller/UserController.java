@@ -46,7 +46,7 @@ public class UserController {
         return userService.modifyUserInfo(userOutputDto);
     }
 
-    @DeleteMapping("/{memberId}/remove")
+    @DeleteMapping("/remove/{memberId}")
     public User modifyUser(@PathVariable Long memberId,
                            @RequestBody UserOutputDto userOutputDto){
         return userService.removeUserInfo(memberId, userOutputDto);

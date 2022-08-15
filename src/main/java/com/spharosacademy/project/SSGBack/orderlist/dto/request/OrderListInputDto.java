@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.orderlist.dto.request;
 
 import com.spharosacademy.project.SSGBack.Product;
-import com.spharosacademy.project.SSGBack.orderlist.entity.Orders;
+import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,12 +24,12 @@ public class OrderListInputDto { // 가격, 옵션 - 색상, 사이즈, 제품 �
     private String productName;
 
 
-    public static OrderListInputDto of(Product product, Orders orders, User user){
+    public static OrderListInputDto of(Product product, OrderList orderList, User user){
 
         return OrderListInputDto.builder()
             .userId(user.getUserId())
             .userAddress(user.getUserAddress())
-            .orderId(orders.getOrderId())
+            .orderId(orderList.getOrderId())
             .price(product.getPrice())
             .productCnt((long) product.getCnt())
             .productName(product.getName())
