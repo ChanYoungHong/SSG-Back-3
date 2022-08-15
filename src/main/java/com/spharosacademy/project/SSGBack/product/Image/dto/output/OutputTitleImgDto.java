@@ -1,17 +1,16 @@
 package com.spharosacademy.project.SSGBack.product.Image.dto.output;
 
-import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ImageDetailDto {
-    private String productDetailImgUrl;
-    private String productDetailImgTxt;
+public class OutputTitleImgDto {
+    private String productTitleImgUrl;
+    private String productTitleImgTxt;
 }

@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
-import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageDetailDto;
-import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageTitleDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputDetailImgDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputTitleImgDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +30,7 @@ public class ResponseProductDto {
     List<PofCategoryS> pofCategorySList;
     List<PofCategoryM> pofCategoryMList;
     List<PofCategoryL> pofCategoryLList;
-    List<ImageDetailDto> imageDetailDtos;
-    List<ImageTitleDto> imageTitleDtos;
+    List<OutputDetailImgDto> outputDetailImgDtos;
+    List<OutputTitleImgDto> outputTitleImgDtos;
     List<OptionOutputDto> optionOutputDtos;
 }

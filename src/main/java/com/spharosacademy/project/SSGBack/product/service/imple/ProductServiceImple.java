@@ -1,9 +1,10 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
 import com.spharosacademy.project.SSGBack.category.entity.*;
+import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
-import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageDetailDto;
-import com.spharosacademy.project.SSGBack.product.Image.dto.output.ImageTitleDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputDetailImgDto;
+import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputTitleImgDto;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductTitleImage;
 import com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository;
@@ -12,6 +13,7 @@ import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
+import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
@@ -20,6 +22,7 @@ import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -55,19 +58,28 @@ public class ProductServiceImple implements ProductService {
                         .sellAmt(requestProductDto.getSellAmount())
                         .explanation(requestProductDto.getExplanation())
                         .thumbnailUrl(requestProductDto.getThumbnailUrl())
-                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
+                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
+                                .orElseThrow(CategoryNotFoundException::new))
                         .build()
         );
 
         categoryProductListRepository.save(CategoryProductList.builder()
-                .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId()).get())
-                .categoryS(categorySRepository.findById(requestProductDto.getCategorySId()).get())
-                .categoryM(categoryMRepository.findById(requestProductDto.getCategoryMId()).get())
-                .categoryL(categoryLRepository.findById(requestProductDto.getCategoryLId()).get())
-                .Lname(categoryLRepository.findById(requestProductDto.getCategoryLId()).get().getName())
-                .Mname(categoryMRepository.findById(requestProductDto.getCategoryMId()).get().getName())
-                .Sname(categorySRepository.findById(requestProductDto.getCategorySId()).get().getName())
-                .SSname(categorySSRepository.findById(requestProductDto.getCategorySSId()).get().getName())
+                .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
+                        .orElseThrow(ProductNotFoundException::new))
+                .categoryS(categorySRepository.findById(requestProductDto.getCategorySId())
+                        .orElseThrow(CategoryNotFoundException::new))
+                .categoryM(categoryMRepository.findById(requestProductDto.getCategoryMId())
+                        .orElseThrow(CategoryNotFoundException::new))
+                .categoryL(categoryLRepository.findById(requestProductDto.getCategoryLId())
+                        .orElseThrow(CategoryNotFoundException::new))
+                .Lname(categoryLRepository.findById(requestProductDto.getCategoryLId())
+                        .orElseThrow(CategoryNotFoundException::new).getName())
+                .Mname(categoryMRepository.findById(requestProductDto.getCategoryMId())
+                        .orElseThrow(CategoryNotFoundException::new).getName())
+                .Sname(categorySRepository.findById(requestProductDto.getCategorySId())
+                        .orElseThrow(CategoryNotFoundException::new).getName())
+                .SSname(categorySSRepository.findById(requestProductDto.getCategorySSId())
+                        .orElseThrow(CategoryNotFoundException::new).getName())
                 .product(product)
                 .build());
 
@@ -91,7 +103,7 @@ public class ProductServiceImple implements ProductService {
             );
         });
 
-        requestProductDto.getCreateDetailImgDtoList().forEach(createDetailImgDto -> {
+        requestProductDto.getInputDetailImgDtoList().forEach(createDetailImgDto -> {
             productDetailImgRepository.save(
                     ProductDetailImage.builder()
                             .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
@@ -101,7 +113,7 @@ public class ProductServiceImple implements ProductService {
             );
         });
 
-        requestProductDto.getCreateTitleImgDtoList().forEach(createTitleImgDto -> {
+        requestProductDto.getInputTitleImgDtoList().forEach(createTitleImgDto -> {
             productTitleImgRepository.save(
                     ProductTitleImage.builder()
                             .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
@@ -114,26 +126,49 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
+    public List<OutputSearchProductDto> searchProductByWord(String searchWord, Pageable pageable) {
+        List<Product> productList = productRepository.findAllBysearchWord(searchWord, pageable);
+        List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
+        if (productList.isEmpty()) {
+            System.out.println("검색 결과가 없습니다");
+        } else {
+            for (Product product : productList) {
+                outputSearchProductDtos.add(OutputSearchProductDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .brand(product.getBrand())
+                        .mallTxt(product.getMallText())
+                        .price(product.getPrice())
+                        .thumbnailImgUrl(product.getThumbnailUrl())
+                        .priceTxt(product.getPriceText())
+                        .build());
+            }
+        }
+
+        return outputSearchProductDtos;
+    }
+
+    @Override
     public List<ResponseProductDto> getAll() {
         List<Product> ListProduct = productRepository.findAll();
         List<ResponseProductDto> responseProductDtoList = new ArrayList<>();
 
         ListProduct.forEach(product -> {
             List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
-            List<ImageDetailDto> detailDtoList = new ArrayList<>();
+            List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
 
             for (ProductDetailImage detailImage : detailImageList) {
-                detailDtoList.add(ImageDetailDto.builder()
+                detailDtoList.add(OutputDetailImgDto.builder()
                         .productDetailImgTxt(detailImage.getProductDetailImgTxt())
                         .productDetailImgUrl(detailImage.getProductDetailImgUrl())
                         .build());
             }
 
-            List<ImageTitleDto> titleDtoList = new ArrayList<>();
+            List<OutputTitleImgDto> titleDtoList = new ArrayList<>();
             List<ProductTitleImage> titleImageList = productTitleImgRepository.findAllByProduct(product);
 
             for (ProductTitleImage productTitleImage : titleImageList) {
-                titleDtoList.add(ImageTitleDto.builder()
+                titleDtoList.add(OutputTitleImgDto.builder()
                         .productTitleImgTxt(productTitleImage.getProductTitleImgTxt())
                         .productTitleImgUrl(productTitleImage.getProductTitleImgUrl())
                         .build());
@@ -202,8 +237,8 @@ public class ProductServiceImple implements ProductService {
                     .pofCategoryMList(categoryMList)
                     .pofCategorySList(categorySList)
                     .pofCategorySSList(categorySSList)
-                    .imageDetailDtos(detailDtoList)
-                    .imageTitleDtos(titleDtoList)
+                    .outputDetailImgDtos(detailDtoList)
+                    .outputTitleImgDtos(titleDtoList)
                     .optionOutputDtos(optionOutputDtoList)
                     .build());
         });
@@ -212,7 +247,7 @@ public class ProductServiceImple implements ProductService {
 
     @Override
     public ResponseRecommendProductDto getRecommendProductById(Long id) {
-        Product recproduct = productRepository.findById(id).get();
+        Product recproduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         return ResponseRecommendProductDto.builder()
                 .id(recproduct.getId())
                 .name(recproduct.getName())
@@ -224,25 +259,25 @@ public class ProductServiceImple implements ProductService {
                 .build();
     }
 
+
     @Override
     public ResponseProductDto getByProductId(Long id) {
-        Product product = productRepository.findById(id).get();
-
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
-        List<ImageDetailDto> detailDtoList = new ArrayList<>();
+        List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
 
         for (ProductDetailImage detailImage : detailImageList) {
-            detailDtoList.add(ImageDetailDto.builder()
+            detailDtoList.add(OutputDetailImgDto.builder()
                     .productDetailImgTxt(detailImage.getProductDetailImgTxt())
                     .productDetailImgUrl(detailImage.getProductDetailImgUrl())
                     .build());
         }
 
         List<ProductTitleImage> titleImageList = productTitleImgRepository.findAllByProduct(product);
-        List<ImageTitleDto> titleDtoList = new ArrayList<>();
+        List<OutputTitleImgDto> titleDtoList = new ArrayList<>();
 
         for (ProductTitleImage productTitleImage : titleImageList) {
-            titleDtoList.add(ImageTitleDto.builder()
+            titleDtoList.add(OutputTitleImgDto.builder()
                     .productTitleImgTxt(productTitleImage.getProductTitleImgTxt())
                     .productTitleImgUrl(productTitleImage.getProductTitleImgUrl())
                     .build());
@@ -309,15 +344,16 @@ public class ProductServiceImple implements ProductService {
                 .pofCategoryMList(categoryMList)
                 .pofCategorySList(categorySList)
                 .pofCategorySSList(categorySSList)
-                .imageDetailDtos(detailDtoList)
-                .imageTitleDtos(titleDtoList)
+                .outputDetailImgDtos(detailDtoList)
+                .outputTitleImgDtos(titleDtoList)
                 .optionOutputDtos(optionOutputDtoList)
                 .build();
     }
 
     @Override
-    public Product editProductById(UpdateProductDto updateProductDto) throws Exception {
-        Product product = productRepository.findById(updateProductDto.getProductId()).get();
+    public Product editProductById(UpdateProductDto updateProductDto) {
+        Product product = productRepository.findById(updateProductDto.getProductId())
+                .orElseThrow(ProductNotFoundException::new);
         productRepository.save(
                 Product.builder()
                         .id(updateProductDto.getProductId())
