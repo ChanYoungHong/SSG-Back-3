@@ -1,2 +1,5 @@
-package com.spharosacademy.project.SSGBack.coupon.entity;public class BaseEntity2 {
+package com.spharosacademy.project.SSGBack.coupon.entity;
+
+public abstract class BaseEntity2 {
+
 }
