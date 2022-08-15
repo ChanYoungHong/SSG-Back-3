@@ -1,8 +1,12 @@
 package com.spharosacademy.project.SSGBack.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Builder
-@Table(name = "user")
+@Table(name = "Member")
 public class User extends BaseEntity {
 
     @Id
@@ -37,7 +41,7 @@ public class User extends BaseEntity {
     @Column(name = "user_address", nullable = false)
     private String userAddress;
 
-    @Column(name = "user_Email")
+    @Column(name = "user_email")
     private String userEmail;
 
     @Column(name = "user_phone")
@@ -45,9 +49,6 @@ public class User extends BaseEntity {
 
     @Column(name = "member_type")
     private String memberType;
-
-    @Column(name = "role")
-    private String role;
 
     @Column(name = "gender")
     private String gender;
@@ -57,6 +58,17 @@ public class User extends BaseEntity {
 
     @Column(name = "user_drop_check")
     private Boolean userDropCheck;
+
+    @Column(name = " ")
+    private boolean fromSocial;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<UserRole> roleSet = new HashSet<>();
+
+    public void addUserRole(UserRole userRole) {
+        roleSet.add(userRole);
+    }
 
 //    public void changeUserPhone(String userPhone) {
 //        this.userPhone = userPhone;

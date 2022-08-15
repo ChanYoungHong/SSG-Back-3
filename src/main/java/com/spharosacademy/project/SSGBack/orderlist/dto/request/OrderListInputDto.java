@@ -1,8 +1,9 @@
 package com.spharosacademy.project.SSGBack.orderlist.dto.request;
 
-import com.spharosacademy.project.SSGBack.Product;
-import com.spharosacademy.project.SSGBack.orderlist.entity.Orders;
+import com.spharosacademy.project.SSGBack.tmpProduct.Product;
+import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderListInputDto { // 가격, 옵션 - 색상, 사이즈, 제품 이름, 수량
+public class OrderListInputDto { // 가격, 회사, 수량, 회원 아이디, 제품 번호, 색상, 사이즈, 사용자 주소, 제품 이름
 
     private Long userId;
+    private Long memberId;
+    private Long productId;
     private String userAddress;
     private Long orderId;
     private Long price;
@@ -23,19 +26,6 @@ public class OrderListInputDto { // 가격, 옵션 - 색상, 사이즈, 제품 �
     private String productSize;
     private String productName;
 
-
-    public static OrderListInputDto of(Product product, Orders orders, User user){
-
-        return OrderListInputDto.builder()
-            .userId(user.getUserId())
-            .userAddress(user.getUserAddress())
-            .orderId(orders.getOrderId())
-            .price(product.getPrice())
-            .productCnt((long) product.getCnt())
-            .productName(product.getName())
-            .productSize(product.getSize())
-            .productColor(product.getColor())
-            .build();
-    }
+//    private List<OrderInfoDto> orderInfo;
 
 }

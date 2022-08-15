@@ -1,7 +1,6 @@
 package com.spharosacademy.project.SSGBack.orderlist.entity;
 
-import com.spharosacademy.project.SSGBack.Cart;
-import com.spharosacademy.project.SSGBack.Product;
+import com.spharosacademy.project.SSGBack.tmpProduct.Product;
 import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.time.LocalDateTime;
@@ -23,12 +22,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-@Table(name = "order_list") // Order이라는 어노테이션이 있어서 Orders로 표기함
+@Table(name = "order_list")
 public class OrderList extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+
+    private Long userId;
 
     @Column(name = "order_state")
     private Boolean orderState;
@@ -45,29 +46,19 @@ public class OrderList extends BaseEntity {
     @Column(name = "order_AnOrderer")
     private String orderAnOrderer;
 
-//    @Column(name = "order_list")
-//    private String orderList;   // 리스트 형태로 바꿔야하는 것은 아닌지?
-
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    private String productColor;
 
-
-
-
-
-
-
-
-
+//    @ManyToOne
+//    @JoinColumn(name = "cart_id", nullable = false)
+//    private Cart cart;
 
 
 }

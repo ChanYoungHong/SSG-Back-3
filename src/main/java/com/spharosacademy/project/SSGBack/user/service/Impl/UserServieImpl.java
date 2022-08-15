@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServieImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -38,7 +37,6 @@ public class UserServieImpl implements UserService {
                 .userPhone(userInputDto.getUserPhoneNumber())
                 .userBirthDate(userInputDto.getUserBirthDate())
                 .gender(userInputDto.getGender())
-                .role(userInputDto.getRole())
                 .memberType(userInputDto.getMemberType())
                 .build()
         );
@@ -66,7 +64,6 @@ public class UserServieImpl implements UserService {
                     .userEmail(userOutputDto.getUserEmail())
                     .userBirthDate(userOutputDto.getUserBirthDate())
                     .gender(userOutputDto.getGender())
-                    .role(userOutputDto.getRole())
                     .memberType(userOutputDto.getMemberType())
                     .build()
             );

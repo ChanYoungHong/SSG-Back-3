@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack;
+package com.spharosacademy.project.SSGBack.tmpProduct;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

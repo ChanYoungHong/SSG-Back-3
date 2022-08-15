@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.orderlist.repo;
 
-import com.spharosacademy.project.SSGBack.orderlist.entity.Orders;
+import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,20 +10,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 class OrderRepositoryTest {
 
     @Autowired
-    private OrderRepository orderRepository;
-
+    private OrderListRepository orderListRepository;
     @Test
     public void insertOrder(){
 
         IntStream.rangeClosed(1, 300).forEach(i -> {
 
-            Orders order = Orders.builder()
+            OrderList order = OrderList.builder()
                 .orderId((long) i)
                 .orderAnOrderer("user" + i)
                 .orderMsg("경비실에 부탁해용~")
                 .build();
 
-            orderRepository.save(order);
+            orderListRepository.save(order);
         });
 
     }
