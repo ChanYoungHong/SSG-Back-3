@@ -20,9 +20,4 @@ public class OrderListServiceImpl implements OrderListService {
     public OrderList buyOrdering(OrderListInputDto orderInputDto) {
         return null;
     }
-
-    @Override
-    public OrderList dtoToEntity(OrderListInputDto dto) {
-        return OrderListService.super.dtoToEntity(dto);
-    }
 }
