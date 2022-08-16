@@ -45,15 +45,17 @@ public class UserServieImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    public List<User> findAllByUserId(Long userId) {
+        return userRepository.findAllByUserId(userId);
     }
 
     @Override
     @Transactional
-    public User modifyUserInfo(UserOutputDto userOutputDto) {
+    public User modifyUserInfo(Long memberId, UserOutputDto userOutputDto) {
 
-        Optional<User> result = userRepository.findById(userOutputDto.getMemberId());
+        Optional<User> result = Optional.ofNullable(
+            userRepository.findById(userOutputDto.getMemberId())
+                .orElseThrow(MemberIdNotfound::new));
 
         if (result.isPresent()) {
             return userRepository.save(
@@ -78,8 +80,9 @@ public class UserServieImpl implements UserService {
     public User removeUserInfo(Long memberId, UserOutputDto userOutputDto) {
 
         Optional<User> check =
-            Optional.ofNullable(userRepository.findById(userOutputDto.getMemberId()).orElseThrow(
-                MemberIdNotfound::new));
+            Optional.ofNullable(
+                userRepository.findById(userOutputDto.getMemberId()).orElseThrow(
+                    MemberIdNotfound::new));
 
         if (check.isPresent()) {
             if (userOutputDto.getUserDropCheck().equals(true)) {

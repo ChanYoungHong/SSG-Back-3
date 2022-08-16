@@ -9,9 +9,9 @@ public interface UserService {
 
     User registerUser(UserInputDto userInputDto);
 
-    List<User> getAllUser();
+    List<User> findAllByUserId(Long userId);
 
-    User modifyUserInfo(UserOutputDto userOutputDto);
+    User modifyUserInfo(Long memberId, UserOutputDto userOutputDto);
 
     User removeUserInfo(Long memberId, UserOutputDto userOutputDto);
 

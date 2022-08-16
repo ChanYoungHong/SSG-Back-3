@@ -33,21 +33,22 @@ public class UserController {
     }
 
     // 회원가입 조회
-    @GetMapping("/getAll")
+    @GetMapping("/get/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUser() {
-        return userService.getAllUser();
+    public List<User> getAllUser(@PathVariable Long userId) {
+        return userService.findAllByUserId(userId);
     }
 
 
-    @PutMapping("/modify")
+    @PutMapping("/modify/{memberId}")
     @ResponseStatus(HttpStatus.OK)
-    public User modifyUser(@RequestBody UserOutputDto userOutputDto){
-        return userService.modifyUserInfo(userOutputDto);
+    public User modifyUserInfo(@PathVariable Long memberId,
+                            @RequestBody UserOutputDto userOutputDto){
+        return userService.modifyUserInfo(memberId, userOutputDto);
     }
 
-    @DeleteMapping("/{memberId}/remove")
-    public User modifyUser(@PathVariable Long memberId,
+    @DeleteMapping("/remove/{memberId}")
+    public User removeUserInfo(@PathVariable Long memberId,
                            @RequestBody UserOutputDto userOutputDto){
         return userService.removeUserInfo(memberId, userOutputDto);
     }

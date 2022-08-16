@@ -55,7 +55,7 @@ public class User extends BaseEntity {
     @Column(name = "user_birthdate")
     private LocalDateTime userBirthDate;
 
-    @Column(name = "user_drop_check")
+    @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;
 
 //    public void changeUserPhone(String userPhone) {
