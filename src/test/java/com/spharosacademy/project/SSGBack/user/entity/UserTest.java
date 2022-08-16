@@ -26,7 +26,7 @@ class UserTest {
         IntStream.rangeClosed(1, 100).forEach(i -> {
 
             User user = User.builder()
-                .userId((long) i)
+                .userId(String.valueOf(i))
                 .userPwd(passwordEncoder.encode("1111"))
                 .userName("user"+i+"님")
                 .userEmail("user" + i + "@naver.com")

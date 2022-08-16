@@ -20,17 +20,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServieImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     @Transactional
     public User registerUser(UserInputDto userInputDto) {
 
+
+        if(userRepository.existsByUserId(userInputDto.getUserId())){
+
+        }
+
         return userRepository.save(
             User.builder()
 //                .memberId(userInputDto.getMemberId())
                 .userId(userInputDto.getUserId())
-                .userPwd(userInputDto.getUserPwd())
+                .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                 .userAddress(userInputDto.getUserAddress())
                 .userName(userInputDto.getUserName())
                 .userEmail(userInputDto.getUserEmail())

@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     private Long memberId;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
     @Column(name = "user_pwd", nullable = false)
     private String userPwd;
@@ -59,7 +59,7 @@ public class User extends BaseEntity {
     @Column(name = "user_drop_check")
     private Boolean userDropCheck;
 
-    @Column(name = " ")
+    @Column(name = "")
     private boolean fromSocial;
 
     @ElementCollection(fetch = FetchType.LAZY)

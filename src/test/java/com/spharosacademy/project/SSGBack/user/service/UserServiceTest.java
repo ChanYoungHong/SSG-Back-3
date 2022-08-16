@@ -15,7 +15,7 @@ class UserServiceTest {
     public void testRegister() {
         UserInputDto userInputDto = UserInputDto.builder()
 //            .memberId(5L)
-            .userId(123L)
+            .userId(String.valueOf(123))
             .userPwd("1234")
             .userAddress("광안리 수영구 138-1")
             .userEmail("cksdu9883@naver.com")
