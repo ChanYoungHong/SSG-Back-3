@@ -3,7 +3,6 @@ package com.spharosacademy.project.SSGBack.product.entity;
 import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 
@@ -19,7 +18,9 @@ public class Product extends BaseTimeEntity {
     private Long id;
     private String name;
     private String mallText;
-    private int price;
+    private float oldPrice;
+    private float newPrice;
+    private float discountRate;
     private String priceText;
     private String brand;
     private int cnt;

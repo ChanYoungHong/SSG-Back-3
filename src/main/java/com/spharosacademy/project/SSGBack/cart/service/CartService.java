@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.cart.service;
 
-import com.spharosacademy.project.SSGBack.cart.domain.Cart;
+import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 
@@ -12,5 +12,5 @@ public interface CartService {
 
     List<CartOutputDto> getAllCart();
 
-    CartOutputDto getCartByUserId(Long userid);
+    List<CartOutputDto> getCartByUserId(Long userid);
 }

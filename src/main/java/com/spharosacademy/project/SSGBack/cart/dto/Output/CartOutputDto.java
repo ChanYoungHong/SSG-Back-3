@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,9 +19,10 @@ public class CartOutputDto {
         private String useraddress;
         private String productName;
         private String productBrand;
-        private String productColor;
-        private int price;
+        private float price;
         private int qty;
         private String titleImgUrl;
+
+        OptionCartOutputDto optionCartOutputDto;
     }
 

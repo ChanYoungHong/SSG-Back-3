@@ -17,7 +17,6 @@ import java.util.List;
 public class RequestProductDto {
 
     private String name;
-    private int price;
     private String priceText;
     private String brand;
     private int cnt;
@@ -25,6 +24,8 @@ public class RequestProductDto {
     private String explanation;
     private int sellAmount;
     private String mallTxt;
+    private int oldPrice;
+    private float discountRate;
     private int categorySSId;
     private int categorySId;
     private int categoryMId;

@@ -17,6 +17,6 @@ public class OutputSearchProductDto {
     private String brand;
     private String mallTxt;
     private String priceTxt;
-    private int price;
+    private float price;
     private String thumbnailImgUrl;
 }

@@ -18,13 +18,15 @@ public class ResponseProductDto {
 
     private Long id;
     private String productName;
-    private int price;
     private String priceText;
     private String productBrand;
     private int productCnt;
     private String mallTxt;
     private String thumbnailImgUrl;
     private int sellAmount;
+    private float oldPrice;
+    private float newPrice ;
+    private float discountRate;
     private String explanation;
     List<PofCategorySS> pofCategorySSList;
     List<PofCategoryS> pofCategorySList;

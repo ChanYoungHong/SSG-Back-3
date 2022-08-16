@@ -52,7 +52,9 @@ public class ProductServiceImple implements ProductService {
                         .sellAmt(requestProductDto.getSellAmount())
                         .priceText(requestProductDto.getPriceText())
                         .mallText(requestProductDto.getMallTxt())
-                        .price(requestProductDto.getPrice())
+                        .oldPrice(requestProductDto.getOldPrice())
+                        .discountRate(requestProductDto.getDiscountRate())
+                        .newPrice(requestProductDto.getOldPrice() * (1 - requestProductDto.getDiscountRate()))
                         .brand(requestProductDto.getBrand())
                         .cnt(requestProductDto.getCnt())
                         .sellAmt(requestProductDto.getSellAmount())
@@ -138,7 +140,7 @@ public class ProductServiceImple implements ProductService {
                         .name(product.getName())
                         .brand(product.getBrand())
                         .mallTxt(product.getMallText())
-                        .price(product.getPrice())
+                        .price(product.getNewPrice())
                         .thumbnailImgUrl(product.getThumbnailUrl())
                         .priceTxt(product.getPriceText())
                         .build());
@@ -179,6 +181,7 @@ public class ProductServiceImple implements ProductService {
 
             for (OptionList option : optionList) {
                 optionOutputDtoList.add(OptionOutputDto.builder()
+                        .id(option.getId())
                         .color(option.getColor())
                         .size(option.getSize())
                         .stock(option.getStock())
@@ -225,7 +228,9 @@ public class ProductServiceImple implements ProductService {
             responseProductDtoList.add(ResponseProductDto.builder()
                     .id(product.getId())
                     .productName(product.getName())
-                    .price(product.getPrice())
+                    .oldPrice(product.getOldPrice())
+                    .newPrice(product.getNewPrice())
+                    .discountRate(product.getDiscountRate())
                     .priceText(product.getPriceText())
                     .mallTxt(product.getMallText())
                     .productBrand(product.getBrand())
@@ -254,7 +259,7 @@ public class ProductServiceImple implements ProductService {
                 .mallText(recproduct.getMallText())
                 .brand(recproduct.getBrand())
                 .priceText(recproduct.getPriceText())
-                .price(recproduct.getPrice())
+                .price(recproduct.getNewPrice())
                 .titleImgUrl(recproduct.getThumbnailUrl())
                 .build();
     }
@@ -288,6 +293,7 @@ public class ProductServiceImple implements ProductService {
 
         for (OptionList option : optionList) {
             optionOutputDtoList.add(OptionOutputDto.builder()
+                    .id(option.getId())
                     .color(option.getColor())
                     .size(option.getSize())
                     .stock(option.getStock())
@@ -332,7 +338,9 @@ public class ProductServiceImple implements ProductService {
         return ResponseProductDto.builder()
                 .id(product.getId())
                 .productName(product.getName())
-                .price(product.getPrice())
+                .oldPrice(product.getOldPrice())
+                .newPrice(product.getNewPrice())
+                .discountRate(product.getDiscountRate())
                 .productBrand(product.getBrand())
                 .productCnt(product.getCnt())
                 .priceText(product.getPriceText())
@@ -358,7 +366,6 @@ public class ProductServiceImple implements ProductService {
                 Product.builder()
                         .id(updateProductDto.getProductId())
                         .name(updateProductDto.getProductName())
-                        .price(updateProductDto.getPrice())
                         .cnt(updateProductDto.getProductCnt())
                         .brand(updateProductDto.getProductBrand())
                         .build()

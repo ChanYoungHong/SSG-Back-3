@@ -17,5 +17,5 @@ public class ResponseRecommendProductDto {
     private String mallText;
     private String brand;
     private String priceText;
-    private int price;
+    private float price;
 }

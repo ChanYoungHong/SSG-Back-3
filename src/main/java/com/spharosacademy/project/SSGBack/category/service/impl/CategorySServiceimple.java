@@ -88,7 +88,7 @@ public class CategorySServiceimple implements CategorySService {
                     .id(categoryProductList.getProduct().getId())
                     .brand(categoryProductList.getProduct().getBrand())
                     .mallTxt(categoryProductList.getProduct().getMallText())
-                    .price(categoryProductList.getProduct().getPrice())
+                    .price(categoryProductList.getProduct().getNewPrice())
                     .thumbnailUrl(categoryProductList.getProduct().getThumbnailUrl())
                     .build());
         }

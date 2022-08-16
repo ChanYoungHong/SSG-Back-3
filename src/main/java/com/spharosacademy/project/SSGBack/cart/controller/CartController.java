@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.cart.controller;
 
-import com.spharosacademy.project.SSGBack.cart.domain.Cart;
+import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
@@ -29,7 +29,7 @@ public class CartController {
     }
 
     @GetMapping("/getByUserId/{userid}")
-    public CartOutputDto getCartByUserId(@PathVariable Long userid){
+    public List<CartOutputDto> getCartByUserId(@PathVariable Long userid){
         return cartService.getCartByUserId(userid);
 
     }

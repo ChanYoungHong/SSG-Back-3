@@ -16,5 +16,5 @@ public class ProductOfCategory {
     private String brand;
     private String mallTxt;
     private String thumbnailUrl;
-    private int price;
+    private float price;
 }
