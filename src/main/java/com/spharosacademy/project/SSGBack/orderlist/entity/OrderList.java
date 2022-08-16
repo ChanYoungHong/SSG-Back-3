@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.orderlist.entity;
 
 import com.spharosacademy.project.SSGBack.Cart;
 import com.spharosacademy.project.SSGBack.Product;
+import com.spharosacademy.project.SSGBack.temporder.Order;
 import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.time.LocalDateTime;
@@ -28,7 +29,8 @@ public class OrderList extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    @Column(name = "order_list_id")
+    private Long orderListId;
 
     @Column(name = "order_state")
     private Boolean orderState;
@@ -45,6 +47,11 @@ public class OrderList extends BaseEntity {
     @Column(name = "order_AnOrderer")
     private String orderAnOrderer;
 
+    @Column(name = "user_address")
+    private String userAddress;
+
+
+
 //    @Column(name = "order_list")
 //    private String orderList;   // 리스트 형태로 바꿔야하는 것은 아닌지?
 
@@ -59,6 +66,10 @@ public class OrderList extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
 
 

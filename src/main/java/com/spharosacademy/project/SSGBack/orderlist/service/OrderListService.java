@@ -6,6 +6,18 @@ import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 
 public interface OrderListService {
 
-    OrderList buyOrdering(OrderListInputDto orderInputDto);
+    OrderList purchase(OrderListInputDto inputDto);
+
+//    // Request할 때.
+//    default OrderList dtoToEntity(OrderListInputDto inputDto) {
+//
+//        OrderList entity = OrderList.builder()
+//            .orderReceiver(inputDto.getMemberId().)
+//            .userAddress()
+//            .build();
+//
+//        return null;
+//    }
+
 
 }

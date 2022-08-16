@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.orderlist.service.Impl;
 
 import com.spharosacademy.project.SSGBack.orderlist.dto.request.OrderListInputDto;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
+import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderRepository;
 import com.spharosacademy.project.SSGBack.orderlist.service.OrderListService;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +14,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderListServiceImpl implements OrderListService {
 
-    private final OrderRepository orderRepository;
+    private OrderListRepository orderListRepository;
 
 
     @Override
-    public OrderList buyOrdering(OrderListInputDto orderInputDto) {
-        return null;
+    public OrderList purchase(OrderListInputDto inputDto) {
+
+
+        return orderListRepository.save(
+            OrderList.builder()
+                .orderListId(inputDto.getOrderId())
+                .orderState(inputDto.)
+                .orderMsg(inputDto.getMemberId().)
+
+
+                .build()
+        );
     }
+
 }

@@ -14,9 +14,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderListInputDto { // 환불 여부도 생각하기,
 
-    private Long userId;
+    private Long memberId;
     private Long orderId;
     private Long productId;
+    private Long cartId;
 
+    private String size;
+    private String color;
+    private String userAddress;
 
 }

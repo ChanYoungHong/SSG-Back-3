@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.orderlist.controller;
 
 import com.spharosacademy.project.SSGBack.orderlist.dto.request.OrderListInputDto;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderListController {
 
     @PostMapping
-    public OrderListInputDto addOrderList(){
+    public OrderListInputDto purchase(@RequestBody OrderListInputDto orderListInputDto){
+
+
 
         return null;
     }
