@@ -16,18 +16,18 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class UseDetailsService implements UserDetailsService {
+public class CustomUseDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        log.info("UserDetailsService loadUserByname " + username);
+        log.info("UserDetailsService loadUserByname " + userName);
 
-        Optional<User> result = userRepository.findByUserEmail(username, false);
+        Optional<User> result = userRepository.findByUserEmail(userName, false);
 
-        if(result.isPresent()){
+        if(!result.isPresent()){
             throw new UsernameNotFoundException("Check Email or Social");
         }
 
@@ -45,7 +45,7 @@ public class UseDetailsService implements UserDetailsService {
                     ("ROLE_" + role.name())).collect(Collectors.toSet())
         );
 
-        userAuthMemberDto.setUserName(user.getUserName());
+        userAuthMemberDto.setUserName(user.getUserEmail());
         userAuthMemberDto.setFromSocial(user.isFromSocial());
 
         return userAuthMemberDto;

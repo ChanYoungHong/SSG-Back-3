@@ -4,12 +4,18 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
+import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,8 +100,9 @@ public class UserServieImpl implements UserService {
     }
 
 
-    @Override
-    public User dtoToEntity(UserInputDto userInputDto) {
-        return UserService.super.dtoToEntity(userInputDto);
-    }
+//    @Override
+//    public User dtoToEntity(UserInputDto userInputDto) {
+//        return UserService.super.dtoToEntity(userInputDto);
+//    }
+
 }
