@@ -34,7 +34,7 @@ public class OrderListServiceImpl implements OrderListService {
 
         return orderListRepository.save(
             OrderList.builder()
-                .orderListId(inputDto.getOrderId())
+                .orderListId(result1.get().getMemberId())
                 .orderAnOrderer(result1.get().getUserName())
                 .userAddress(result1.get().getUserAddress())
                 .orderReceiver(result1.get().getUserName())

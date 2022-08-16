@@ -1,7 +1,6 @@
 package com.spharosacademy.project.SSGBack.orderlist.repo;
 
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
-import com.spharosacademy.project.SSGBack.orderlist.entity.Orders;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.spharosacademy.project.SSGBack.orderlist.entity;
 
 import com.spharosacademy.project.SSGBack.Cart;
 import com.spharosacademy.project.SSGBack.Product;
-import com.spharosacademy.project.SSGBack.temporder.Order;
+import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.time.LocalDateTime;
@@ -73,7 +73,7 @@ public class OrderList extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Orders orders;
 
 
 
