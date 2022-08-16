@@ -50,6 +50,10 @@ public class OrderList extends BaseEntity {
     @Column(name = "user_address")
     private String userAddress;
 
+    @Column(name = "option_id")
+    private Long optionId;
+
+
 
 
 //    @Column(name = "order_list")
