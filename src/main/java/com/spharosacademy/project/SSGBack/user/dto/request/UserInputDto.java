@@ -18,7 +18,7 @@ public class UserInputDto {
 //    private Long memberId;
 
     @NotBlank(message = "아이디를 입력해주세요.")
-    private Long userId;
+    private String userId;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String userPwd;

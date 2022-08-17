@@ -19,7 +19,7 @@ public interface UserService {
 
     default User dtoToEntity(UserInputDto userInputDto){
         User entity = User.builder()
-            .userId(userInputDto.getUserId())
+            .userId(String.valueOf(userInputDto.getUserId()))
 //            .memberId(userInputDto.getMemberId())
             .userName(userInputDto.getUserName())
             .build();

@@ -30,7 +30,7 @@ public class UserServieImpl implements UserService {
         return userRepository.save(
             User.builder()
 //                .memberId(userInputDto.getMemberId())
-                .userId(userInputDto.getUserId())
+                .userId(String.valueOf(userInputDto.getUserId()))
                 .userPwd(userInputDto.getUserPwd())
                 .userAddress(userInputDto.getUserAddress())
                 .userName(userInputDto.getUserName())
@@ -59,7 +59,7 @@ public class UserServieImpl implements UserService {
             return userRepository.save(
                 User.builder()
                     .memberId(userOutputDto.getMemberId())
-                    .userId(userOutputDto.getUserId())
+                    .userId(String.valueOf(userOutputDto.getUserId()))
                     .userPwd(userOutputDto.getUserPwd())
                     .userAddress(userOutputDto.getUserAddress())
                     .userName(userOutputDto.getUserName())

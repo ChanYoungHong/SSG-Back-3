@@ -75,14 +75,4 @@ public class OrderList extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Orders orders;
 
-
-
-
-
-
-
-
-
-
-
 }

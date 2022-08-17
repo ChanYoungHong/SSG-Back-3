@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     private Long memberId;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
     @Column(name = "user_pwd", nullable = false)
     private String userPwd;
