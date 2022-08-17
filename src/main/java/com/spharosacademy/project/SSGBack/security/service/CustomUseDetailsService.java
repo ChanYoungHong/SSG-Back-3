@@ -27,6 +27,7 @@ public class CustomUseDetailsService implements UserDetailsService {
 
         Optional<User> result = userRepository.findByUserEmail(userName, false);
 
+        // 책에는 !가 없음, 근데 로직상 !가 있어야 할 것 같음.
         if(!result.isPresent()){
             throw new UsernameNotFoundException("Check Email or Social");
         }
