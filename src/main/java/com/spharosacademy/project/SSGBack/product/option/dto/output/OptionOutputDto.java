@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class OptionOutputDto {
     private Long id;
     private String color;
+    private Long colorId;
     private String size;
+    private Long sizeId;
     private int stock;
 }

@@ -21,7 +21,8 @@ public class OrderDetail {
     private Long id;
     private String address;
     private Long optionId;
-    private int qty;
+    private float qty;
+    private float totalPrice;
 
     @ManyToOne
     Orders orders;

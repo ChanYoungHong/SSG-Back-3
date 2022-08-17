@@ -1,10 +1,15 @@
 package com.spharosacademy.project.SSGBack.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
+import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,4 +36,11 @@ public class Product extends BaseTimeEntity {
     @ManyToOne
     CategorySS categorySS;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    List<Cart> carts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    List<OptionList> optionLists = new ArrayList<>();
 }

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,7 +14,5 @@ import lombok.NoArgsConstructor;
 public class CartInputDto {
     private Long userId;
     private Long productId;
-    //productId에 따른 수량 ??
-    private int qty;
-    private Long optionId;
+    private List<CartOptionDto> cartOptionDtos;
 }

@@ -69,10 +69,10 @@ public class ProductController {
         return productService.getRecommendProductById(id);
     }
 
-    @GetMapping("/search/{searchword}")
-    public List<OutputSearchProductDto> SearchProductByWord(@PathVariable String searchword
+    @GetMapping("/search")
+    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String keyword
             , @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return productService.searchProductByWord(searchword, pageable);
+        return productService.searchProductByWord(keyword, pageable);
     }
 
 }

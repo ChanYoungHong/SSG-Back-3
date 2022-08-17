@@ -24,5 +24,5 @@ public interface ProductService {
 
     ResponseRecommendProductDto getRecommendProductById(Long id);
 
-    List<OutputSearchProductDto> searchProductByWord(String searchWord , Pageable pageable);
+    List<OutputSearchProductDto> searchProductByWord(String keyword , Pageable pageable);
 }

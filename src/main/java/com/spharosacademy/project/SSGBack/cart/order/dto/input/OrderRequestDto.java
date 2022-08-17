@@ -1,21 +1,17 @@
-package com.spharosacademy.project.SSGBack.order.dto.input;
+package com.spharosacademy.project.SSGBack.cart.order.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderInputDto {
-
+public class OrderRequestDto {
     private Long userId;
-    private Long productId;
-    private Long optionId;
-    private Long cartId;
-    private float qty;
+    private List<CartOrderRequestDto> cartOrderRequestDtos;
 }

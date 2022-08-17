@@ -13,11 +13,14 @@ import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
+import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
+import com.spharosacademy.project.SSGBack.product.option.repository.ColorRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
+import com.spharosacademy.project.SSGBack.product.option.repository.SizeRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +45,8 @@ public class ProductServiceImple implements ProductService {
     private final CategoryLRepository categoryLRepository;
     private final ProductTitleImgRepository productTitleImgRepository;
     private final OptionRepository optionRepository;
+    private final ColorRepository colorRepository;
+    private final SizeRepository sizeRepository;
 
 
     @Override
@@ -88,8 +93,8 @@ public class ProductServiceImple implements ProductService {
         List<OptionInputDto> optionInputDtos = new ArrayList<>();
         for (OptionInputDto optionInputDto : requestProductDto.getOptionInputDtoList()) {
             optionInputDtos.add(OptionInputDto.builder()
-                    .color(optionInputDto.getColor())
-                    .size(optionInputDto.getSize())
+                    .colorId(optionInputDto.getColorId())
+                    .sizeId(optionInputDto.getSizeId())
                     .stock(optionInputDto.getStock())
                     .build());
         }
@@ -97,9 +102,11 @@ public class ProductServiceImple implements ProductService {
         optionInputDtos.forEach(optionInputDto -> {
             optionRepository.save(
                     OptionList.builder()
-                            .color(optionInputDto.getColor())
-                            .size(optionInputDto.getSize())
                             .stock(optionInputDto.getStock())
+                            .colors(colorRepository.findById(optionInputDto.getColorId())
+                                    .orElseThrow(OptionNotFoundException::new))
+                            .size(sizeRepository.findById(optionInputDto.getSizeId())
+                                    .orElseThrow(OptionNotFoundException::new))
                             .product(product)
                             .build()
             );
@@ -128,8 +135,8 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String searchWord, Pageable pageable) {
-        List<Product> productList = productRepository.findAllBysearchWord(searchWord, pageable);
+    public List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable) {
+        List<Product> productList = productRepository.findAllBysearchWord(keyword, pageable);
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
@@ -140,7 +147,8 @@ public class ProductServiceImple implements ProductService {
                         .name(product.getName())
                         .brand(product.getBrand())
                         .mallTxt(product.getMallText())
-                        .price(product.getNewPrice())
+                        .oldPrice(product.getOldPrice())
+                        .newPrice(product.getNewPrice())
                         .thumbnailImgUrl(product.getThumbnailUrl())
                         .priceTxt(product.getPriceText())
                         .build());
@@ -178,12 +186,13 @@ public class ProductServiceImple implements ProductService {
 
             List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
             List<OptionList> optionList = optionRepository.findAllByProduct(product);
-
             for (OptionList option : optionList) {
                 optionOutputDtoList.add(OptionOutputDto.builder()
                         .id(option.getId())
-                        .color(option.getColor())
-                        .size(option.getSize())
+                        .color(option.getColors().getName())
+                        .size(option.getSize().getType())
+                        .colorId(option.getColors().getId())
+                        .sizeId(option.getSize().getId())
                         .stock(option.getStock())
                         .build());
             }
@@ -290,12 +299,13 @@ public class ProductServiceImple implements ProductService {
 
         List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
         List<OptionList> optionList = optionRepository.findAllByProduct(product);
-
         for (OptionList option : optionList) {
             optionOutputDtoList.add(OptionOutputDto.builder()
                     .id(option.getId())
-                    .color(option.getColor())
-                    .size(option.getSize())
+                    .color(option.getColors().getName())
+                    .size(option.getSize().getType())
+                    .colorId(option.getColors().getId())
+                    .sizeId(option.getSize().getId())
                     .stock(option.getStock())
                     .build());
         }

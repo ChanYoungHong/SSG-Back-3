@@ -1,12 +1,21 @@
 package com.spharosacademy.project.SSGBack.cart.service.Impl;
 
 import com.spharosacademy.project.SSGBack.cart.dto.Output.OptionCartOutputDto;
+import com.spharosacademy.project.SSGBack.cart.dto.input.CartOptionDto;
 import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
+import com.spharosacademy.project.SSGBack.cart.order.dto.input.CartOrderRequestDto;
+import com.spharosacademy.project.SSGBack.cart.order.dto.input.OrderRequestDto;
+import com.spharosacademy.project.SSGBack.order.dto.input.OrderInputDto;
 import com.spharosacademy.project.SSGBack.cart.repository.CartRepository;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
+import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
+import com.spharosacademy.project.SSGBack.order.entity.Orders;
+import com.spharosacademy.project.SSGBack.order.repository.OrderDetailRepository;
+import com.spharosacademy.project.SSGBack.order.repository.OrderRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
@@ -14,6 +23,7 @@ import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,35 +33,77 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServiceimple implements CartService {
 
     private final IUserRepository iUserRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final OptionRepository optionRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
 
     @Override
     public Cart addProductToCart(CartInputDto cartInputDto) {
         //상품의 존재 여부를 판단한다
-        Optional<Product> product = productRepository.findById(cartInputDto.getProductId());
-        Optional<User> user = iUserRepository.findById(cartInputDto.getUserId());
-        Optional<OptionList> optionList = optionRepository.findById(cartInputDto.getOptionId());
-
-        try {
-            if (product.isPresent() && user.isPresent() && optionList.isPresent()) {
-                return cartRepository.save(
-                        Cart.builder()
-                                .product(product.get())
-                                .user(user.get())
-                                .qty(cartInputDto.getQty())
-                                .optionId(optionList.get().getId())
-                                .build());
-            }
-        } catch (ProductNotFoundException e) {
-            e.printStackTrace();
+        Product product = productRepository.findById(cartInputDto.getProductId()).get();
+        User user = iUserRepository.findById(cartInputDto.getUserId()).get();
+        List<CartOptionDto> cartOptionDtos = new ArrayList<>();
+        for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
+            cartOptionDtos.add(CartOptionDto.builder()
+                    .colorId(cartOptionDto.getColorId())
+                    .sizeId(cartOptionDto.getSizeId())
+                    .qty(cartOptionDto.getQty())
+                    .build());
         }
+
+        cartOptionDtos.forEach(cartOptionDto -> {
+            cartRepository.save(Cart.builder()
+                    .product(product)
+                    .user(user)
+                    .colorId(cartOptionDto.getColorId())
+                    .sizeId(cartOptionDto.getSizeId())
+                    .qty(cartOptionDto.getQty())
+                    .optionId(optionRepository.findByColorsAndSize
+                            (cartOptionDto.getColorId(), cartOptionDto.getSizeId()).getId())
+                    .build());
+        });
+
+
         return null;
+
+    }
+
+    @Override
+    public void orderCart(OrderRequestDto orderRequestDto) {
+        Cart cart = cartRepository.findById(orderRequestDto.getUserId()).get();
+        User user = iUserRepository.findById(orderRequestDto.getUserId()).get();
+
+        orderRepository.save(Orders.builder()
+                .user(user)
+                .build());
+
+        List<CartOrderRequestDto> cartOrderRequestDtos = new ArrayList<>();
+        for (CartOrderRequestDto cartOrderRequestDto : orderRequestDto.getCartOrderRequestDtos()) {
+            cartOrderRequestDtos.add(CartOrderRequestDto.builder()
+                    .cartId(cartOrderRequestDto.getCartId())
+                    .qty(cartOrderRequestDto.getQty())
+                    .build());
+        }
+
+        cartOrderRequestDtos.forEach(cartOrderRequestDto -> {
+            orderDetailRepository.save(OrderDetail.builder()
+                    .user(cart.getUser())
+                    .address(cart.getUser().getAddress())
+                    .qty(cartOrderRequestDto.getQty())
+                    .optionId(cartRepository.findById(cartOrderRequestDto.getCartId()).get().getId())
+                    .cart(cartRepository.findById(cartOrderRequestDto.getCartId()).get())
+                    .totalPrice(cart.getProduct().getNewPrice() * cartOrderRequestDto.getQty())
+                    .orders(orderRepository.findByUserId(orderRequestDto.getUserId()))
+                    .product(cartRepository.findById(cartOrderRequestDto.getCartId()).get().getProduct())
+                    .build());
+        });
     }
 
     @Override
@@ -90,16 +142,22 @@ public class CartServiceimple implements CartService {
                     .productBrand(cart.getProduct().getBrand())
                     .price(cart.getProduct().getNewPrice())
                     .qty(cart.getQty())
-                    .optionCartOutputDto(OptionCartOutputDto.builder()
-                            .color(optionRepository.findById(cart.getOptionId())
-                                    .get().getColor())
-                            .size(optionRepository.findById(cart.getOptionId())
-                                    .get().getSize())
-                            .build())
+//                    .optionCartOutputDto(OptionCartOutputDto.builder()
+//                            .color(optionRepository.findById(cart.getOptionId())
+//                                    .orElseThrow(OptionNotFoundException::new).getColor())
+//                            .size(optionRepository.findById(cart.getOptionId())
+//                                    .orElseThrow(OptionNotFoundException::new).getSize())
+//                            .build())
                     .build());
         }
         return outputDtos;
     }
+
+    @Override
+    public void deleteCart(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
+
 }
 
 

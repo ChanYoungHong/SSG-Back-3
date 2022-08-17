@@ -20,7 +20,7 @@ public class CartOutputDto {
         private String productName;
         private String productBrand;
         private float price;
-        private int qty;
+        private float qty;
         private String titleImgUrl;
 
         OptionCartOutputDto optionCartOutputDto;
