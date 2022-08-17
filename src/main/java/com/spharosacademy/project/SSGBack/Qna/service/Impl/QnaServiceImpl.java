@@ -76,23 +76,44 @@ public class QnaServiceImpl implements QnaService {
 
     @Override
     public List<Qna> getAll() {
-        List<Qna> ListQna = qnaRepo.findAll();
+        List<Qna> ListQna= qnaRepo.findAll();
         return ListQna;
     }
-
     //질문 수정하기
     @Override
     public Qna editQnaById(ResponseQnaDto responseQnaDto) throws Exception {
-        Qna qna = qnaRepo.findById(responseQnaDto.getQnaId()).get();
-        qnaRepo.save(Qna.builder()
-                        .qnaId(responseQnaDto.getQnaId())
+        Qna qna = qnaRepo.findById(responseQnaDto.getQnaId())
+                .orElseThrow(QnaNotFoundException::new);
+        qnaRepo.save(
+                qna.builder()
                         .qnaTitle(responseQnaDto.getQnaTitle())
                         .qnaContent(responseQnaDto.getQnaContent())
-//                        .isSecret(editQnaById())
-
-                .build());
+                        .build());
         return qna;
     }
+
+
+//    @Override
+//    public Qna editQnaQyId(ResponseQnaDto responseQnaDto) {
+//        Optional<Qna> result = qnaRepo.findById(responseQnaDto.getQnaId());
+//        if(result.isPresent()) {
+//            Qna entity = result.get();
+//
+//            entity.changeQnaTitle(responseQnaDto.getQnaTitle());
+//            entity.changeQnaContent(responseQnaDto.getQnaContent());
+//
+//            qnaRepo.save(entity);
+//        }
+//        Qna qna = qnaRepo.findById(responseQnaDto.getQnaId()).get();
+//        qnaRepo.save(Qna.builder()
+//                        .qnaId(responseQnaDto.getQnaId())
+//                        .qnaTitle(responseQnaDto.getQnaTitle())
+//                        .qnaContent(responseQnaDto.getQnaContent())
+//                        .isSecret(editQnaById())
+//
+//                .build());
+//        return qna;
+//    }
 
     // 질문 삭제하기
     @Override

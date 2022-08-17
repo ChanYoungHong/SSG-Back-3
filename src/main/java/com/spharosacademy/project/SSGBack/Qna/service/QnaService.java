@@ -24,6 +24,7 @@ public interface QnaService {
     // 질문 수정 하기
 //    void editQna(RequestQnaDto requestQnaDto );
     Qna editQnaById(ResponseQnaDto responseQnaDto) throws Exception;
+//    void editQna(ResponseQnaDto responseQnaDto);
 
     // 질문 삭제 하기
 //    void deleteQna(Integer qnaId);

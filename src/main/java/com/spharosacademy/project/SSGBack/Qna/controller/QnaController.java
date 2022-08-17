@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/qna")
 @RequiredArgsConstructor
+@CrossOrigin
 
 public class QnaController {
     private final QnaService qnaService;
@@ -36,7 +37,8 @@ public class QnaController {
 
     //특정 문의 수정
     @PutMapping("/edit")
-    public Qna editQna(@RequestBody ResponseQnaDto responseQnaDto) throws Exception {
+    public Qna editQna
+    (@RequestBody ResponseQnaDto responseQnaDto) throws Exception {
         return qnaService.editQnaById(responseQnaDto);
     }
 
