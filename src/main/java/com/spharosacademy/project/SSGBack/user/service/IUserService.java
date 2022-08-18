@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.service;
 
+import com.spharosacademy.project.SSGBack.order.dto.output.OrderOutputDto;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface IUserService {
     List<User> getAll();
 
     void deleteUser(Long id);
+
+    List<OrderOutputDto> getOrderList(Long userId);
 }

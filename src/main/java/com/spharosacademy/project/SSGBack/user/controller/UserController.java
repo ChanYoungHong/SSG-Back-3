@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.controller;
 
+import com.spharosacademy.project.SSGBack.order.dto.output.OrderOutputDto;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.user.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,10 @@ public class UserController {
     @PutMapping("/user/edit")
     public User editUser(@RequestBody User user) {
         return iUserService.editUser(user);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<OrderOutputDto> getOrderList(@PathVariable Long userId){
+        return iUserService.getOrderList(userId);
     }
 }

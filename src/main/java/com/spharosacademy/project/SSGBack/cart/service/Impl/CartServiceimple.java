@@ -12,6 +12,7 @@ import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.order.repository.OrderDetailRepository;
 import com.spharosacademy.project.SSGBack.order.repository.OrderRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
@@ -95,36 +96,53 @@ public class CartServiceimple implements CartService {
                     .user(cart.getUser())
                     .address(cart.getUser().getAddress())
                     .qty(orderOptionRequestDto.getQty())
-                    .optionId(cartRepository.findById(orderOptionRequestDto.getCartId()).get().getId())
-                    .cart(cartRepository.findById(orderOptionRequestDto.getCartId()).get())
+                    .optionId(cartRepository.findById(orderOptionRequestDto.getCartId())
+                            .orElseThrow(CartNotFoundException::new).getId())
+                    .cart(cartRepository.findById(orderOptionRequestDto.getCartId())
+                            .orElseThrow(CartNotFoundException::new))
                     .totalPrice(cart.getProduct().getNewPrice() * orderOptionRequestDto.getQty())
                     .orders(orderRepository.findByUserId(cartOrderRequestDto.getUserId()))
-                    .product(cartRepository.findById(orderOptionRequestDto.getCartId()).get().getProduct())
+                    .product(cartRepository.findById(orderOptionRequestDto.getCartId())
+                            .orElseThrow(CartNotFoundException::new).getProduct())
                     .build());
 
             optionRepository.save(OptionList.builder()
                     .id(orderDetail.getOptionId())
-                    .colors(optionRepository.findById(orderDetail.getOptionId()).get().getColors())
-                    .size(optionRepository.findById(orderDetail.getOptionId()).get().getSize())
-                    .product(optionRepository.findById(orderDetail.getOptionId()).get().getProduct())
-                    .stock(optionRepository.findById(orderDetail.getOptionId()).get().getStock()
+                    .colors(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getColors())
+                    .size(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getSize())
+                    .product(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getProduct())
+                    .stock(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getStock()
                             - orderDetail.getQty())
                     .build());
 
 
             orderStockOutputDtos.add(OrderStockOutputDto.builder()
-                    .stock(optionRepository.findById(orderDetail.getOptionId()).get().getStock())
-                    .color(optionRepository.findById(orderDetail.getOptionId()).get().getColors().getName())
-                    .colorId(optionRepository.findById(orderDetail.getOptionId()).get().getColors().getId())
-                    .size(optionRepository.findById(orderDetail.getOptionId()).get().getSize().getType())
-                    .sizeId(optionRepository.findById(orderDetail.getOptionId()).get().getSize().getId())
-                    .productId(optionRepository.findById(orderDetail.getOptionId()).get().getProduct().getId())
-                    .optionId(optionRepository.findById(orderDetail.getOptionId()).get().getId())
+                    .stock(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getStock())
+                    .color(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getColors().getName())
+                    .colorId(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getColors().getId())
+                    .size(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getSize().getType())
+                    .sizeId(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getSize().getId())
+                    .productId(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getProduct().getId())
+                    .optionId(optionRepository.findById(orderDetail.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getId())
                     .build());
-
-            cartRepository.deleteById(orderDetail.getCart().getId());
-
+//
         });
+
+        for (OrderOptionRequestDto orderOptionRequestDto : orderOptionRequestDtos) {
+            cartRepository.deleteById(orderOptionRequestDto.getCartId());
+        }
+
 
         return orderStockOutputDtos;
 

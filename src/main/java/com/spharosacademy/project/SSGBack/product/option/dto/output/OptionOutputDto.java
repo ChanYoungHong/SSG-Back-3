@@ -16,4 +16,5 @@ public class OptionOutputDto {
     private String size;
     private Long sizeId;
     private float stock;
+
 }
