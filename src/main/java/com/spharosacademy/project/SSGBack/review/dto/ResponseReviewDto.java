@@ -18,8 +18,8 @@ public class ResponseReviewDto {
     private String reviewContent;
     private String reviewAuthorId;
     private int reviewScore;
-    private LocalDateTime reviewRegDate;
-    private LocalDateTime reviewModDate;
+    private Long reviewCount;
+    private LocalDateTime createDate, updateDate;
 
 
 }

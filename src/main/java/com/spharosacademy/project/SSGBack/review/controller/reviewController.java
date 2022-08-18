@@ -1,15 +1,14 @@
 package com.spharosacademy.project.SSGBack.review.controller;
 
 
-import com.spharosacademy.project.SSGBack.review.Image.service.ReviewImageService;
 import com.spharosacademy.project.SSGBack.review.dto.RequestReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.ResponseReviewDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -18,13 +17,14 @@ import java.util.List;
 public class reviewController {
 
     private final ReviewService reviewService;
-    private final ReviewImageService reviewImageService;
 
 
     // 리뷰 쓰기
     @PostMapping("/add")
     public Review addReview(@RequestBody RequestReviewDto requestReviewDto) {
         return reviewService.addReview(requestReviewDto);
+//    public void addReview(@RequestBody RequestReviewDto requestReviewDto, MultipartFile file) throws Exception {
+//        reviewService.addReview(requestReviewDto, file);
     }
 
     // 모든 상품 조회 하기
@@ -35,8 +35,8 @@ public class reviewController {
 
     // 특정 리뷰 삭제
     @DeleteMapping("/delete/{id}")
-    public void deleteReviewById(@PathVariable Long id) throws Exception {
-        reviewService.deleteReviewById(id);
+    public void deleteReviewById(@PathVariable Long reviewId) throws Exception {
+        reviewService.deleteReviewById(reviewId);
     }
 
     // 특정 리뷰 수정

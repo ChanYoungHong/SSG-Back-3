@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.math.BigInteger;
 
 public interface ReviewRepo extends JpaRepository<Review, Long> {
+
+    Long countByProductId(Long productId);
 }

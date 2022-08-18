@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface QnaRepo extends JpaRepository<Qna, Integer> {
+
+    List<Qna> findByProductId(Integer qnaId);
     
 }

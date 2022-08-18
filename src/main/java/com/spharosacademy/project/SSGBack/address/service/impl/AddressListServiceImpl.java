@@ -25,8 +25,8 @@ public class AddressListServiceImpl implements AddressListService {
     //추가
     @Override
     public AddressList addAddressList(AddressListDto addressListDto) {
-        AddressList addressList = addressListRepo.save(
-                AddressList.builder()
+        AddressList addressList = addressListRepo.save(AddressList.builder()
+                        .addressId(addressListDto.getAddressId())
                         .addressNickname(addressListDto.getAddressNickname())
                         .addressReceiver(addressListDto.getAddressReceiver())
                         .addressPhoneNumber(addressListDto.getAddressPhoneNumber())
@@ -57,6 +57,7 @@ public class AddressListServiceImpl implements AddressListService {
                 .orElseThrow(AddressNotFoundException::new);
         addressListRepo.save(
                 AddressList.builder()
+                        .addressId(addressListDto.getAddressId())
                         .addressNickname(addressListDto.getAddressNickname())
                         .addressReceiver(addressList.getAddressReceiver())
                         .addressHomeNumber(addressList.getAddressHomeNumber())

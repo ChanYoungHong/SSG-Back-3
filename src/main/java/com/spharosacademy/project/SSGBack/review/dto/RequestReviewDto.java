@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.review.dto;
 
-import com.spharosacademy.project.SSGBack.review.Image.entity.ReviewImage;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,10 @@ public class RequestReviewDto {
     private String reviewContent;
     private String reviewAuthorId;
     private int reviewScore;
-    private LocalDateTime reviewRegDate;
+    private String filename;
+    private String filepath;
+    private Long reviewCount;
+    private LocalDateTime createDate, updateDate;
 
-    List<ReviewImage> reviewImageList;
+//    List<ReviewImage> reviewImageList;
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -16,18 +16,13 @@ import java.time.LocalDateTime;
 
 public class RequestQnaDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 
     private int qnaId;
-
     private String qnaTitle;
-
     private String qnaContent;
-
-    private Boolean isSecret;
-
-    private String qnaType;
+    private Integer isSecret;
+    private Integer qnaType;
 
 
     private LocalDateTime createDate, updateDate;

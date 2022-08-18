@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -63,10 +63,17 @@ public class QnaServiceImpl implements QnaService {
 // 질문작성하기 서비스
     @Override
     public Qna addQna(RequestQnaDto requestQnaDto) {
+//        Product product = productRepository.findbyId(requestDto.get
+//                .findById(createRequest.getOrderProductNo())
+//                .orElseThrow(OrderProductNotFoundException::new);
+
+
         Qna qna = qnaRepo.save(Qna.builder()
                 .qnaId(requestQnaDto.getQnaId())
                 .qnaTitle(requestQnaDto.getQnaTitle())
                 .qnaContent(requestQnaDto.getQnaContent())
+                .isSecret(requestQnaDto.getIsSecret())
+                .qnaType(requestQnaDto.getQnaType())
                 .build());
 
         return qna;
@@ -79,6 +86,28 @@ public class QnaServiceImpl implements QnaService {
         List<Qna> ListQna= qnaRepo.findAll();
         return ListQna;
     }
+
+    @Override
+    public List<ResponseQnaDto> getQnaByProductId(Integer qnaId) {
+        List<Qna> qnas = qnaRepo.findByProductId(qnaId);
+        List<ResponseQnaDto> responseQnaDtos = new ArrayList<>();
+
+        for(Qna qna : qnas) {
+            responseQnaDtos.add(ResponseQnaDto.builder()
+                    .qnaType(qna.getQnaType())
+                    .qnaTitle(qna.getQnaTitle())
+                    .qnaContent(qna.getQnaContent())
+                    .build());
+        }
+        return responseQnaDtos;
+    }
+
+    //리스트 형식 제품아이디로 찾아서 가져와야함
+    //상품을 조회할 때, 같이 갯수가 나간다.
+    //
+
+
+
     //질문 수정하기
     @Override
     public Qna editQnaById(ResponseQnaDto responseQnaDto) throws Exception {
@@ -86,8 +115,11 @@ public class QnaServiceImpl implements QnaService {
                 .orElseThrow(QnaNotFoundException::new);
         qnaRepo.save(
                 qna.builder()
+                        .qnaId(responseQnaDto.getQnaId())
                         .qnaTitle(responseQnaDto.getQnaTitle())
                         .qnaContent(responseQnaDto.getQnaContent())
+                        .isSecret(responseQnaDto.getIsSecret())
+                        .qnaType(responseQnaDto.getQnaType())
                         .build());
         return qna;
     }
@@ -125,6 +157,22 @@ public class QnaServiceImpl implements QnaService {
             throw new Exception();
         }
 
-    }
+
+
+}
+
+
+
+    // 특정 질문만 보기
+//    @Override
+//    public void findQnaById(int qnaId) throws Exception {
+//        Optional<Qna> findByQnaId = qnaRepo.findById(qnaId);
+//        if (findByQnaId.isPresent()) {
+//            qnaRepo.findById(qnaId);
+//        }else {
+//            throw new Exception();
+//        }
+//    }
+
 
 }

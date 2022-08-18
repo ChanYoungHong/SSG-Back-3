@@ -4,7 +4,6 @@ package com.spharosacademy.project.SSGBack.Qna.service;
 import com.spharosacademy.project.SSGBack.Qna.dto.ResponseQnaDto;
 import com.spharosacademy.project.SSGBack.Qna.entity.Qna;
 import com.spharosacademy.project.SSGBack.Qna.dto.RequestQnaDto;
-import com.spharosacademy.project.SSGBack.review.dto.RequestReviewDto;
 
 import java.util.List;
 
@@ -19,6 +18,9 @@ public interface QnaService {
     List<Qna> getAll();
     // ** 제품당 모든 Qna 를 가져온다
 //    List <RequestQnaDto> getListOfQna(Long productId);
+
+    //특정 질문 조회하기(productID 로 변경 필요)
+    List<ResponseQnaDto> getQnaByProductId(Integer qnaId);
 
 
     // 질문 수정 하기

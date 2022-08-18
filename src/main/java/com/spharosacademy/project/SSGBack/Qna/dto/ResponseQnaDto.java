@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,18 +19,17 @@ import java.time.LocalDateTime;
 
 public class ResponseQnaDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 
     private int qnaId;
 
     private String qnaTitle;
-
     private String qnaContent;
 
-    private Boolean isSecret;
+    private Integer isSecret;
 
-    private String qnaType;
+    private Integer qnaType;
+    private Long qnaCount;
 
 
     private LocalDateTime createDate, updateDate;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/addresslist")
 @RequiredArgsConstructor
 
 
@@ -27,7 +27,7 @@ public class AddressListController {
     }
 
     // 배송지 리스트 조회
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     public List<AddressList> getAllAddressList() {
         return addressListService.getAll();
     }

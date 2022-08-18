@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ public class Qna extends BaseTimeEntity {
     private int qnaId;
 
 //    @Column(name = "qna_title")
+    @Length(max = 35)
     private String qnaTitle;
 
 //    @Column(name = "qna_content")
@@ -35,7 +37,9 @@ public class Qna extends BaseTimeEntity {
     // Boolean추가 사항?
 
  //   @Column(name = "is_Secret")
-    private Boolean isSecret;
+    private Integer isSecret;
+
+    private Integer qnaType;
 
     public void changeQnaTitle(String qnaTitle) {
         this.qnaTitle = qnaTitle;

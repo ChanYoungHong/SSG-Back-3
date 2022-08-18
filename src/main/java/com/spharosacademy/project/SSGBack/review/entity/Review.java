@@ -27,11 +27,14 @@ public class Review extends BaseTimeEntity {
     private String reviewAuthorId;
 
     //별점 어떻게 구현하지?
-//    @Min(value = 1, message = "별점은 1이상 5이하 여야 합니다")
-//    @Max(value = 5, message = "별점은 1이상 5이하 여야 합니다")
+    @Min(value = 1, message = "별점은 1이상 5이하 여야 합니다")
+    @Max(value = 5, message = "별점은 1이상 5이하 여야 합니다")
     private int reviewScore;
 
-    private BigInteger reviewCnt;
+    private Long reviewCnt;
+
+    private String filename;
+    private String filepath;
 
 //    @ManyToOne
 //    @JoinColumn(name = "product_id")
