@@ -122,6 +122,8 @@ public class CartServiceimple implements CartService {
                     .optionId(optionRepository.findById(orderDetail.getOptionId()).get().getId())
                     .build());
 
+            cartRepository.deleteById(orderDetail.getCart().getId());
+
         });
 
         return orderStockOutputDtos;
