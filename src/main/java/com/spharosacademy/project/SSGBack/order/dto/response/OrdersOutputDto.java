@@ -1,4 +1,5 @@
-package com.spharosacademy.project.SSGBack.order.dto.request;
+package com.spharosacademy.project.SSGBack.order.dto.response;
+
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -12,11 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrdersInputDto {
+public class OrdersOutputDto {
 
+    private Long orderListId;
     private Long memberId;
-    private Long productId;
-    private Long ordersId;
 
-    List<OrdersOptioninputDto> ordersOptioninputDtoList;
+    List<OrdersOptionOutputDto> orderOptionOutputDtoList;
 }

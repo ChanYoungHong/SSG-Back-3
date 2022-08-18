@@ -21,7 +21,7 @@ public class OptionList {
     private Long optionListId;
 
     private Long colorId;
-    private Long siezeId;
+    private Long sizeId;
     private Long qty;
 
 

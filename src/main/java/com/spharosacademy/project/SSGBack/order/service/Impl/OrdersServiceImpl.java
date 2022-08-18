@@ -3,13 +3,12 @@ package com.spharosacademy.project.SSGBack.order.service.Impl;
 import com.spharosacademy.project.SSGBack.Product;
 import com.spharosacademy.project.SSGBack.ProductRepository;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersInputDto;
-import com.spharosacademy.project.SSGBack.order.dto.request.OrdersOptionDto;
+import com.spharosacademy.project.SSGBack.order.dto.request.OrdersOptioninputDto;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.order.repo.OrdersRepository;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
-import com.spharosacademy.project.SSGBack.tempoptionlist.OptionList;
 import com.spharosacademy.project.SSGBack.tempoptionlist.OptionListRepository;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
@@ -35,8 +34,6 @@ public class OrdersServiceImpl implements OrdersService {
     public void createDirectOrder(OrdersInputDto ordersInputDto) {
 
         Optional<User> user = userRepository.findById(ordersInputDto.getMemberId());
-//        Optional<OptionList>
-//            orderList = optionListRepository.findById(ordersInputDto.getOrdersOptionDtoList().get(0).getOptionListId());
         Optional<Product> product = productRepository.findById(ordersInputDto.getProductId());
 
         Orders order = ordersRepository.save(
@@ -46,21 +43,22 @@ public class OrdersServiceImpl implements OrdersService {
                 .build()
         );
 
-        List<OrdersOptionDto> ordersOptionDtoList = new ArrayList<>();
-        for (OrdersOptionDto ordersOptionDto : ordersInputDto.getOrdersOptionDtoList()) {
-            ordersOptionDtoList.add(OrdersOptionDto.builder()
-                .colorId(ordersOptionDto.getColorId())
-                .sizeId(ordersOptionDto.getSizeId())
-                .qty(ordersOptionDto.getQty())
+        List<OrdersOptioninputDto> ordersOptioninputDtoList = new ArrayList<>();
+
+        for(OrdersOptioninputDto ordersOptioninputDto : ordersOptioninputDtoList) {
+            ordersOptioninputDtoList.add(ordersOptioninputDto.builder()
+                .colorId(ordersOptioninputDto.getColorId())
+                .sizeId(ordersOptioninputDto.getSizeId())
+                .qty(ordersOptioninputDto.getQty())
                 .build());
         }
 
-        ordersOptionDtoList.forEach(ordersOptionDto -> {
+        ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
             orderListRepository.save(
                 OrderList.builder()
                     .orderAnOrderer(user.get().getUserName())
-                    .optionId(optionListRepository.findByColorIdAndsizeId(ordersOptionDto.getColorId(), ordersOptionDto.getSizeId()).getOptionListId()) // 옵션은 어디서 들고오나?
-                    .orderMsg("경비실에 나둬 주세요")
+                    .optionId(optionListRepository.findByColorIdAndsizeId(ordersOptioninputDto.getColorId(), ordersOptioninputDto.getSizeId()).getOptionListId())
+                    .orderMsg("집 앞에 부탁해용")
                     .orderReceiver(user.get().getUserName())
                     .orderState(false)
                     .userAddress(user.get().getUserAddress())
@@ -73,26 +71,36 @@ public class OrdersServiceImpl implements OrdersService {
             );
         });
     }
-}
 
+    @Override
+    public Optional<OrderList> checkMyOrder(Long memberId) {
+        return Optional.empty();
+    }
 
 //    @Override
-//    public OrderList purchase(OrderListInputDto inputDto) {
+//    public Optional<OrderList> checkMyOrder(Long memberId) {
 //
-//        Optional<User> result1 = userRepository.findById(inputDto.getMemberId());
-//        Optional<Product> result2 = productRepository.findById(inputDto.getProductId());
+//        Optional<OrderList> orderList =
+//            Optional.ofNullable(orderListRepository.findById(memberId)
+//                .orElseThrow(OrderedProductNotFound::new));
 //
-//        return orderListRepository.save(
-//            OrderList.builder()
-//                .orderListId(result1.get().getMemberId())
-//                .orderAnOrderer(result1.get().getUserName())
-//                .userAddress(result1.get().getUserAddress())
-//                .orderReceiver(result1.get().getUserName())
-//                .orderMsg("직접 받겠습니다")
-//                .optionId(Long.valueOf(result2.get().getColor()))
-//                .optionId(Long.valueOf(result2.get().getSize()))
-//                .build()
-//        );
+////        List<OrdersOptionOutputDto> orderOptionOutputDtoList = new ArrayList<>();
+////        for (OrdersOptionOutputDto ordersOptionOutputDto : ) {
+////            ordersOptionDtoList.add(OrdersOptionDto.builder()
+////                .colorId(ordersOptionDto.getColorId())
+////                .sizeId(ordersOptionDto.getSizeId())
+////                .qty(ordersOptionDto.getQty())
+////                .build());
+////        }
+//
+//        if(!orderList.isEmpty()){
+//            return orderListRepository.findById(memberId);
+//        }
+//        return orderList;
 //    }
+
+
+}
+
 
 
