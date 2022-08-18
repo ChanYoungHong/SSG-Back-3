@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -28,7 +27,7 @@ public class Qna extends BaseTimeEntity {
     private int qnaId;
 
 //    @Column(name = "qna_title")
-    @Length(max = 35)
+
     private String qnaTitle;
 
 //    @Column(name = "qna_content")
