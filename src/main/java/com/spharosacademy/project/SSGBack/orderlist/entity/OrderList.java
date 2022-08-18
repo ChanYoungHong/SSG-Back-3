@@ -53,12 +53,6 @@ public class OrderList extends BaseEntity {
     @Column(name = "option_id")
     private Long optionId;
 
-
-
-
-//    @Column(name = "order_list")
-//    private String orderList;   // 리스트 형태로 바꿔야하는 것은 아닌지?
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private User user;
