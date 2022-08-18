@@ -19,7 +19,7 @@ public class OptionList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int stock;
+    private float stock;
 
     @ManyToOne
     @JsonBackReference

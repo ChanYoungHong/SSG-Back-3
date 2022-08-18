@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -28,6 +31,7 @@ public class ResponseProductDto {
     private float newPrice ;
     private float discountRate;
     private String explanation;
+    private LocalDateTime regDate;
     List<PofCategorySS> pofCategorySSList;
     List<PofCategoryS> pofCategorySList;
     List<PofCategoryM> pofCategoryMList;

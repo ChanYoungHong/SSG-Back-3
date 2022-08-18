@@ -1,13 +1,13 @@
 package com.spharosacademy.project.SSGBack.cart.controller;
 
-import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
+import com.spharosacademy.project.SSGBack.cart.dto.Output.OrderStockOutputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
-import com.spharosacademy.project.SSGBack.cart.order.dto.input.CartOrderRequestDto;
-import com.spharosacademy.project.SSGBack.cart.order.dto.input.OrderRequestDto;
+import com.spharosacademy.project.SSGBack.cart.dto.input.CartOrderRequestDto;
+import com.spharosacademy.project.SSGBack.cart.dto.input.CartUpdateRequestDto;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
-import com.spharosacademy.project.SSGBack.order.dto.input.OrderInputDto;
-import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +22,9 @@ public class CartController {
 
     //장바구니 담기 클릭
     @PostMapping("/add")
-    public Cart addCart(@RequestBody CartInputDto cartInputDto){
-        return cartService.addProductToCart(cartInputDto);
+    public String addCart(@RequestBody CartInputDto cartInputDto){
+        cartService.addProductToCart(cartInputDto);
+        return "선택하신 상품이 장바구니에 담겼습니다";
     }
 
     @GetMapping("/getAll")
@@ -36,13 +37,25 @@ public class CartController {
         return cartService.getCartByUserId(userid);
     }
 
+    @GetMapping("/getOptionList/{productId}")
+    public List<OptionList> getOptionByProduct(@PathVariable Long productId){
+        return cartService.getOptionByProduct(productId);
+    }
+
     @DeleteMapping("/delete/{cartId}")
-    public void deleteCart(@PathVariable Long cartId){
+    public String deleteCart(@PathVariable Long cartId){
         cartService.deleteCart(cartId);
+        return "선택하신 상품이 장바구니에서 삭제되었습니다";
     }
 
     @PostMapping("/order")
-    public void orderCart(@RequestBody OrderRequestDto orderRequestDto){
-         cartService.orderCart(orderRequestDto);
+    public List<OrderStockOutputDto> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto){
+         return cartService.orderCart(cartOrderRequestDto);
+    }
+
+    @PutMapping("/update")
+    public String updateCart(@RequestBody CartUpdateRequestDto cartUpdateRequestDto){
+        cartService.updateCart(cartUpdateRequestDto);
+        return "장바구니 상품 옵션이 변경되었습니다";
     }
 }

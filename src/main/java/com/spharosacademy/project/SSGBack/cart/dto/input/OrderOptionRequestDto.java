@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.cart.order.dto.input;
+package com.spharosacademy.project.SSGBack.cart.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartOrderRequestDto {
+public class OrderOptionRequestDto {
 
     private Long cartId;
     private float qty;

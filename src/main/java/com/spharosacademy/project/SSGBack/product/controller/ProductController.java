@@ -32,9 +32,10 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/add")
-    public Product addProduct(
+    public String addProduct(
             @RequestBody RequestProductDto requestProductDto) {
-        return productService.addProduct(requestProductDto);
+        productService.addProduct(requestProductDto);
+        return "상품 등록이 완료되었습니다";
     }
 
     //모든 상품들에 대한 정보 조회
@@ -46,8 +47,9 @@ public class ProductController {
 
     //특정 상품 삭제
     @DeleteMapping("/delete/{id}")
-    public void deleteProductById(@PathVariable Long id) throws Exception {
+    public String deleteProductById(@PathVariable Long id) throws Exception {
         productService.deleteProductById(id);
+        return "상품 삭제가 완료되었습니다";
     }
 
     //특정 상품 조회
@@ -58,9 +60,10 @@ public class ProductController {
 
     //특정 상품 수정 
     @PutMapping("/update")
-    public Product editProduct
+    public String editProduct
     (@RequestBody UpdateProductDto updateProductDto) throws Exception {
-        return productService.editProductById(updateProductDto);
+        productService.editProductById(updateProductDto);
+        return "상품 수정이 완료되었습니다";
     }
 
     //추천 상품들에 해당하는 상품 조회
@@ -70,9 +73,9 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String keyword
-            , @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return productService.searchProductByWord(keyword, pageable);
+    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query
+            , @PageableDefault(size = 20, sort = "createDate", direction = Sort.Direction.ASC) Pageable pageable) {
+        return productService.searchProductByWord(query, pageable);
     }
 
 }

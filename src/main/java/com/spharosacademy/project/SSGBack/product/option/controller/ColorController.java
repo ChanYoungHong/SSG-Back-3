@@ -17,7 +17,8 @@ public class ColorController {
     private final ColorService colorService;
 
     @PostMapping("/add")
-    public Colors addColor(@RequestBody RequestColorDto requestColorDto){
-        return colorService.addColor(requestColorDto);
+    public String addColor(@RequestBody RequestColorDto requestColorDto){
+        colorService.addColor(requestColorDto);
+        return "색상이 등록되었습니다";
     }
 }

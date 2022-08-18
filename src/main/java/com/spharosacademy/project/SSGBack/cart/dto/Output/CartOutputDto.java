@@ -19,6 +19,7 @@ public class CartOutputDto {
         private String useraddress;
         private String productName;
         private String productBrand;
+        private Long count;
         private float price;
         private float qty;
         private String titleImgUrl;

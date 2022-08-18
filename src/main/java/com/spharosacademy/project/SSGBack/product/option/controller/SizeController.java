@@ -17,7 +17,8 @@ public class SizeController {
     private final SizeService sizeService;
 
     @PostMapping("/add")
-    public Size addSize(@RequestBody RequestSizeDto requestSizeDto){
-        return sizeService.addSize(requestSizeDto);
+    public String addSize(@RequestBody RequestSizeDto requestSizeDto){
+        sizeService.addSize(requestSizeDto);
+        return "사이즈 정보가 등록되었습니다";
     }
 }

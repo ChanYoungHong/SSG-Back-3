@@ -1,13 +1,10 @@
 package com.spharosacademy.project.SSGBack.cart.service.Impl;
 
 import com.spharosacademy.project.SSGBack.cart.dto.Output.OptionCartOutputDto;
-import com.spharosacademy.project.SSGBack.cart.dto.input.CartOptionDto;
+import com.spharosacademy.project.SSGBack.cart.dto.Output.OrderStockOutputDto;
+import com.spharosacademy.project.SSGBack.cart.dto.input.*;
 import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
-import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
-import com.spharosacademy.project.SSGBack.cart.order.dto.input.CartOrderRequestDto;
-import com.spharosacademy.project.SSGBack.cart.order.dto.input.OrderRequestDto;
-import com.spharosacademy.project.SSGBack.order.dto.input.OrderInputDto;
 import com.spharosacademy.project.SSGBack.cart.repository.CartRepository;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
 import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
@@ -17,6 +14,8 @@ import com.spharosacademy.project.SSGBack.order.repository.OrderRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
+import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -47,8 +45,10 @@ public class CartServiceimple implements CartService {
     @Override
     public Cart addProductToCart(CartInputDto cartInputDto) {
         //상품의 존재 여부를 판단한다
-        Product product = productRepository.findById(cartInputDto.getProductId()).get();
-        User user = iUserRepository.findById(cartInputDto.getUserId()).get();
+        Product product = productRepository.findById(cartInputDto.getProductId())
+                .orElseThrow(ProductNotFoundException::new);
+        User user = iUserRepository.findById(cartInputDto.getUserId())
+                .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
             cartOptionDtos.add(CartOptionDto.builder()
@@ -69,41 +69,87 @@ public class CartServiceimple implements CartService {
                             (cartOptionDto.getColorId(), cartOptionDto.getSizeId()).getId())
                     .build());
         });
-
-
         return null;
-
     }
 
     @Override
-    public void orderCart(OrderRequestDto orderRequestDto) {
-        Cart cart = cartRepository.findById(orderRequestDto.getUserId()).get();
-        User user = iUserRepository.findById(orderRequestDto.getUserId()).get();
+    public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {
+        Cart cart = cartRepository.findById(cartOrderRequestDto.getUserId()).get();
+        User user = iUserRepository.findById(cartOrderRequestDto.getUserId())
+                .orElseThrow(UserNotFoundException::new);
 
         orderRepository.save(Orders.builder()
                 .user(user)
                 .build());
-
-        List<CartOrderRequestDto> cartOrderRequestDtos = new ArrayList<>();
-        for (CartOrderRequestDto cartOrderRequestDto : orderRequestDto.getCartOrderRequestDtos()) {
-            cartOrderRequestDtos.add(CartOrderRequestDto.builder()
-                    .cartId(cartOrderRequestDto.getCartId())
-                    .qty(cartOrderRequestDto.getQty())
+        List<OrderStockOutputDto> orderStockOutputDtos = new ArrayList<>();
+        List<OrderOptionRequestDto> orderOptionRequestDtos = new ArrayList<>();
+        for (OrderOptionRequestDto orderOptionRequestDto : cartOrderRequestDto.getOrderOptionRequestDtos()) {
+            orderOptionRequestDtos.add(OrderOptionRequestDto.builder()
+                    .cartId(orderOptionRequestDto.getCartId())
+                    .qty(orderOptionRequestDto.getQty())
                     .build());
         }
 
-        cartOrderRequestDtos.forEach(cartOrderRequestDto -> {
-            orderDetailRepository.save(OrderDetail.builder()
+        orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
+            OrderDetail orderDetail = orderDetailRepository.save(OrderDetail.builder()
                     .user(cart.getUser())
                     .address(cart.getUser().getAddress())
-                    .qty(cartOrderRequestDto.getQty())
-                    .optionId(cartRepository.findById(cartOrderRequestDto.getCartId()).get().getId())
-                    .cart(cartRepository.findById(cartOrderRequestDto.getCartId()).get())
-                    .totalPrice(cart.getProduct().getNewPrice() * cartOrderRequestDto.getQty())
-                    .orders(orderRepository.findByUserId(orderRequestDto.getUserId()))
-                    .product(cartRepository.findById(cartOrderRequestDto.getCartId()).get().getProduct())
+                    .qty(orderOptionRequestDto.getQty())
+                    .optionId(cartRepository.findById(orderOptionRequestDto.getCartId()).get().getId())
+                    .cart(cartRepository.findById(orderOptionRequestDto.getCartId()).get())
+                    .totalPrice(cart.getProduct().getNewPrice() * orderOptionRequestDto.getQty())
+                    .orders(orderRepository.findByUserId(cartOrderRequestDto.getUserId()))
+                    .product(cartRepository.findById(orderOptionRequestDto.getCartId()).get().getProduct())
                     .build());
+
+            optionRepository.save(OptionList.builder()
+                    .id(orderDetail.getOptionId())
+                    .colors(optionRepository.findById(orderDetail.getOptionId()).get().getColors())
+                    .size(optionRepository.findById(orderDetail.getOptionId()).get().getSize())
+                    .product(optionRepository.findById(orderDetail.getOptionId()).get().getProduct())
+                    .stock(optionRepository.findById(orderDetail.getOptionId()).get().getStock()
+                            - orderDetail.getQty())
+                    .build());
+
+
+            orderStockOutputDtos.add(OrderStockOutputDto.builder()
+                    .stock(optionRepository.findById(orderDetail.getOptionId()).get().getStock())
+                    .color(optionRepository.findById(orderDetail.getOptionId()).get().getColors().getName())
+                    .colorId(optionRepository.findById(orderDetail.getOptionId()).get().getColors().getId())
+                    .size(optionRepository.findById(orderDetail.getOptionId()).get().getSize().getType())
+                    .sizeId(optionRepository.findById(orderDetail.getOptionId()).get().getSize().getId())
+                    .productId(optionRepository.findById(orderDetail.getOptionId()).get().getProduct().getId())
+                    .optionId(optionRepository.findById(orderDetail.getOptionId()).get().getId())
+                    .build());
+
         });
+
+        return orderStockOutputDtos;
+
+
+    }
+
+    @Override
+    public void updateCart(CartUpdateRequestDto cartUpdateRequestDto) {
+        Cart cart = cartRepository.findById(cartUpdateRequestDto.getCartId())
+                .orElseThrow(ProductNotFoundException::new);
+
+        cartRepository.save(Cart.builder()
+                .id(cartUpdateRequestDto.getCartId())
+                .colorId(cartUpdateRequestDto.getColorId())
+                .sizeId(cartUpdateRequestDto.getSizeId())
+                .optionId(optionRepository.findByColorsAndSize(cartUpdateRequestDto.getColorId(),
+                        cartUpdateRequestDto.getSizeId()).getId())
+                .user(cart.getUser())
+                .product(cart.getProduct())
+                .qty(cart.getQty())
+                .build());
+    }
+
+    @Override
+    public List<OptionList> getOptionByProduct(Long productId) {
+        List<OptionList> optionLists = optionRepository.findByProductId(productId);
+        return optionLists;
     }
 
     @Override
@@ -120,6 +166,12 @@ public class CartServiceimple implements CartService {
                     .username(cart.getUser().getName())
                     .productBrand(cart.getProduct().getBrand())
                     .price(cart.getProduct().getNewPrice())
+                    .optionCartOutputDto(OptionCartOutputDto.builder()
+                            .color(optionRepository.findById(cart.getOptionId())
+                                    .orElseThrow(OptionNotFoundException::new).getColors().getName())
+                            .size(optionRepository.findById(cart.getOptionId())
+                                    .orElseThrow(OptionNotFoundException::new).getSize().getType())
+                            .build())
                     .qty(cart.getQty())
                     .build());
         });
@@ -142,12 +194,13 @@ public class CartServiceimple implements CartService {
                     .productBrand(cart.getProduct().getBrand())
                     .price(cart.getProduct().getNewPrice())
                     .qty(cart.getQty())
-//                    .optionCartOutputDto(OptionCartOutputDto.builder()
-//                            .color(optionRepository.findById(cart.getOptionId())
-//                                    .orElseThrow(OptionNotFoundException::new).getColor())
-//                            .size(optionRepository.findById(cart.getOptionId())
-//                                    .orElseThrow(OptionNotFoundException::new).getSize())
-//                            .build())
+                    .optionCartOutputDto(OptionCartOutputDto.builder()
+                            .color(optionRepository.findById(cart.getOptionId())
+                                    .orElseThrow(OptionNotFoundException::new).getColors().getName())
+                            .size(optionRepository.findById(cart.getOptionId())
+                                    .orElseThrow(OptionNotFoundException::new).getSize().getType())
+                            .build())
+                    .count(cartRepository.countByUserId(userid))
                     .build());
         }
         return outputDtos;

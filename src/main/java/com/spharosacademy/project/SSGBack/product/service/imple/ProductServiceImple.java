@@ -151,6 +151,7 @@ public class ProductServiceImple implements ProductService {
                         .newPrice(product.getNewPrice())
                         .thumbnailImgUrl(product.getThumbnailUrl())
                         .priceTxt(product.getPriceText())
+                        .regDate(product.getCreateDate())
                         .build());
             }
         }
@@ -254,6 +255,7 @@ public class ProductServiceImple implements ProductService {
                     .outputDetailImgDtos(detailDtoList)
                     .outputTitleImgDtos(titleDtoList)
                     .optionOutputDtos(optionOutputDtoList)
+                    .regDate(product.getCreateDate())
                     .build());
         });
         return responseProductDtoList;
@@ -270,6 +272,7 @@ public class ProductServiceImple implements ProductService {
                 .priceText(recproduct.getPriceText())
                 .price(recproduct.getNewPrice())
                 .titleImgUrl(recproduct.getThumbnailUrl())
+                .regDate(recproduct.getCreateDate())
                 .build();
     }
 
@@ -365,6 +368,7 @@ public class ProductServiceImple implements ProductService {
                 .outputDetailImgDtos(detailDtoList)
                 .outputTitleImgDtos(titleDtoList)
                 .optionOutputDtos(optionOutputDtoList)
+                .regDate(product.getCreateDate())
                 .build();
     }
 

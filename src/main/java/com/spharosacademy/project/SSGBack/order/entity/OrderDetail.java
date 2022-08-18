@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.order.entity;
 
 import com.spharosacademy.project.SSGBack.cart.entity.Cart;
+import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import lombok.AllArgsConstructor;

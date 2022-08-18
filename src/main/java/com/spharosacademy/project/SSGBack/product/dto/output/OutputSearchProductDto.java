@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @Builder
@@ -20,4 +22,5 @@ public class OutputSearchProductDto {
     private float newPrice;
     private float oldPrice;
     private String thumbnailImgUrl;
+    private LocalDateTime regDate;
 }

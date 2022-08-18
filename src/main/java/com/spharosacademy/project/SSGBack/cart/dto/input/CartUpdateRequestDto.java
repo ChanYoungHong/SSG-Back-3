@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.product.option.dto.output;
+package com.spharosacademy.project.SSGBack.cart.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OptionOutputDto {
-    private Long id;
-    private String color;
+public class CartUpdateRequestDto {
+
+    private Long cartId;
     private Long colorId;
-    private String size;
     private Long sizeId;
-    private float stock;
 }

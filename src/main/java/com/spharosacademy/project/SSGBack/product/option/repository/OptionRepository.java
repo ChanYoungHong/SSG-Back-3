@@ -13,4 +13,6 @@ public interface OptionRepository extends JpaRepository<OptionList, Long> {
 
     @Query(value = "select p from OptionList as p where p.colors.id = :colorId AND p.size.id = :sizeId")
     OptionList findByColorsAndSize(Long colorId, Long sizeId);
+
+    List<OptionList> findByProductId(Long productId);
 }
