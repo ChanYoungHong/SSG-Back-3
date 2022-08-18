@@ -21,8 +21,8 @@ public class OrdersController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.OK)
-    public Orders createDirectOrder(@RequestBody OrdersInputDto ordersInputDto){
-        return ordersService.createDirectOrder(ordersInputDto);
+    public void createDirectOrder(@RequestBody OrdersInputDto ordersInputDto){
+        ordersService.createDirectOrder(ordersInputDto);
     }
 
 

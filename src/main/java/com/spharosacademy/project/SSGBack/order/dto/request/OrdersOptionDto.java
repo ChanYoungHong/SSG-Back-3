@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class OrdersOptionDto {
 
     private Long colorId;
-    private Long sizeId;
+    private Long sizeId; //
     private int qty;
+
 }

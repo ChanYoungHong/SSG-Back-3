@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 public class OrdersInputDto {
 
     private Long memberId;
-    private Long userId;
     private Long productId;
     private Long ordersId;
+//    private Long orderListId;
+
     List<OrdersOptionDto> ordersOptionDtoList;
 
 //    private Long optionId;

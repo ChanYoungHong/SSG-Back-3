@@ -3,6 +3,7 @@ package com.spharosacademy.project.SSGBack.order.service.Impl;
 import com.spharosacademy.project.SSGBack.Product;
 import com.spharosacademy.project.SSGBack.ProductRepository;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersInputDto;
+import com.spharosacademy.project.SSGBack.order.dto.request.OrdersOptionDto;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.order.repo.OrdersRepository;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
@@ -13,6 +14,8 @@ import com.spharosacademy.project.SSGBack.tempoptionlist.OptionListRepository;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,11 +32,13 @@ public class OrdersServiceImpl implements OrdersService {
 
 
     @Override
-    public Orders createDirectOrder(OrdersInputDto ordersInputDto) {
+    public void createDirectOrder(OrdersInputDto ordersInputDto) {
 
         Optional<User> user = userRepository.findById(ordersInputDto.getMemberId());
-        Optional<OptionList> option = optionListRepository.findById(ordersInputDto.getOrdersId());
+//        Optional<OptionList>
+//            orderList = optionListRepository.findById(ordersInputDto.getOrdersOptionDtoList().get(0).getOptionListId());
         Optional<Product> product = productRepository.findById(ordersInputDto.getProductId());
+
         Orders order = ordersRepository.save(
             Orders.builder()
                 .orderedDate(LocalDateTime.now())
@@ -41,13 +46,34 @@ public class OrdersServiceImpl implements OrdersService {
                 .build()
         );
 
-        return orderListRepository.save(
-            OrderList.builder()
-                .orderAnOrderer(user.get().getUserName())
-                .optionId() // 옵션은 어디서 들고오나?
-                .build()
-        );
+        List<OrdersOptionDto> ordersOptionDtoList = new ArrayList<>();
+        for (OrdersOptionDto ordersOptionDto : ordersInputDto.getOrdersOptionDtoList()) {
+            ordersOptionDtoList.add(OrdersOptionDto.builder()
+                .colorId(ordersOptionDto.getColorId())
+                .sizeId(ordersOptionDto.getSizeId())
+                .qty(ordersOptionDto.getQty())
+                .build());
+        }
+
+        ordersOptionDtoList.forEach(ordersOptionDto -> {
+            orderListRepository.save(
+                OrderList.builder()
+                    .orderAnOrderer(user.get().getUserName())
+                    .optionId(optionListRepository.findByColorIdAndsizeId(ordersOptionDto.getColorId(), ordersOptionDto.getSizeId()).getOptionListId()) // 옵션은 어디서 들고오나?
+                    .orderMsg("경비실에 나둬 주세요")
+                    .orderReceiver(user.get().getUserName())
+                    .orderState(false)
+                    .userAddress(user.get().getUserAddress())
+                    .orderDecidedDate(LocalDateTime.now())
+                    .user(user.get())
+                    .product(product.get())
+                    .orders(order)
+                    .cart(null)
+                    .build()
+            );
+        });
     }
+}
 
 
 //    @Override
@@ -69,4 +95,4 @@ public class OrdersServiceImpl implements OrdersService {
 //        );
 //    }
 
-}
+

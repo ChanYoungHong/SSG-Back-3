@@ -4,16 +4,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OptionList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long optionListId;
 
-    private String optionColor;
-    private String optionSize;
+    private Long colorId;
+    private Long siezeId;
+    private Long qty;
 
 
 

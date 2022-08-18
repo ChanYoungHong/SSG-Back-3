@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
-//    @Query(value = "select m from optionList m where m.colorId = :colorId, m.sizeId = :sizeId ")
-//    List<OrdersOptionDto> findAllByColorIdAndsizeId(@Param("colorId")Long colorId,
-//                                                    @Param("sizeId") Long sizeId);
+
 
 }
