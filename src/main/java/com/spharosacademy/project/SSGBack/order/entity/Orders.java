@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.order.entity;
 
+import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    private LocalDateTime orderedDate; 
+    private LocalDateTime OrderedDate;
 
     @ManyToOne
     @JoinColumn(name = "member_id")

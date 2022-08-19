@@ -17,6 +17,7 @@ public class OrdersOutputDto {
 
     private Long orderListId;
     private Long memberId;
+    private Long productId;
 
-    List<OrdersOptionOutputDto> orderOptionOutputDtoList;
+//    List<OrdersOptionOutputDto> orderOptionOutputDtoList;
 }

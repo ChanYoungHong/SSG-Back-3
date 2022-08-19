@@ -32,8 +32,8 @@ public class OrderList extends BaseEntity {
     @Column(name = "order_list_id")
     private Long orderListId;
 
-    @Column(name = "order_state")
-    private Boolean orderState;
+//    @Column(name = "order_state")
+//    private Boolean orderState;
 
     @Column(name = "order_msg")
     private String orderMsg;
@@ -53,17 +53,12 @@ public class OrderList extends BaseEntity {
     @Column(name = "option_id")
     private Long optionId;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private User user;
+    @Column(name = "member_id")
+    private Long memberId;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
