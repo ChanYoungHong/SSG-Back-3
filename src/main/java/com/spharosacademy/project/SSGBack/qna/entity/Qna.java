@@ -49,7 +49,6 @@ public class Qna extends BaseTimeEntity {
     private Product product;
 
     @ManyToOne
-//    @JoinColumn(name = "member_id")
     private User user;
 
 }

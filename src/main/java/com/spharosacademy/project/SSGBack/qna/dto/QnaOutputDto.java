@@ -25,10 +25,7 @@ public class QnaOutputDto {
 
 
     private Integer isSecret;
-
     private Integer qnaType;
-    private Long qnaCount;
-
 
     private LocalDateTime createDate, updateDate;
 

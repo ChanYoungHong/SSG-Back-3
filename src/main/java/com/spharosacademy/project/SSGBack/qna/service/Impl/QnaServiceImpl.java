@@ -25,50 +25,12 @@ public class QnaServiceImpl implements QnaService {
     private final QnaRepo qnaRepo;
     private final ProductRepository productRepository;
 
-//    @Override
-//    public Long addQna(RequestQnaDto requestQnaDto) {
-//        Optional<Qna> result = dtoToEntity(requestQnaDto);
-//        qnaRepo.save(productQna)
-//
-//
-//
-//
-//        return  ;
-//    }
-//
-//    //조회하기
-//    @Override
-//    public List<RequestQnaDto> getListOfQna(Long productId) {
-//
-//        Product product = Product.builder().productId(productId).build();
-//        List<Qna> result = qnaRepo.findByProduct(product);
-//        return result.stream().map(qna -> entityToDto(qna)).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public void editQna(RequestQnaDto requestQnaDto) {
-//        Qna qna = qnaRepo.findById(requestQnaDto.getQnaId())
-//                .orElseThrow(QnaNotFoundException::new);
-//
-//        qna.
-//
-//    }
-//
-//    @Override
-//    public void deleteQna(Integer qnaId) {
-//
-//    }
-//}
-//
-//
-//
 
     // 질문작성하기 서비스
+
     @Override
     public Qna addQna(QnaInputDto qnaInputDto) {
-//        Product product = productRepository.findbyId(requestDto.get
-//                .findById(createRequest.getOrderProductNo())
-//                .orElseThrow(OrderProductNotFoundException::new);
+
         Product product = productRepository.findById(qnaInputDto.getProductid()).get();
 
         Qna qna = qnaRepo.save(Qna.builder()
@@ -83,7 +45,8 @@ public class QnaServiceImpl implements QnaService {
         return qna;
     }
 
-    // 질문 조회하기
+
+    // 전체 질문 조회하기
 
     @Override
     public List<Qna> getAll() {
@@ -98,6 +61,7 @@ public class QnaServiceImpl implements QnaService {
 
         for (Qna qna : qnas) {
             qnaOutputDtos.add(QnaOutputDto.builder()
+                    .qnaId(qna.getQnaId())
                     .titleImgUrl(qna.getProduct().getThumbnailUrl())
                     .productName(qna.getProduct().getName())
                     .productBrand(qna.getProduct().getBrand())
@@ -105,15 +69,14 @@ public class QnaServiceImpl implements QnaService {
                     .qnaType(qna.getQnaType())
                     .qnaTitle(qna.getQnaTitle())
                     .qnaContent(qna.getQnaContent())
+                    .isSecret(qna.getIsSecret())
+                    .createDate(qna.getCreateDate())
+                    .updateDate(qna.getUpdatedDate())
                     .count(qnaRepo.countByProductId(productid))
                     .build());
         }
         return qnaOutputDtos;
     }
-
-    //리스트 형식 제품아이디로 찾아서 가져와야함
-    //상품을 조회할 때, 같이 갯수가 나간다.
-    //
 
 
     //질문 수정하기
@@ -133,28 +96,6 @@ public class QnaServiceImpl implements QnaService {
     }
 
 
-//    @Override
-//    public Qna editQnaQyId(ResponseQnaDto responseQnaDto) {
-//        Optional<Qna> result = qnaRepo.findById(responseQnaDto.getQnaId());
-//        if(result.isPresent()) {
-//            Qna entity = result.get();
-//
-//            entity.changeQnaTitle(responseQnaDto.getQnaTitle());
-//            entity.changeQnaContent(responseQnaDto.getQnaContent());
-//
-//            qnaRepo.save(entity);
-//        }
-//        Qna qna = qnaRepo.findById(responseQnaDto.getQnaId()).get();
-//        qnaRepo.save(Qna.builder()
-//                        .qnaId(responseQnaDto.getQnaId())
-//                        .qnaTitle(responseQnaDto.getQnaTitle())
-//                        .qnaContent(responseQnaDto.getQnaContent())
-//                        .isSecret(editQnaById())
-//
-//                .build());
-//        return qna;
-//    }
-
     // 질문 삭제하기
     @Override
     public void deleteQnaById(int qnaId) throws Exception {
@@ -164,21 +105,7 @@ public class QnaServiceImpl implements QnaService {
         } else {
             throw new Exception();
         }
-
-
     }
-
-
-    // 특정 질문만 보기
-//    @Override
-//    public void findQnaById(int qnaId) throws Exception {
-//        Optional<Qna> findByQnaId = qnaRepo.findById(qnaId);
-//        if (findByQnaId.isPresent()) {
-//            qnaRepo.findById(qnaId);
-//        }else {
-//            throw new Exception();
-//        }
-//    }
 
 
 }

@@ -24,7 +24,7 @@ public class QnaController {
 
         qnaService.addQna(qnaInputDto);
         model.addAttribute("message", "글작성이 완료 되었습니다");
-        return "message";
+        return "글작성이 완료 되었습니다";
 //        public Qna addQna(@RequestBody RequestQnaDto requestQnaDto, Model model) {
 //        return qnaService.addQna(requestQnaDto);
     }
@@ -43,7 +43,7 @@ public class QnaController {
 
         model.addAttribute("message", "글 수정이 완료 되었습니다");
 
-        return "message";
+        return "글 수정이 완료 되었습니다";
     }
 //    public Qna editQna
 //    (@RequestBody ResponseQnaDto responseQnaDto) throws Exception {
@@ -52,10 +52,12 @@ public class QnaController {
 
     //문의 삭제
     @DeleteMapping("/delete/{qnaId}")
-    public void deleteQnaById(@PathVariable int qnaId, Model model ) throws Exception {
+    public String deleteQnaById(@PathVariable int qnaId, Model model ) throws Exception {
         qnaService.deleteQnaById(qnaId);
 
         model.addAttribute("message", "글 삭제가 완료 되었습니다");
+
+        return "글 삭제가 완료 되었습니다";
 
     }
 
