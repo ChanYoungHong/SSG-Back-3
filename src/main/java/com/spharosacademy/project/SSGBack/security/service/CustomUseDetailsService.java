@@ -29,7 +29,7 @@ public class CustomUseDetailsService implements UserDetailsService {
 
         // 책에는 !가 없음, 근데 로직상 !가 있어야 할 것 같음.
         if(!result.isPresent()){
-            throw new UsernameNotFoundException("Check Email or Social");
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
 
         User user = result.get();

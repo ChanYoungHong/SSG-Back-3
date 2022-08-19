@@ -22,10 +22,12 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     private String secretKey = "charlie12345";
 
+    // 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
+    // secretKey를 Base64로 인코딩하는 것.
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -55,6 +57,7 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    // Request의 Header에서 token 값을 가져온다 "Authorization"
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
