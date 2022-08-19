@@ -38,34 +38,6 @@ public class ReviewServiceImpl implements ReviewService {
     private final ColorRepository colorRepository;
 
 
-    //리뷰 사진 등록
-    // 사진 등록 안하면?????
-
-    //수정중
-
-
-    //이미지 파일 추가 하려고 하는데 잘 안되는데.
-//    public void addReview(RequestReviewDto requestReviewDto, MultipartFile file) throws Exception {
-//
-//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-//
-//        UUID uuid = UUID.randomUUID();
-//        String fileName = uuid + "_" + file.getOriginalFilename();
-//        File saveFile = new File(projectPath, fileName);
-//        file.transferTo(saveFile);
-//
-//        Review review = reviewRepo.save(Review.builder()
-//                        .reviewId(requestReviewDto.getReviewId())
-//                        .reviewAuthorId(requestReviewDto.getReviewAuthorId())
-//                        .reviewContent(requestReviewDto.getReviewContent())
-//                        .reviewScore(requestReviewDto.getReviewScore())
-//                        .filename(requestReviewDto.getFilename())
-//                        .filepath(requestReviewDto.getFilepath())
-//                        .build());
-//    }
-
-
-//    기존에 되었던 것
 @Override
     public Review addReview(ReviewInputDto reviewInputDto, MultipartFile file) throws Exception {
 
@@ -92,16 +64,6 @@ public class ReviewServiceImpl implements ReviewService {
     return review;
 }
 
-   //안되던것
-//        requestReviewDto.getReviewImageList().forEach(reviewImage -> {
-//            reviewImageRepo.save(ReviewImage.builder()
-//                            .imgUrl(reviewImage.getImgUrl())
-//                            .review(review)
-//                    .build());
-//        });
- //       return review;
- //   }
-
     // 리뷰 수정하기
 
     @Override
@@ -113,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewAuthorId(reviewOutputDto.getReviewAuthorId())
                 .reviewContent(reviewOutputDto.getReviewContent())
                 .reviewScore(reviewOutputDto.getReviewScore())
-//                .reviewModDate(responseReviewDto.getReviewModDate())
+
                 .build());
         return review;
     }
@@ -152,7 +114,6 @@ public class ReviewServiceImpl implements ReviewService {
                     .productName(review.getProduct().getName())
                     .reviewScore(review.getReviewScore())
                     .createDate(review.getCreateDate())
-                    .userid(review.getUser().getId())
                     .reviewContent(review.getReviewContent())
                     .count(reviewRepo.countByProductId(productid))
                     .build());
@@ -161,22 +122,3 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewOutputDtos;
     }
 }
-
-//    @Override
-//    public List<QnaOutputDto> getQnaByProductId(Long productid) {
-//        List<Qna> qnas = qnaRepo.findByProductId(productid);
-//        List<QnaOutputDto> qnaOutputDtos = new ArrayList<>();
-//
-//        for (Qna qna : qnas) {
-//            qnaOutputDtos.add(QnaOutputDto.builder()
-//                    .titleImgUrl(qna.getProduct().getThumbnailUrl())
-//                    .productName(qna.getProduct().getName())
-//                    .productBrand(qna.getProduct().getBrand())
-//                    .productid(qna.getProduct().getId())
-//                    .qnaType(qna.getQnaType())
-//                    .qnaTitle(qna.getQnaTitle())
-//                    .qnaContent(qna.getQnaContent())
-//                    .count(qnaRepo.countByProductId(productid))
-//                    .build());
-//        }
-//        return qnaOutputDtos;
