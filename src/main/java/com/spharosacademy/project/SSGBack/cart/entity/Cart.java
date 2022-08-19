@@ -1,13 +1,11 @@
 package com.spharosacademy.project.SSGBack.cart.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -36,4 +34,8 @@ public class Cart {
 
     @ManyToOne
     private Product product;
+
+    public void addCount(float qty){
+        this.qty += qty;
+    }
 }

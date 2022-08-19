@@ -52,29 +52,79 @@ public class CartServiceimple implements CartService {
         User user = iUserRepository.findById(cartInputDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
+        Long duplicate = 0L;
         for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
             cartOptionDtos.add(CartOptionDto.builder()
                     .optionId(cartOptionDto.getOptionId())
                     .qty(cartOptionDto.getQty())
                     .build());
+
+            duplicate = cartRepository.findByUserIdAndOptionId(user.getId(), cartOptionDto.getOptionId());
+
+            if (duplicate == null) {
+
+                cartRepository.save(Cart.builder()
+                        .product(product)
+                        .user(user)
+                        .optionId(cartOptionDto.getOptionId())
+                        .qty(cartOptionDto.getQty())
+                        .sizeId(optionRepository.findById(cartOptionDto.getOptionId()).get().getSize().getId())
+                        .colorId(optionRepository.findById(cartOptionDto.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getColors().getId())
+                        .build());
+
+            } else {
+                cartRepository.save(Cart.builder()
+                        .user(user)
+                        .product(product)
+                        .id(duplicate)
+                        .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getSize().getId())
+                        .optionId(cartRepository.findById(cartOptionDto.getOptionId()).get().getOptionId())
+                        .qty(cartOptionDto.getQty() + cartRepository.findById(duplicate).get().getQty())
+                        .colorId(optionRepository.findById(cartOptionDto.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getColors().getId())
+                        .build());
+            }
+
         }
 
-        cartOptionDtos.forEach(cartOptionDto
-                -> {
-            cartRepository.save(Cart.builder()
-                    .product(product)
-                    .user(user)
-                    .optionId(cartOptionDto.getOptionId())
-                    .qty(cartOptionDto.getQty())
-                    .colorId(optionRepository.findById(cartOptionDto.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getColors().getId())
-                    .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getSize().getId())
-                    .build());
-        });
+//        if (duplicate == null) {
+//            cartOptionDtos.forEach(cartOptionDto
+//                    -> {
+//                cartRepository.save(Cart.builder()
+//                        .product(product)
+//                        .user(user)
+//                        .optionId(cartOptionDto.getOptionId())
+//                        .qty(cartOptionDto.getQty())
+//                        .colorId(optionRepository.findById(cartOptionDto.getOptionId())
+//                                .orElseThrow(OptionNotFoundException::new).getColors().getId())
+//                        .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
+//                                .orElseThrow(OptionNotFoundException::new).getSize().getId())
+//                        .build());
+//            });
+//        } else {
+//            Long finalDuplicate = duplicate;
+//
+//            cartOptionDtos.forEach(cartOptionDto1 -> {
+//                cartRepository.save(Cart.builder()
+//                        .user(user)
+//                        .product(product)
+//                        .id(finalDuplicate)
+//                        .sizeId(optionRepository.findById(cartOptionDto1.getOptionId())
+//                                .orElseThrow(OptionNotFoundException::new).getSize().getId())
+//                        .optionId(cartRepository.findById(finalDuplicate).get().getOptionId())
+//                        .qty(cartOptionDto1.getQty() + cartOptionDto1.getQty())
+//                        .colorId(optionRepository.findById(cartOptionDto1.getOptionId())
+//                                .orElseThrow(OptionNotFoundException::new).getColors().getId())
+//                        .build());
+//            });
+//        }
+
 
         return null;
     }
+
 
     @Override
     public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {

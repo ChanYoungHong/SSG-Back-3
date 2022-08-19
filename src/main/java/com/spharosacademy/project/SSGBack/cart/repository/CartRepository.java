@@ -11,11 +11,14 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     //사용자 id에 따른 장바구니를 전부 가져온다
     List<Cart> findByUserId(Long userid);
 
-    long countByUserId(Long userid);
-
-    boolean existsByUserUserIdAndOptionIdAndProductId(Long userId ,Long optionId, Long productId);
-
-    Cart existsByUserIdAndOptionId(Long userId, Long optionId);
+    Long countByUserId(Long userid);
 
 
+
+//    boolean existsByUserUserIdAndOptionIdAndProductId(Long userId ,Long optionId, Long productId);
+
+//    Cart existsByUserIdAndOptionId(Long userId, Long optionId);
+
+    @Query(value = "select c.id from Cart c where c.user.id =:userId and c.optionId =:optionId")
+    Long findByUserIdAndOptionId(Long userId, Long optionId);
 }
