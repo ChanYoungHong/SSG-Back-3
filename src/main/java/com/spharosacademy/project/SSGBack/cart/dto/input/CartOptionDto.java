@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartOptionDto {
 
-    private Long colorId;
-    private Long sizeId;
+    private Long optionId;
     private float qty;
 }

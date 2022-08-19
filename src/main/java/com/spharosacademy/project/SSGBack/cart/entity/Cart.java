@@ -35,6 +35,5 @@ public class Cart {
     private User user;
 
     @ManyToOne
-    @JsonBackReference
     private Product product;
 }

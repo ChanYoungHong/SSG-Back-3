@@ -26,8 +26,10 @@ public class OptionList {
     Product product;
 
     @ManyToOne
+    @JoinColumn(name = "colorId", nullable = true)
     private Colors colors;
 
     @ManyToOne
+    @JoinColumn(name = "sizeId", nullable = true)
     private Size size;
 }

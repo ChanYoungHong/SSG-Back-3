@@ -13,11 +13,12 @@ import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
-import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.entity.Colors;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
+import com.spharosacademy.project.SSGBack.product.option.entity.Size;
 import com.spharosacademy.project.SSGBack.product.option.repository.ColorRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.SizeRepository;
@@ -90,6 +91,7 @@ public class ProductServiceImple implements ProductService {
                 .product(product)
                 .build());
 
+
         List<OptionInputDto> optionInputDtos = new ArrayList<>();
         for (OptionInputDto optionInputDto : requestProductDto.getOptionInputDtoList()) {
             optionInputDtos.add(OptionInputDto.builder()
@@ -100,13 +102,21 @@ public class ProductServiceImple implements ProductService {
         }
 
         optionInputDtos.forEach(optionInputDto -> {
+            Colors colors = null;
+            if (optionInputDto.getColorId() != null) {
+                colors = colorRepository.findById(optionInputDto.getColorId()).get();
+            }
+
+            Size size = null;
+            if (optionInputDto.getSizeId() != null) {
+                size = sizeRepository.findById(optionInputDto.getSizeId()).get();
+            }
+
             optionRepository.save(
                     OptionList.builder()
                             .stock(optionInputDto.getStock())
-                            .colors(colorRepository.findById(optionInputDto.getColorId())
-                                    .orElseThrow(OptionNotFoundException::new))
-                            .size(sizeRepository.findById(optionInputDto.getSizeId())
-                                    .orElseThrow(OptionNotFoundException::new))
+                            .colors(colors)
+                            .size(size)
                             .product(product)
                             .build()
             );
@@ -302,7 +312,10 @@ public class ProductServiceImple implements ProductService {
 
         List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
         List<OptionList> optionList = optionRepository.findAllByProduct(product);
+
         for (OptionList option : optionList) {
+            log.info("");
+
             optionOutputDtoList.add(OptionOutputDto.builder()
                     .id(option.getId())
                     .color(option.getColors().getName())
@@ -324,7 +337,6 @@ public class ProductServiceImple implements ProductService {
         }
 
         List<PofCategoryM> categoryMList = new ArrayList<>();
-
         for (CategoryProductList categoryProductList : lists) {
             categoryMList.add(PofCategoryM.builder()
                     .id(categoryProductList.getCategoryM().getId())

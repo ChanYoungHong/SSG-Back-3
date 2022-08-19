@@ -42,7 +42,6 @@ public class OrderServiceImplements implements OrderService {
                 .build());
 
         orderDetailRepository.save(OrderDetail.builder()
-                .user(user)
                 .product(product)
                 .optionId(optionList.getId())
                 .address(user.getAddress())

@@ -8,6 +8,7 @@ import com.spharosacademy.project.SSGBack.category.entity.CategoryProductList;
 import com.spharosacademy.project.SSGBack.category.entity.CategoryS;
 import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategorySDto;
 import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
+import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryMRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategorySRepository;
@@ -34,7 +35,8 @@ public class CategorySServiceimple implements CategorySService {
         return categorySRepository.save(
                 CategoryS.builder()
                         .name(categorySDto.getName())
-                        .categoryM(categoryMRepository.findById(categorySDto.getCategoryMId()).get())
+                        .categoryM(categoryMRepository.findById(categorySDto.getCategoryMId())
+                                .orElseThrow(CategoryNotFoundException::new))
                         .build()
         );
     }
@@ -67,16 +69,16 @@ public class CategorySServiceimple implements CategorySService {
 
     @Override
     public CategorySDto getCategorySById(Integer id) {
-        CategoryS categoryS = categorySRepository.findById(id).get();
 
+        CategoryS categoryS = categorySRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
         List<CategoryProductList> categoryProductLists = categoryProductListRepository.findAllByCategoryS(categoryS);
         List<CategorySS> ssList = categorySSRepository.findAllByCategoryS(categoryS);
         List<CategorySSOfCategorySDto> categorySDtos = new ArrayList<>();
 
         for (CategorySS categorySSob : ssList) {
             categorySDtos.add(CategorySSOfCategorySDto.builder()
-                    .id(categorySSob.getCategoryS().getId())
-                    .name(categorySSob.getCategoryS().getName())
+                    .id(categorySSob.getId())
+                    .name(categorySSob.getName())
                     .build());
         }
 
@@ -95,8 +97,8 @@ public class CategorySServiceimple implements CategorySService {
         return CategorySDto.builder()
                 .name(categoryS.getName())
                 .id(categoryS.getId())
-                .productOfCategoryList(productOfCategoryList)
                 .categorySSOfCategorySDtoList(categorySDtos)
+                .productOfCategoryList(productOfCategoryList)
                 .build();
     }
 

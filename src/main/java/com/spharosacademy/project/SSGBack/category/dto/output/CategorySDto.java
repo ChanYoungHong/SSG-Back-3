@@ -15,6 +15,6 @@ public class CategorySDto {
 
     private int id;
     private String name;
-    List<ProductOfCategory> productOfCategoryList;
     List<CategorySSOfCategorySDto> categorySSOfCategorySDtoList;
+    List<ProductOfCategory> productOfCategoryList;
 }

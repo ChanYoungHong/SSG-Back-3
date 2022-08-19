@@ -28,7 +28,7 @@ public class ResponseProductDto {
     private String thumbnailImgUrl;
     private int sellAmount;
     private float oldPrice;
-    private float newPrice ;
+    private float newPrice;
     private float discountRate;
     private String explanation;
     private LocalDateTime regDate;

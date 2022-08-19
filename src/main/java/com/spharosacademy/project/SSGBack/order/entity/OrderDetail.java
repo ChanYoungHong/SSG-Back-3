@@ -1,14 +1,10 @@
 package com.spharosacademy.project.SSGBack.order.entity;
 
-import com.spharosacademy.project.SSGBack.cart.entity.Cart;
-import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity
@@ -24,16 +20,12 @@ public class OrderDetail {
     private Long optionId;
     private float qty;
     private float totalPrice;
+    private Long userId;
 
     @ManyToOne
     Orders orders;
 
     @ManyToOne
-    User user;
-
-    @ManyToOne
     Product product;
 
-    @ManyToOne
-    Cart cart;
 }

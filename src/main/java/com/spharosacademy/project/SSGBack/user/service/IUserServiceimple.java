@@ -3,6 +3,8 @@ package com.spharosacademy.project.SSGBack.user.service;
 import com.spharosacademy.project.SSGBack.order.dto.output.OrderOutputDto;
 import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
 import com.spharosacademy.project.SSGBack.order.repository.OrderDetailRepository;
+import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
+import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
@@ -31,7 +33,7 @@ public class IUserServiceimple implements IUserService {
 
     @Override
     public User getUserById(Long id) {
-        return iUserRepository.findById(id).get();
+        return iUserRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -52,18 +54,25 @@ public class IUserServiceimple implements IUserService {
 
     @Override
     public List<OrderOutputDto> getOrderList(Long userId) {
-        User user = iUserRepository.findById(userId).get();
-        List<OrderDetail> detailList = orderDetailRepository.findByUserId(user.getId());
+
+        List<OrderDetail> orderDetails = orderDetailRepository.findAllByUserId(userId);
         List<OrderOutputDto> outputDtos = new ArrayList<>();
-        for (OrderDetail orderDetail : detailList) {
+        for (OrderDetail orderDetail : orderDetails) {
             outputDtos.add(OrderOutputDto.builder()
                     .orderId(orderDetail.getOrders().getId())
-                    .userName(iUserRepository.findById(orderDetail.getUser().getId())
-                            .get().getName())
-                    .userAddress(iUserRepository.findById(orderDetail.getUser().getId())
-                            .get().getAddress())
-                    .productName(productRepository.findById(orderDetail.getProduct().getId()).get().getName())
-                    .productThumbnailImageUrl(productRepository.findById(orderDetail.getProduct().getId()).get().getThumbnailUrl())
+                    .userName(iUserRepository.findById(userId)
+                            .orElseThrow(UserNotFoundException::new).getName())
+                    .userAddress(iUserRepository.findById(userId).
+                            orElseThrow(UserNotFoundException::new).getAddress())
+                    .productName(productRepository.findById(orderDetail.getProduct().getId())
+                            .orElseThrow(ProductNotFoundException::new).getName())
+                    .productThumbnailImageUrl(productRepository.findById(orderDetail.getProduct().getId())
+                            .orElseThrow(ProductNotFoundException::new).getThumbnailUrl())
+                    .oldPrice(productRepository.findById(orderDetail.getProduct().getId())
+                            .orElseThrow(ProductNotFoundException::new).getOldPrice())
+                    .newPrice(productRepository.findById(orderDetail.getProduct().getId())
+                            .orElseThrow(ProductNotFoundException::new).getNewPrice())
+                    .qty(orderDetail.getQty())
                     .build());
         }
 

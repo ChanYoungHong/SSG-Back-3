@@ -37,11 +37,4 @@ public class Product extends BaseTimeEntity {
     @ManyToOne
     CategorySS categorySS;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    List<Cart> carts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    List<OptionList> optionLists = new ArrayList<>();
 }
