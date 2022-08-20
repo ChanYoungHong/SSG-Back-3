@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 public class OrdersOptioninputDto {
 
     private Long optionListId;
-    private int qty;
+    private long qty;
 
 }

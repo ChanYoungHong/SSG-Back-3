@@ -6,7 +6,6 @@ import com.spharosacademy.project.SSGBack.order.dto.request.OrdersInputDto;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersOptioninputDto;
 import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
-import com.spharosacademy.project.SSGBack.order.exception.OrderedProductNotFound;
 import com.spharosacademy.project.SSGBack.order.repo.OrdersRepository;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
@@ -70,6 +69,8 @@ public class OrdersServiceImpl implements OrdersService {
                     .orderDecidedDate(LocalDateTime.now())
                     .product(product.get())
                     .orders(order)
+                    .userPhoneNumber(user.get().getUserPhone())
+                    .qty(ordersOptioninputDto.getQty())
                     .memberId(user.get().getMemberId())
                     .build()
             );
@@ -87,14 +88,13 @@ public class OrdersServiceImpl implements OrdersService {
 
         if (user.isPresent()) {
             List<OrderList> orderList =
-                (List<OrderList>) Optional.ofNullable(
-                        orderListRepository.findAllByMemberId(user.get().getMemberId()))
-                    .orElseThrow(OrderedProductNotFound::new);
+                orderListRepository.findAllByMemberId(user.get().getMemberId());
             ordersOutputDtoList = new ArrayList<>();
 
             for (OrderList orderlist : orderList) {
                 ordersOutputDtoList.add(OrdersOutputDto.builder()
-                    .orderListId(orderlist.getOrderListId())
+                    .orderId(orderlist.getOrders().getOrderId())
+                    .productId(orderlist.getProduct().getId())
                     .productName(orderlist.getProduct().getName())
                     .userName(user.get().getUserName())
                     .userAddress(user.get().getUserAddress())
@@ -102,8 +102,6 @@ public class OrdersServiceImpl implements OrdersService {
                     .orderMsg(orderlist.getOrderMsg())
                     .userPhoneNumber(user.get().getUserPhone())
                     .qty(orderlist.getQty())
-                    .memberId(user.get().getMemberId())
-                    .productId(orderlist.getProduct().getId())
                     .build());
             }
         }

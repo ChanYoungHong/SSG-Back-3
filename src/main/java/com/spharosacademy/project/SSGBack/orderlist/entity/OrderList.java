@@ -58,6 +58,8 @@ public class OrderList extends BaseEntity {
 
     private Long qty;
 
+    private String userPhoneNumber;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
