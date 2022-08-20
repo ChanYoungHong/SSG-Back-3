@@ -16,6 +16,8 @@ public class OrderOutputDto {
     private String userAddress;
     private String productName;
     private String productThumbnailImageUrl;
+    private String color;
+    private String size;
     private float oldPrice;
     private float newPrice;
     private float qty;

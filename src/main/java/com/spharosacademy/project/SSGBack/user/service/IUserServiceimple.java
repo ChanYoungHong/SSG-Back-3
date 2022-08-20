@@ -5,6 +5,8 @@ import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
 import com.spharosacademy.project.SSGBack.order.repository.OrderDetailRepository;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
+import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
+import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
@@ -24,6 +26,7 @@ public class IUserServiceimple implements IUserService {
     private final IUserRepository iUserRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
+    private final OptionRepository optionRepository;
 
     @Override
     public User addUser(User user) {
@@ -64,8 +67,7 @@ public class IUserServiceimple implements IUserService {
                             .orElseThrow(UserNotFoundException::new).getName())
                     .userAddress(iUserRepository.findById(userId).
                             orElseThrow(UserNotFoundException::new).getAddress())
-                    .productName(productRepository.findById(orderDetail.getProduct().getId())
-                            .orElseThrow(ProductNotFoundException::new).getName())
+                    .productName(orderDetail.getProduct().getName())
                     .productThumbnailImageUrl(productRepository.findById(orderDetail.getProduct().getId())
                             .orElseThrow(ProductNotFoundException::new).getThumbnailUrl())
                     .oldPrice(productRepository.findById(orderDetail.getProduct().getId())
@@ -73,6 +75,8 @@ public class IUserServiceimple implements IUserService {
                     .newPrice(productRepository.findById(orderDetail.getProduct().getId())
                             .orElseThrow(ProductNotFoundException::new).getNewPrice())
                     .qty(orderDetail.getQty())
+                    .color(optionRepository.findById(orderDetail.getOptionId()).get().getColors().getName())
+                    .size(optionRepository.findById(orderDetail.getOptionId()).get().getSize().getType())
                     .build());
         }
 

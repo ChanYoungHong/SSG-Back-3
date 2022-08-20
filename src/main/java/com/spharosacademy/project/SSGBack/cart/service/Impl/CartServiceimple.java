@@ -149,7 +149,7 @@ public class CartServiceimple implements CartService {
                     .address(user.getAddress())
                     .qty(orderOptionRequestDto.getQty())
                     .optionId(cartRepository.findById(orderOptionRequestDto.getCartId())
-                            .orElseThrow(CartNotFoundException::new).getId())
+                            .orElseThrow(CartNotFoundException::new).getOptionId())
                     .orders(orders)
                     .product(cartRepository.findById(orderOptionRequestDto.getCartId())
                             .orElseThrow(CartNotFoundException::new).getProduct())
