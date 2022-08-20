@@ -40,7 +40,8 @@ public class OrdersController {
     @ResponseStatus(HttpStatus.OK)
     public List<OrdersOutputDto> checkMyOrder(@PathVariable Long memberId){
 
-        ordersService.checkMyOrder(memberId);
+
+        return ordersService.checkMyOrder(memberId);
     }
 
 }

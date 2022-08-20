@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class OrdersOptioninputDto {
 
-    private Long colorId;
-    private Long sizeId;
+    private Long optionListId;
     private int qty;
 
 }

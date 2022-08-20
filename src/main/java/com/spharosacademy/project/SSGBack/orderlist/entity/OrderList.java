@@ -56,6 +56,8 @@ public class OrderList extends BaseEntity {
     @Column(name = "member_id")
     private Long memberId;
 
+    private Long qty;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

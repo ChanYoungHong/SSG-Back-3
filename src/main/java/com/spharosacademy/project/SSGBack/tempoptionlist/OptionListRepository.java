@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OptionListRepository extends JpaRepository<OptionList, Long> {
 
-    @Query(value = "select m from OptionList m where m.colorId = :colorId and m.sizeId = :sizeId ")
-    OptionList findByColorIdAndsizeId(@Param("colorId") Long colorId, @Param("sizeId") Long sizeId);
+//    @Query(value = "select m from OptionList m where m.colorId = :colorId and m.sizeId = :sizeId ")
+//    OptionList findByColorIdAndsizeId(@Param("colorId") Long colorId, @Param("sizeId") Long sizeId);
 
 }
