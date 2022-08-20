@@ -1,20 +1,23 @@
 package com.spharosacademy.project.SSGBack.order.dto.request;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class OrdersOptioninputDto {
+public class OrdersUpdateDto {
 
-    private Long optionListId;
+    private Long orderListId;
+    private String userEmail;
+    private String orderReceiver;
+    private String userAddress;
     private String orderMsg;
-    private long qty;
 
 }

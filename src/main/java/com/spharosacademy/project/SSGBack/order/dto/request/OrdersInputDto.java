@@ -19,4 +19,6 @@ public class OrdersInputDto {
     private Long ordersId;
 
     List<OrdersOptioninputDto> ordersOptioninputDtoList;
+    List<OrdersUpdateDto> ordersUpdateDtoList;
+
 }

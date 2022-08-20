@@ -12,5 +12,10 @@ public interface OrdersService {
     void createDirectOrder(OrdersInputDto ordersInputDto);
     List<OrdersOutputDto> checkMyOrder(Long memberId);
 
+    void editMyOrderDetail(Long memberId, OrdersInputDto ordersInputDto);
+
+
+
+
 
 }
