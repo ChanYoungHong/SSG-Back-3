@@ -15,8 +15,6 @@ import org.hibernate.validator.constraints.Length;
 public class UserInputDto {
 
 
-//    private Long memberId;
-
     @NotBlank(message = "아이디를 입력해주세요.")
     private Long userId;
 

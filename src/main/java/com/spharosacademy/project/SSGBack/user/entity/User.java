@@ -25,6 +25,7 @@ public class User extends BaseEntity {
     @Column(name = "member_id")
     private Long memberId;
 
+    // 사용자 ID
     @Column(name = "user_id")
     private Long userId;
 
@@ -58,12 +59,5 @@ public class User extends BaseEntity {
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;
 
-//    public void changeUserPhone(String userPhone) {
-//        this.userPhone = userPhone;
-//    }
-//
-//    public void changeUserEmail(String userEmail) {
-//        this.userEmail = userEmail;
-//    }
 
 }

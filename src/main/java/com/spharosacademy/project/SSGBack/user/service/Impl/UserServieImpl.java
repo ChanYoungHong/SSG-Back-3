@@ -29,7 +29,6 @@ public class UserServieImpl implements UserService {
 
         return userRepository.save(
             User.builder()
-//                .memberId(userInputDto.getMemberId())
                 .userId(userInputDto.getUserId())
                 .userPwd(userInputDto.getUserPwd())
                 .userAddress(userInputDto.getUserAddress())
