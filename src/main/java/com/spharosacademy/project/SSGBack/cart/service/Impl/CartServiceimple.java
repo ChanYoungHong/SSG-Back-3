@@ -107,8 +107,13 @@ public class CartServiceimple implements CartService {
 
         orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
             Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
-            if (orderOptionRequestDto.getQty() > optionRepository.findById(cart.getOptionId()).get().getStock()) {
+            for (OrderOptionRequestDto optionRequestDto : orderOptionRequestDtos){
+                if (optionRequestDto.getQty() > optionRepository.findById(cart.getOptionId()).get().getStock()) {
                     throw new OutOfStockException();
+                }
+            }
+            if (orderOptionRequestDto.getQty() > optionRepository.findById(cart.getOptionId()).get().getStock()) {
+                throw new OutOfStockException();
             } else {
                 Orders orders = orderRepository.save(Orders.builder()
                         .user(user)
