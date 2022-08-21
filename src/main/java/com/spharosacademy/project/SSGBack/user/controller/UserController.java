@@ -39,13 +39,14 @@ public class UserController {
         return userService.getAllUser();
     }
 
-
+    // 회원정보 수정
     @PutMapping("/modify")
     @ResponseStatus(HttpStatus.OK)
     public User modifyUser(@RequestBody UserOutputDto userOutputDto){
         return userService.modifyUserInfo(userOutputDto);
     }
 
+    // 회원정보 삭제
     @DeleteMapping("/remove/{memberId}")
     public User modifyUser(@PathVariable Long memberId,
                            @RequestBody UserOutputDto userOutputDto){

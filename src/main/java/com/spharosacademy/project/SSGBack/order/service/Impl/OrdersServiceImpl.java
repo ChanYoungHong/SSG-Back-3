@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.order.dto.request.OrdersInputDto;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersOptioninputDto;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersUpdateDto;
 import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
+import com.spharosacademy.project.SSGBack.order.dto.response.OrdersRemoveOutputDto;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.order.exception.OrderedProductNotFound;
 import com.spharosacademy.project.SSGBack.order.repo.OrdersRepository;
@@ -159,6 +160,25 @@ public class OrdersServiceImpl implements OrdersService {
 
             });
         }
+    }
+
+    @Override
+    public void removeMyOrderAndOrderList(Long orderId) {
+
+        Optional<Orders> orders = ordersRepository.findById(orderId);
+
+        if(orders.isPresent()){
+
+            List<OrderList> orderLists = orderListRepository.findAllByOrders(orders.get());
+
+            for (OrderList orderList: orderLists) {
+                orderListRepository.deleteById(orderList.getOrderListId());
+            }
+
+            ordersRepository.deleteById(orderId);
+        }
+
+
     }
 }
 
