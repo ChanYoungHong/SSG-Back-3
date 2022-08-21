@@ -6,9 +6,12 @@ import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartOrderRequestDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartUpdateRequestDto;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
+import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,5 +60,10 @@ public class CartController {
     public String updateCart(@RequestBody CartUpdateRequestDto cartUpdateRequestDto){
         cartService.updateCart(cartUpdateRequestDto);
         return "장바구니 상품 옵션이 변경되었습니다";
+    }
+
+    @ExceptionHandler(OutOfStockException.class)
+    public ResponseEntity<String> handleOutofStockException(OutOfStockException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }

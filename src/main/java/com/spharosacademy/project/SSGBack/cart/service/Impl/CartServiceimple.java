@@ -9,10 +9,10 @@ import com.spharosacademy.project.SSGBack.cart.repository.CartRepository;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
 import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
+import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.order.repository.OrderDetailRepository;
 import com.spharosacademy.project.SSGBack.order.repository.OrderRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
@@ -88,72 +88,56 @@ public class CartServiceimple implements CartService {
 
         }
 
-
         return null;
     }
-
 
     @Override
     public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {
         User user = iUserRepository.findById(cartOrderRequestDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Orders orders = orderRepository.save(Orders.builder()
-                .user(user)
-                .build());
-
-        List<OrderStockOutputDto> orderStockOutputDtos = new ArrayList<>();
         List<OrderOptionRequestDto> orderOptionRequestDtos = new ArrayList<>();
         for (OrderOptionRequestDto orderOptionRequestDto : cartOrderRequestDto.getOrderOptionRequestDtos()) {
             orderOptionRequestDtos.add(OrderOptionRequestDto.builder()
                     .cartId(orderOptionRequestDto.getCartId())
                     .qty(orderOptionRequestDto.getQty())
                     .build());
+
         }
 
         orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
-            OrderDetail orderDetail = orderDetailRepository.save(OrderDetail.builder()
-                    .address(user.getAddress())
-                    .qty(orderOptionRequestDto.getQty())
-                    .optionId(cartRepository.findById(orderOptionRequestDto.getCartId())
-                            .orElseThrow(CartNotFoundException::new).getOptionId())
-                    .orders(orders)
-                    .product(cartRepository.findById(orderOptionRequestDto.getCartId())
-                            .orElseThrow(CartNotFoundException::new).getProduct())
-                    .userId(user.getId())
-                    .build());
+            Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
+            if (orderOptionRequestDto.getQty() > optionRepository.findById(cart.getOptionId()).get().getStock()) {
+                    throw new OutOfStockException();
+            } else {
+                Orders orders = orderRepository.save(Orders.builder()
+                        .user(user)
+                        .build());
 
-            optionRepository.save(OptionList.builder()
-                    .id(orderDetail.getOptionId())
-                    .colors(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getColors())
-                    .size(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getSize())
-                    .product(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getProduct())
-                    .stock(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getStock()
-                            - orderDetail.getQty())
-                    .build());
+                OrderDetail orderDetail = orderDetailRepository.save(OrderDetail.builder()
+                        .address(user.getAddress())
+                        .userId(user.getId())
+                        .qty(orderOptionRequestDto.getQty())
+                        .optionId(cartRepository.findById(orderOptionRequestDto.getCartId())
+                                .get().getOptionId())
+                        .orders(orders)
+                        .product(cartRepository.findById(orderOptionRequestDto.getCartId())
+                                .get().getProduct())
+                        .build());
 
-
-            orderStockOutputDtos.add(OrderStockOutputDto.builder()
-                    .stock(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getStock())
-                    .color(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getColors().getName())
-                    .colorId(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getColors().getId())
-                    .size(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getSize().getType())
-                    .sizeId(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getSize().getId())
-                    .productId(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getProduct().getId())
-                    .optionId(optionRepository.findById(orderDetail.getOptionId())
-                            .orElseThrow(OptionNotFoundException::new).getId())
-                    .build());
-
+                optionRepository.save(OptionList.builder()
+                        .id(orderDetail.getOptionId())
+                        .colors(optionRepository.findById(orderDetail.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getColors())
+                        .size(optionRepository.findById(orderDetail.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getSize())
+                        .product(optionRepository.findById(orderDetail.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getProduct())
+                        .stock(optionRepository.findById(orderDetail.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getStock()
+                                - orderDetail.getQty())
+                        .build());
+            }
         });
 
         for (OrderOptionRequestDto orderOptionRequestDto : orderOptionRequestDtos) {
