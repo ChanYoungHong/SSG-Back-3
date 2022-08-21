@@ -52,6 +52,8 @@ public class QnaServiceImplement implements QnaService {
                     .qnaContent(qnA.getQnaContent())
                     .qnaTitle(qnA.getQnaTitle())
                     .qnaType(qnA.getQnaType())
+                    .regDate(qnA.getCreateDate())
+                    .updateDate(qnA.getUpdatedDate())
                     .build());
         });
         return responseProductQnaDtoList;

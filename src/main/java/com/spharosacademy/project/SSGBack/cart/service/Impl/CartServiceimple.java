@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -45,14 +44,13 @@ public class CartServiceimple implements CartService {
 
     @Override
     public Cart addProductToCart(CartInputDto cartInputDto) {
-        boolean isOverLap = false;
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
         User user = iUserRepository.findById(cartInputDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
-        Long duplicate = 0L;
+        Long duplicate;
         for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
             cartOptionDtos.add(CartOptionDto.builder()
                     .optionId(cartOptionDto.getOptionId())
@@ -68,7 +66,8 @@ public class CartServiceimple implements CartService {
                         .user(user)
                         .optionId(cartOptionDto.getOptionId())
                         .qty(cartOptionDto.getQty())
-                        .sizeId(optionRepository.findById(cartOptionDto.getOptionId()).get().getSize().getId())
+                        .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getSize().getId())
                         .colorId(optionRepository.findById(cartOptionDto.getOptionId())
                                 .orElseThrow(OptionNotFoundException::new).getColors().getId())
                         .build());

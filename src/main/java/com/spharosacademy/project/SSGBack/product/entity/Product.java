@@ -1,16 +1,10 @@
 package com.spharosacademy.project.SSGBack.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
-import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data

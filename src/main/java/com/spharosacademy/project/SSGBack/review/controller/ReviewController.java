@@ -3,8 +3,8 @@ package com.spharosacademy.project.SSGBack.review.controller;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDeleteDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDto;
-import com.spharosacademy.project.SSGBack.review.dto.output.ProductReviewResponseDto;
-import com.spharosacademy.project.SSGBack.review.dto.output.UserReviewResponseDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class ReviewController {
 
     //  상품에 대한 모든 리뷰 조회 하기
     @GetMapping("/product/{productId}")
-    public List<ProductReviewResponseDto> getAllByProductId(@PathVariable Long productId) {
+    public List<ResponseProductReviewDto> getAllByProductId(@PathVariable Long productId) {
         return reviewService.getAllByProductId(productId);
     }
 
@@ -52,7 +52,7 @@ public class ReviewController {
 //
     //사용자가 작성한 모든 리뷰 조회하는 화면
     @GetMapping("/user/{userId}")
-    public List<UserReviewResponseDto> getReviewByProductId(@PathVariable Long userId) {
-        return reviewService.getReviewByuserId(userId);
+    public List<ResponseUserReviewDto> getReviewByUserId(@PathVariable Long userId) {
+        return reviewService.getReviewByUserId(userId);
     }
 }

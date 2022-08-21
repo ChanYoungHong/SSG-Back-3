@@ -13,6 +13,7 @@ import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
+import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
@@ -110,12 +111,14 @@ public class ProductServiceImple implements ProductService {
         optionInputDtos.forEach(optionInputDto -> {
             Colors colors = null;
             if (optionInputDto.getColorId() != null) {
-                colors = colorRepository.findById(optionInputDto.getColorId()).get();
+                colors = colorRepository.findById(optionInputDto.getColorId())
+                        .orElseThrow(OptionNotFoundException::new);
             }
 
             Size size = null;
             if (optionInputDto.getSizeId() != null) {
-                size = sizeRepository.findById(optionInputDto.getSizeId()).get();
+                size = sizeRepository.findById(optionInputDto.getSizeId())
+                        .orElseThrow(OptionNotFoundException::new);
             }
 
             optionRepository.save(
@@ -128,24 +131,22 @@ public class ProductServiceImple implements ProductService {
             );
         });
 
-        requestProductDto.getInputDetailImgDtoList().forEach(createDetailImgDto -> {
-            productDetailImgRepository.save(
-                    ProductDetailImage.builder()
-                            .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
-                            .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
-                            .product(product)
-                            .build()
-            );
-        });
+        requestProductDto.getInputDetailImgDtoList().forEach
+                (createDetailImgDto -> productDetailImgRepository.save(
+                        ProductDetailImage.builder()
+                                .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
+                                .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
+                                .product(product)
+                                .build()
+                ));
 
-        requestProductDto.getInputTitleImgDtoList().forEach(createTitleImgDto -> {
-            productTitleImgRepository.save(
-                    ProductTitleImage.builder()
-                            .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
-                            .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
-                            .product(product)
-                            .build());
-        });
+        requestProductDto.getInputTitleImgDtoList().forEach
+                (createTitleImgDto -> productTitleImgRepository.save(
+                        ProductTitleImage.builder()
+                                .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
+                                .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
+                                .product(product)
+                                .build()));
 
         return product;
     }
@@ -160,21 +161,20 @@ public class ProductServiceImple implements ProductService {
         } else {
             for (Product product : productList) {
                 List<Review> reviewList = reviewRepository.findAllByProductId(product.getId());
-                reviewList.forEach(review -> {
-                    outputSearchProductDtos.add(OutputSearchProductDto.builder()
-                            .id(product.getId())
-                            .name(product.getName())
-                            .brand(product.getBrand())
-                            .mallTxt(product.getMallText())
-                            .oldPrice(product.getOldPrice())
-                            .newPrice(product.getNewPrice())
-                            .reviewCount(reviewRepository.countByProductId(product.getId()))
-                            .reviewScore(review.getReviewScore())
-                            .thumbnailImgUrl(product.getThumbnailUrl())
-                            .priceTxt(product.getPriceText())
-                            .regDate(product.getCreateDate())
-                            .build());
-                });
+                reviewList.forEach
+                        (review -> outputSearchProductDtos.add(OutputSearchProductDto.builder()
+                                .id(product.getId())
+                                .name(product.getName())
+                                .brand(product.getBrand())
+                                .mallTxt(product.getMallText())
+                                .oldPrice(product.getOldPrice())
+                                .newPrice(product.getNewPrice())
+                                .reviewCount(reviewRepository.countByProductId(product.getId()))
+                                .reviewScore(review.getReviewScore())
+                                .thumbnailImgUrl(product.getThumbnailUrl())
+                                .priceTxt(product.getPriceText())
+                                .regDate(product.getCreateDate())
+                                .build()));
 
             }
         }

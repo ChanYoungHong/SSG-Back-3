@@ -12,8 +12,8 @@ import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDeleteDt
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
-import com.spharosacademy.project.SSGBack.review.dto.output.ProductReviewResponseDto;
-import com.spharosacademy.project.SSGBack.review.dto.output.UserReviewResponseDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.exception.NotOrderProductException;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
@@ -60,10 +60,10 @@ public class ReviewServiceImplement implements ReviewService {
 
         requestReviewDto.getRequestReviewImageDtos().forEach(inputReviewImageDto ->
                 reviewImageRepository.save(ReviewImage.builder()
-                .reviewImgTxt(inputReviewImageDto.getReviewImgTxt())
-                .reviewImgUrl(inputReviewImageDto.getReviewImgUrl())
-                .review(review)
-                .build()));
+                        .reviewImgTxt(inputReviewImageDto.getReviewImgTxt())
+                        .reviewImgUrl(inputReviewImageDto.getReviewImgUrl())
+                        .review(review)
+                        .build()));
     }
 
     @Override
@@ -72,9 +72,9 @@ public class ReviewServiceImplement implements ReviewService {
     }
 
     @Override
-    public List<ProductReviewResponseDto> getAllByProductId(Long productId) {
+    public List<ResponseProductReviewDto> getAllByProductId(Long productId) {
         List<Review> reviewList = reviewRepository.findAllByProductId(productId);
-        List<ProductReviewResponseDto> productReviewResponseDtos = new ArrayList<>();
+        List<ResponseProductReviewDto> responseProductReviewDtos = new ArrayList<>();
 
         reviewList.forEach(review -> {
             List<OutputReviewImgDto> outputReviewImgDtos = new ArrayList<>();
@@ -88,7 +88,7 @@ public class ReviewServiceImplement implements ReviewService {
 
             OrderDetail detail = orderDetailRepository.findById(review.getOrderDetailId()).get();
             OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
-            productReviewResponseDtos.add(ProductReviewResponseDto.builder()
+            responseProductReviewDtos.add(ResponseProductReviewDto.builder()
                     .reviewId(review.getId())
                     .orderDetailId(detail.getId())
                     .reviewTitle(review.getReviewTitle())
@@ -96,6 +96,7 @@ public class ReviewServiceImplement implements ReviewService {
                     .userLoginId(review.getUser().getUserId())
                     .reviewScore(review.getReviewScore())
                     .regDate(review.getCreateDate())
+                    .updateDate(review.getUpdatedDate())
                     .color(optionList.getColors().getName())
                     .size(optionList.getSize().getType())
                     .outputReviewImgDtos(outputReviewImgDtos)
@@ -103,13 +104,13 @@ public class ReviewServiceImplement implements ReviewService {
 
         });
 
-        return productReviewResponseDtos;
+        return responseProductReviewDtos;
     }
 
     @Override
-    public List<UserReviewResponseDto> getReviewByuserId(Long userId) {
+    public List<ResponseUserReviewDto> getReviewByUserId(Long userId) {
         List<Review> reviewList = reviewRepository.findAllByUserId(userId);
-        List<UserReviewResponseDto> userReviewResponseDtos = new ArrayList<>();
+        List<ResponseUserReviewDto> responseUserReviewDtos = new ArrayList<>();
 
         reviewList.forEach(
                 review -> {
@@ -125,7 +126,7 @@ public class ReviewServiceImplement implements ReviewService {
                     OrderDetail detail = orderDetailRepository.findById(review.getOrderDetailId()).get();
                     OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
 
-                    userReviewResponseDtos.add(UserReviewResponseDto.builder()
+                    responseUserReviewDtos.add(ResponseUserReviewDto.builder()
                             .reviewId(review.getId())
                             .orderDetailId(detail.getId())
                             .productId(review.getProduct().getId())
@@ -136,6 +137,7 @@ public class ReviewServiceImplement implements ReviewService {
                             .color(optionList.getColors().getName())
                             .size(optionList.getSize().getType())
                             .regDate(review.getCreateDate())
+                            .updateDate(review.getUpdatedDate())
                             .userLoginId(review.getUser().getUserId())
                             .outputReviewImgDtos(outputReviewImgDtos)
                             .build());
@@ -143,13 +145,15 @@ public class ReviewServiceImplement implements ReviewService {
                 });
 
 
-        return userReviewResponseDtos;
+        return responseUserReviewDtos;
     }
 
     @Override
     public Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto) {
-        User user = iUserRepository.findById(requestUpdateReviewDto.getMemberId()).get();
-        Product product = productRepository.findById(requestUpdateReviewDto.getProductId()).get();
+        User user = iUserRepository.findById(requestUpdateReviewDto.getMemberId())
+                .orElseThrow(UserNotFoundException::new);
+        Product product = productRepository.findById(requestUpdateReviewDto.getProductId())
+                .orElseThrow(ProductNotFoundException::new);
 
         Review review = reviewRepository.save(Review.builder()
                 .reviewTitle(requestUpdateReviewDto.getReviewTitle())
@@ -163,11 +167,11 @@ public class ReviewServiceImplement implements ReviewService {
 
         requestUpdateReviewDto.getRequestUpdateReviewImgDtos().forEach(updateReviewImgDto ->
                 reviewImageRepository.save(ReviewImage.builder()
-                .id(updateReviewImgDto.getReviewImgId())
-                .reviewImgUrl(updateReviewImgDto.getReviewImgUrl())
-                .reviewImgTxt(updateReviewImgDto.getReviewImgTxt())
-                .review(review)
-                .build()));
+                        .id(updateReviewImgDto.getReviewImgId())
+                        .reviewImgUrl(updateReviewImgDto.getReviewImgUrl())
+                        .reviewImgTxt(updateReviewImgDto.getReviewImgTxt())
+                        .review(review)
+                        .build()));
 
         return null;
     }

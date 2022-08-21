@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserReviewResponseDto {
+public class ResponseUserReviewDto {
 
     private Long reviewId;
     private Long productId;
@@ -24,6 +24,7 @@ public class UserReviewResponseDto {
     private String reviewContent;
     private float reviewScore;
     private LocalDateTime regDate;
+    private LocalDateTime updateDate;
     private String userLoginId;
 
     List<OutputReviewImgDto> outputReviewImgDtos;
