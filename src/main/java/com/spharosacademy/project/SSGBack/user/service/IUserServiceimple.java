@@ -63,6 +63,7 @@ public class IUserServiceimple implements IUserService {
         for (OrderDetail orderDetail : orderDetails) {
             outputDtos.add(OrderOutputDto.builder()
                     .orderId(orderDetail.getOrders().getId())
+                    .orderDetailId(orderDetail.getId())
                     .userName(iUserRepository.findById(userId)
                             .orElseThrow(UserNotFoundException::new).getName())
                     .userAddress(iUserRepository.findById(userId).

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class OrderOutputDto {
 
     private Long orderId;
+    private Long orderDetailId;
     private String userName;
     private String userAddress;
     private String productName;

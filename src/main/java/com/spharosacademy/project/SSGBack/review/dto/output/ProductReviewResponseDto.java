@@ -6,20 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewResponseDto {
+public class ProductReviewResponseDto {
 
+    private Long reviewId;
     private String reviewTitle;
     private String reviewContent;
-    private float reviewScore;
-    private LocalDateTime regDate;
     private String userLoginId;
-
+    private Long orderDetailId;
+    private LocalDateTime regDate;
+    private float reviewScore;
+    private String color;
+    private String size;
     List<OutputReviewImgDto> outputReviewImgDtos;
 }

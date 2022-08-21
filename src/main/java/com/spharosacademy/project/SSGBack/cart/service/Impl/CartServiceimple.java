@@ -89,38 +89,6 @@ public class CartServiceimple implements CartService {
 
         }
 
-//        if (duplicate == null) {
-//            cartOptionDtos.forEach(cartOptionDto
-//                    -> {
-//                cartRepository.save(Cart.builder()
-//                        .product(product)
-//                        .user(user)
-//                        .optionId(cartOptionDto.getOptionId())
-//                        .qty(cartOptionDto.getQty())
-//                        .colorId(optionRepository.findById(cartOptionDto.getOptionId())
-//                                .orElseThrow(OptionNotFoundException::new).getColors().getId())
-//                        .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
-//                                .orElseThrow(OptionNotFoundException::new).getSize().getId())
-//                        .build());
-//            });
-//        } else {
-//            Long finalDuplicate = duplicate;
-//
-//            cartOptionDtos.forEach(cartOptionDto1 -> {
-//                cartRepository.save(Cart.builder()
-//                        .user(user)
-//                        .product(product)
-//                        .id(finalDuplicate)
-//                        .sizeId(optionRepository.findById(cartOptionDto1.getOptionId())
-//                                .orElseThrow(OptionNotFoundException::new).getSize().getId())
-//                        .optionId(cartRepository.findById(finalDuplicate).get().getOptionId())
-//                        .qty(cartOptionDto1.getQty() + cartOptionDto1.getQty())
-//                        .colorId(optionRepository.findById(cartOptionDto1.getOptionId())
-//                                .orElseThrow(OptionNotFoundException::new).getColors().getId())
-//                        .build());
-//            });
-//        }
-
 
         return null;
     }
@@ -186,7 +154,7 @@ public class CartServiceimple implements CartService {
                     .optionId(optionRepository.findById(orderDetail.getOptionId())
                             .orElseThrow(OptionNotFoundException::new).getId())
                     .build());
-//
+
         });
 
         for (OrderOptionRequestDto orderOptionRequestDto : orderOptionRequestDtos) {
