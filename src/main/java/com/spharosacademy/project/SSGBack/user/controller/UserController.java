@@ -44,14 +44,15 @@ public class UserController {
 
     @PutMapping("/modify/{memberId}")
     @ResponseStatus(HttpStatus.OK)
-    public User modifyUserInfo(@PathVariable Long memberId,
-                            @RequestBody UserOutputDto userOutputDto){
-        return userService.modifyUserInfo(memberId, userOutputDto);
+    public void modifyUserInfo(@PathVariable Long memberId,
+                               @RequestBody UserOutputDto userOutputDto) {
+
+        userService.modifyUserInfo(memberId, userOutputDto);
     }
 
     @DeleteMapping("/remove/{memberId}")
     public User removeUserInfo(@PathVariable Long memberId,
-                           @RequestBody UserOutputDto userOutputDto){
+                               @RequestBody UserOutputDto userOutputDto) {
         return userService.removeUserInfo(memberId, userOutputDto);
     }
 

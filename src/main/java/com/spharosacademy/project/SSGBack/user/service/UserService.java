@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.service;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
@@ -14,7 +15,7 @@ public interface UserService {
 
     List<User> findAllByUserId(Long userId);
 
-    User modifyUserInfo(Long memberId, UserOutputDto userOutputDto);
+    void modifyUserInfo(Long memberId,UserOutputDto userOutputDto);
 
     User removeUserInfo(Long memberId, UserOutputDto userOutputDto);
 

@@ -1,21 +1,17 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
-import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +28,6 @@ public class UserServieImpl implements UserService {
     @Override
     @Transactional
     public User registerUser(UserInputDto userInputDto) {
-
-
-        if(userRepository.existsByUserId(userInputDto.getUserId())){
-
-        }
 
         return userRepository.save(
             User.builder()
@@ -60,28 +51,41 @@ public class UserServieImpl implements UserService {
 
     @Override
     @Transactional
-    public User modifyUserInfo(Long memberId, UserOutputDto userOutputDto) {
+    public void modifyUserInfo(Long memberId, UserOutputDto userOutputDto) {
 
         Optional<User> result = Optional.ofNullable(
-            userRepository.findById(userOutputDto.getMemberId())
+            userRepository.findById(memberId)
                 .orElseThrow(MemberIdNotfound::new));
 
-        if (result.isPresent()) {
-            return userRepository.save(
-                User.builder()
-                    .memberId(userOutputDto.getMemberId())
-                    .userId(userOutputDto.getUserId())
-                    .userPwd(userOutputDto.getUserPwd())
-                    .userAddress(userOutputDto.getUserAddress())
-                    .userName(userOutputDto.getUserName())
-                    .userEmail(userOutputDto.getUserEmail())
-                    .userBirthDate(userOutputDto.getUserBirthDate())
-                    .gender(userOutputDto.getGender())
-                    .memberType(userOutputDto.getMemberType())
-                    .build()
-            );
+        List<UserEditInputDto> userEditInputDtoList = new ArrayList<>();
+
+        for (UserEditInputDto userEditInputDto : userOutputDto.getUserEditInputDtoList()) {
+            userEditInputDtoList.add(userEditInputDto.builder()
+                .userPhoneNumber(userEditInputDto.getUserPhoneNumber())
+                .userEmail(userEditInputDto.getUserEmail())
+                .build());
         }
-        return null;
+
+        if (result.isPresent()) {
+
+            userEditInputDtoList.forEach(userEditInputDto -> {
+                userRepository.save(
+                    User.builder()
+
+                        .memberId(result.get().getMemberId())
+                        .userId(result.get().getUserId())
+                        .userPwd(result.get().getUserPwd())
+                        .userAddress(result.get().getUserAddress())
+                        .userPhone(userEditInputDto.getUserPhoneNumber())
+                        .userName(result.get().getUsername())
+                        .userEmail(userEditInputDto.getUserEmail())
+                        .userBirthDate(result.get().getUserBirthDate())
+                        .gender(result.get().getGender())
+                        .memberType(result.get().getMemberType())
+                        .build()
+                );
+            });
+        }
     }
 
     @Override
@@ -100,11 +104,5 @@ public class UserServieImpl implements UserService {
 
         return null;
     }
-
-
-//    @Override
-//    public User dtoToEntity(UserInputDto userInputDto) {
-//        return UserService.super.dtoToEntity(userInputDto);
-//    }
 
 }

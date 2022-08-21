@@ -26,6 +26,7 @@ public class SecurityLoginController {
     public String loginUser(@RequestBody Map<String, String> user){
         User result = userRepository.findByUserEmail(user.get("userEmail"), false)
             .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
+
         return jwtTokenProvider.createToken(result.getUsername(), result.getRoles());
     }
 

@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.dto.request;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,5 +45,7 @@ public class UserInputDto {
 
     @Length(max = 6)
     private String role;
+
+
 
 }

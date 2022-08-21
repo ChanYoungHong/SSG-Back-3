@@ -1,6 +1,8 @@
 package com.spharosacademy.project.SSGBack.user.dto.response;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +26,6 @@ public class UserOutputDto {
     private String gender;
     private LocalDateTime userBirthDate, createdAt, updatedAt;
     private Boolean userDropCheck;
+
+    List<UserEditInputDto> userEditInputDtoList;
 }
