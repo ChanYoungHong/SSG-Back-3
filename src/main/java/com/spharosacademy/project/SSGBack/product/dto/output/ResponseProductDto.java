@@ -30,6 +30,8 @@ public class ResponseProductDto {
     private float oldPrice;
     private float newPrice;
     private float discountRate;
+    private Long reviewCount;
+    private Long qnaCount;
     private String explanation;
     private LocalDateTime regDate;
     List<PofCategorySS> pofCategorySSList;

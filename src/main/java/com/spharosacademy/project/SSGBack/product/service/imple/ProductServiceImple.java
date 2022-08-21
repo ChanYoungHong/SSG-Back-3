@@ -24,8 +24,12 @@ import com.spharosacademy.project.SSGBack.product.option.repository.OptionReposi
 import com.spharosacademy.project.SSGBack.product.option.repository.SizeRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
+import com.spharosacademy.project.SSGBack.review.entity.Review;
+import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +52,8 @@ public class ProductServiceImple implements ProductService {
     private final OptionRepository optionRepository;
     private final ColorRepository colorRepository;
     private final SizeRepository sizeRepository;
+    private final ReviewRepository reviewRepository;
+    private final QnaRepository qnaRepository;
 
 
     @Override
@@ -147,22 +153,29 @@ public class ProductServiceImple implements ProductService {
     @Override
     public List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable) {
         List<Product> productList = productRepository.findAllBysearchWord(keyword, pageable);
+
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
         } else {
             for (Product product : productList) {
-                outputSearchProductDtos.add(OutputSearchProductDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .brand(product.getBrand())
-                        .mallTxt(product.getMallText())
-                        .oldPrice(product.getOldPrice())
-                        .newPrice(product.getNewPrice())
-                        .thumbnailImgUrl(product.getThumbnailUrl())
-                        .priceTxt(product.getPriceText())
-                        .regDate(product.getCreateDate())
-                        .build());
+                List<Review> reviewList = reviewRepository.findAllByProductId(product.getId());
+                reviewList.forEach(review -> {
+                    outputSearchProductDtos.add(OutputSearchProductDto.builder()
+                            .id(product.getId())
+                            .name(product.getName())
+                            .brand(product.getBrand())
+                            .mallTxt(product.getMallText())
+                            .oldPrice(product.getOldPrice())
+                            .newPrice(product.getNewPrice())
+                            .reviewCount(reviewRepository.countByProductId(product.getId()))
+                            .reviewScore(review.getReviewScore())
+                            .thumbnailImgUrl(product.getThumbnailUrl())
+                            .priceTxt(product.getPriceText())
+                            .regDate(product.getCreateDate())
+                            .build());
+                });
+
             }
         }
 
@@ -281,6 +294,7 @@ public class ProductServiceImple implements ProductService {
                 .brand(recproduct.getBrand())
                 .priceText(recproduct.getPriceText())
                 .price(recproduct.getNewPrice())
+
                 .titleImgUrl(recproduct.getThumbnailUrl())
                 .regDate(recproduct.getCreateDate())
                 .build();
@@ -292,7 +306,8 @@ public class ProductServiceImple implements ProductService {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
-
+        Long reviewCount = reviewRepository.countByProductId(id);
+        Long qnaCount = qnaRepository.countByProductId(id);
         for (ProductDetailImage detailImage : detailImageList) {
             detailDtoList.add(OutputDetailImgDto.builder()
                     .productDetailImgTxt(detailImage.getProductDetailImgTxt())
@@ -314,7 +329,7 @@ public class ProductServiceImple implements ProductService {
         List<OptionList> optionList = optionRepository.findAllByProduct(product);
 
         for (OptionList option : optionList) {
-            log.info("");
+            log.info(Logger.ROOT_LOGGER_NAME);
 
             optionOutputDtoList.add(OptionOutputDto.builder()
                     .id(option.getId())
@@ -372,6 +387,8 @@ public class ProductServiceImple implements ProductService {
                 .mallTxt(product.getMallText())
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
+                .reviewCount(reviewCount)
+                .qnaCount(qnaCount)
                 .explanation(product.getExplanation())
                 .pofCategoryLList(categoryLlist)
                 .pofCategoryMList(categoryMList)

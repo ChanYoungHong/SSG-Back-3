@@ -21,6 +21,8 @@ public class OutputSearchProductDto {
     private String priceTxt;
     private float newPrice;
     private float oldPrice;
+    private Long reviewCount;
+    private float reviewScore;
     private String thumbnailImgUrl;
     private LocalDateTime regDate;
 }

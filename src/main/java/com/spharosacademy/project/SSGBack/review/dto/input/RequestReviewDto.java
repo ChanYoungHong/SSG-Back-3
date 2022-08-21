@@ -7,18 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
 @Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class UpdateReviewDto {
+@AllArgsConstructor
+public class RequestReviewDto {
 
-    private Long reviewId;
-    private Long memberId;
-    private Long productId;
+    private Long userId;
     private Long orderDetailId;
-    private float reviewScore;
     private String reviewTitle;
     private String reviewContent;
-    List<UpdateReviewImgDto> updateReviewImgDtos;
+    private float reviewScore;
+
+    List<RequestReviewImageDto> requestReviewImageDtos;
 }

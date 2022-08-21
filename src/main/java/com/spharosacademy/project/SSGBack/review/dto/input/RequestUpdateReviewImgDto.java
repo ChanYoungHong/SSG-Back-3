@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateReviewImgDto {
+public class RequestUpdateReviewImgDto {
     private Long reviewImgId;
     private String reviewImgUrl;
     private String reviewImgTxt;
