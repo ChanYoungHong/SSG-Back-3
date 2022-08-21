@@ -4,12 +4,18 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
+import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,17 +33,21 @@ public class UserServieImpl implements UserService {
     @Transactional
     public User registerUser(UserInputDto userInputDto) {
 
+
+        if(userRepository.existsByUserId(userInputDto.getUserId())){
+
+        }
+
         return userRepository.save(
             User.builder()
                 .userId(userInputDto.getUserId())
-                .userPwd(userInputDto.getUserPwd())
+                .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                 .userAddress(userInputDto.getUserAddress())
                 .userName(userInputDto.getUserName())
                 .userEmail(userInputDto.getUserEmail())
                 .userPhone(userInputDto.getUserPhoneNumber())
                 .userBirthDate(userInputDto.getUserBirthDate())
                 .gender(userInputDto.getGender())
-                .role(userInputDto.getRole())
                 .memberType(userInputDto.getMemberType())
                 .build()
         );
@@ -67,7 +77,6 @@ public class UserServieImpl implements UserService {
                     .userEmail(userOutputDto.getUserEmail())
                     .userBirthDate(userOutputDto.getUserBirthDate())
                     .gender(userOutputDto.getGender())
-                    .role(userOutputDto.getRole())
                     .memberType(userOutputDto.getMemberType())
                     .build()
             );
@@ -93,8 +102,9 @@ public class UserServieImpl implements UserService {
     }
 
 
-    @Override
-    public User dtoToEntity(UserInputDto userInputDto) {
-        return UserService.super.dtoToEntity(userInputDto);
-    }
+//    @Override
+//    public User dtoToEntity(UserInputDto userInputDto) {
+//        return UserService.super.dtoToEntity(userInputDto);
+//    }
+
 }
