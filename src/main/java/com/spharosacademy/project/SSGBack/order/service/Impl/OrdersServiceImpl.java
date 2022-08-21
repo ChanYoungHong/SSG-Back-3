@@ -6,8 +6,8 @@ import com.spharosacademy.project.SSGBack.order.dto.request.OrdersInputDto;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersOptioninputDto;
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersUpdateDto;
 import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
-import com.spharosacademy.project.SSGBack.order.dto.response.OrdersRemoveOutputDto;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
+import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.order.exception.OrderedProductNotFound;
 import com.spharosacademy.project.SSGBack.order.repo.OrdersRepository;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
@@ -121,7 +121,8 @@ public class OrdersServiceImpl implements OrdersService {
     public void editMyOrderDetail(Long memberId, OrdersInputDto ordersInputDto) {
 
         Optional<User> user = userRepository.findById(ordersInputDto.getMemberId());
-        Optional<OrderList> orderedUser = orderListRepository.findById(ordersInputDto.getOrdersUpdateDtoList().get(0).getOrderListId());
+        Optional<OrderList> orderedUser = orderListRepository.findById(
+            ordersInputDto.getOrdersUpdateDtoList().get(0).getOrderListId());
         Optional<Product> product = productRepository.findById(ordersInputDto.getProductId());
         Optional<Orders> orders = ordersRepository.findById(ordersInputDto.getOrdersId());
 
@@ -165,21 +166,20 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public void removeMyOrderAndOrderList(Long orderId) {
 
-        Optional<Orders> orders = ordersRepository.findById(orderId);
+        Optional<Orders> orders = Optional.ofNullable(
+            ordersRepository.findById(orderId).orElseThrow(OrderIdNotFound::new));
 
-        if(orders.isPresent()){
+        if (orders.isPresent()) {
 
             List<OrderList> orderLists = orderListRepository.findAllByOrders(orders.get());
 
-            for (OrderList orderList: orderLists) {
+            for (OrderList orderList : orderLists) {
                 orderListRepository.deleteById(orderList.getOrderListId());
             }
-
             ordersRepository.deleteById(orderId);
         }
-
-
     }
+
 }
 
 
