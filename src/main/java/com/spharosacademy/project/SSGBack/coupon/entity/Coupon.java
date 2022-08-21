@@ -1,11 +1,11 @@
 package com.spharosacademy.project.SSGBack.coupon.entity;
 
-import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +32,9 @@ public class Coupon extends BaseEntity {
 
     private boolean expiredStatus;
 
+    private String couponCondition;
+
     @ManyToOne
+    @JoinColumn(name = "member_id")
     private User user;
 }
