@@ -55,6 +55,7 @@ public class CategorySServiceimple implements CategorySService {
     public CategoryS editCategoryS(RequestCategorySDto categorySDto) {
 
         Optional<CategoryM> categoryS = categoryMRepository.findById(categorySDto.getId());
+        categoryMRepository.findById(categorySDto.getCategoryMId()).get().getId();
         if (categoryS.isPresent()) {
             categorySRepository.save(
                     CategoryS.builder()
