@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseWishListDto {
 
+    private Long wishListId;
     private Long productId;
     private String productName;
     private String mallTxt;

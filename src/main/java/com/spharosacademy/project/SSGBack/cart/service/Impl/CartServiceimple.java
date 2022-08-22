@@ -60,7 +60,6 @@ public class CartServiceimple implements CartService {
             duplicate = cartRepository.findByUserIdAndOptionId(user.getId(), cartOptionDto.getOptionId());
 
             if (duplicate == null) {
-
                 cartRepository.save(Cart.builder()
                         .product(product)
                         .user(user)

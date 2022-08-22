@@ -11,12 +11,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/wishList")
 @RequiredArgsConstructor
+@CrossOrigin
 public class WishListController {
 
     private final WishListService wishListService;
 
     @PostMapping("/add")
-    public void addWishList(@RequestBody RequestWishListDto requestWishListDto){
+    public void addWishList(@RequestBody RequestWishListDto requestWishListDto) {
         wishListService.addProduct(requestWishListDto);
     }
 
@@ -26,7 +27,7 @@ public class WishListController {
     }
 
     @DeleteMapping("/delete/{wishlistId}")
-    public void deleteWishList(@PathVariable Long wishlistId){
+    public void deleteWishList(@PathVariable Long wishlistId) {
         wishListService.deleteWishList(wishlistId);
     }
 }

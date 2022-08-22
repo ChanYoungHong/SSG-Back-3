@@ -28,12 +28,19 @@ public class WishListServiceImplement implements WishListService {
     public void addProduct(RequestWishListDto requestWishListDto) {
         Optional<Product> product = productRepository.findById(requestWishListDto.getProductId());
         Optional<User> user = iUserRepository.findById(requestWishListDto.getUserId());
-
+        Long duplicate;
         if (product.isPresent() && user.isPresent()) {
-            wishListRepository.save(WishList.builder()
-                    .product(product.get())
-                    .user(user.get())
-                    .build());
+            duplicate = wishListRepository.findByUserIdAndProductId(requestWishListDto.getUserId()
+                    , requestWishListDto.getProductId());
+            if (duplicate == null) {
+                wishListRepository.save(WishList.builder()
+                        .product(product.get())
+                        .user(user.get())
+                        .build());
+            } else {
+                wishListRepository.deleteById(duplicate);
+            }
+
         }
     }
 
@@ -44,6 +51,7 @@ public class WishListServiceImplement implements WishListService {
 
         for (WishList wishList : wishLists) {
             responseWishListDtos.add(ResponseWishListDto.builder()
+                    .wishListId(wishList.getId())
                     .productId(wishList.getProduct().getId())
                     .productName(wishList.getProduct().getName())
                     .price(wishList.getProduct().getNewPrice())
