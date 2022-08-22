@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.user.service;
+package com.spharosacademy.project.SSGBack.user.service.impl;
 
 import com.spharosacademy.project.SSGBack.order.dto.output.OrderOutputDto;
 import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
@@ -10,6 +10,7 @@ import com.spharosacademy.project.SSGBack.product.option.repository.OptionReposi
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
