@@ -20,17 +20,15 @@ import java.util.List;
 @Builder
 public class ResponseProductDto {
 
-    private Long id;
-    private String productName;
-    private String mallTxt;
-    private String productBrand;
-    private int productCnt;
+    private Long pid;
+    private String name;
+    private String mall;
+    private String brand;
     private String thumbnailImgUrl;
     private int sellAmount;
-    private float oldPrice;
-    private float newPrice;
-    private float discountRate;
-    private String priceText;
+    private float oprice;
+    private float nprice;
+    private float drate;
     ReviewTotalDto reviewTotalDto;
     private Long qnaCount;
     private String explanation;

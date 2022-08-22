@@ -15,14 +15,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class OutputSearchProductDto {
 
-    private Long id;
+    private Long pid;
     private String name;
     private String brand;
-    private String mallTxt;
-    private String priceTxt;
-    private float newPrice;
-    private float oldPrice;
-    private float discountRate;
+    private String mall;
+    private float nprice;
+    private float oprice;
+    private float drate;
     private ReviewTotalDto reviewTotalDto;
     private String thumbnailImgUrl;
     private LocalDateTime regDate;

@@ -14,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewImage {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
