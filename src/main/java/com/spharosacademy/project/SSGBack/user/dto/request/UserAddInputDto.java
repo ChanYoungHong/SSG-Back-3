@@ -1,8 +1,5 @@
 package com.spharosacademy.project.SSGBack.user.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +17,7 @@ import org.hibernate.validator.constraints.Length;
 public class UserAddInputDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
-    private String userId;
+    private String loginId;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String userPwd;
