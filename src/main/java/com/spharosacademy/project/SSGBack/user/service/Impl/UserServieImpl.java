@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
+import com.spharosacademy.project.SSGBack.user.exception.UserdropCheckNotfound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import java.util.ArrayList;
@@ -100,8 +101,9 @@ public class UserServieImpl implements UserService {
             if (userOutputDto.getUserDropCheck().equals(true)) {
                 userRepository.deleteById(userOutputDto.getMemberId());
             }
+        } else {
+            new UserdropCheckNotfound();
         }
-
         return null;
     }
 

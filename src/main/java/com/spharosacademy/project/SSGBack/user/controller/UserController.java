@@ -41,15 +41,15 @@ public class UserController {
         return userService.findAllByUserId(userId);
     }
 
-
+    // 회원정보 변경과 수정
     @PutMapping("/modify/{memberId}")
     @ResponseStatus(HttpStatus.OK)
     public void modifyUserInfo(@PathVariable Long memberId,
                                @RequestBody UserOutputDto userOutputDto) {
-
         userService.modifyUserInfo(memberId, userOutputDto);
     }
 
+    // 회원 탈퇴, 삭제
     @DeleteMapping("/remove/{memberId}")
     public User removeUserInfo(@PathVariable Long memberId,
                                @RequestBody UserOutputDto userOutputDto) {
