@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.review.sevice.impl;
 
-import com.spharosacademy.project.SSGBack.order.entity.OrderDetail;
-import com.spharosacademy.project.SSGBack.order.repository.OrderDetailRepository;
+import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
+import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
@@ -37,23 +37,23 @@ public class ReviewServiceImplement implements ReviewService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final ReviewImageRepository reviewImageRepository;
-    private final OrderDetailRepository orderDetailRepository;
+    private final OrderListRepository orderListRepository;
     private final OptionRepository optionRepository;
 
     @Override
     public void addReview(RequestReviewDto requestReviewDto) {
 
-        OrderDetail orderDetail = orderDetailRepository.findById(requestReviewDto.getOrderDetailId())
+        OrderList orderList = orderListRepository.findById(requestReviewDto.getOrderDetailId())
                 .orElseThrow(NotOrderProductException::new);
-        Product product = productRepository.findById(orderDetail.getProduct().getId())
+        Product product = productRepository.findById(orderList.getProduct().getId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = userRepository.findById(orderDetail.getUserId())
+        User user = userRepository.findById(orderList.getMemberId())
                 .orElseThrow(UserNotFoundException::new);
 
         Review review = reviewRepository.save(Review.builder()
                 .product(product)
                 .user(user)
-                .orderDetailId(orderDetail.getId())
+                .orderDetailId(orderList.getOrderListId())
                 .reviewContent(requestReviewDto.getReviewContent())
                 .reviewScore(requestReviewDto.getReviewScore())
                 .reviewTitle(requestReviewDto.getReviewTitle())
@@ -87,11 +87,11 @@ public class ReviewServiceImplement implements ReviewService {
                         .build());
             }
             ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(productId);
-            OrderDetail detail = orderDetailRepository.findById(review.getOrderDetailId()).get();
+            OrderList detail = orderListRepository.findById(review.getOrderDetailId()).get();
             OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
             responseProductReviewDtos.add(ResponseProductReviewDto.builder()
                     .reviewId(review.getId())
-                    .orderDetailId(detail.getId())
+                    .orderDetailId(detail.getOrderListId())
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
                     .userLoginId(review.getUser().getUserId())
@@ -124,12 +124,12 @@ public class ReviewServiceImplement implements ReviewService {
                                 .build());
                     }
 
-                    OrderDetail detail = orderDetailRepository.findById(review.getOrderDetailId()).get();
+                    OrderList detail = orderListRepository.findById(review.getOrderDetailId()).get();
                     OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
 
                     responseUserReviewDtos.add(ResponseUserReviewDto.builder()
                             .reviewId(review.getId())
-                            .orderDetailId(detail.getId())
+                            .orderDetailId(detail.getOrderListId())
                             .productId(review.getProduct().getId())
                             .productName(review.getProduct().getName())
                             .reviewContent(review.getReviewContent())

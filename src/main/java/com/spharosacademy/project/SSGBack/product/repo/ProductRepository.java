@@ -11,6 +11,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p from Product AS p where p.name like %:searchWord% " +
         "or p.brand like %:searchWord%")
-    List<Product> findAllBysearchWord(@Param("searchWord") String searchWord, Pageable pageable);
+    List<Product> findAllBysearchWord(@Param("searchWord") String searchWord);
 
 }

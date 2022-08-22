@@ -31,8 +31,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
-    private Long memberId;
+    private Long id;
 
     // 사용자 ID
     @Column(name = "user_id")

@@ -34,8 +34,4 @@ public class Cart {
 
     @ManyToOne
     private Product product;
-
-    public void addCount(float qty){
-        this.qty += qty;
-    }
 }

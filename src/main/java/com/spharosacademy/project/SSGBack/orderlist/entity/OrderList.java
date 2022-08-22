@@ -51,17 +51,15 @@ public class OrderList extends BaseEntity {
     @Column(name = "member_id")
     private Long memberId;
 
-    private Long qty;
+    private int qty;
 
     private String userPhoneNumber;
     private String userEmail;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
     private Orders orders;
 
 }

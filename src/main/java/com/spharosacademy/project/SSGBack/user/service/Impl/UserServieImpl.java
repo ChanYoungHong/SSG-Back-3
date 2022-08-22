@@ -75,7 +75,7 @@ public class UserServieImpl implements UserService {
                 userRepository.save(
                     User.builder()
 
-                        .memberId(result.get().getMemberId())
+                        .id(result.get().getId())
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
                         .userAddress(result.get().getUserAddress())

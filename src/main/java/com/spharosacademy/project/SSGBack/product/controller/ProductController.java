@@ -68,10 +68,8 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query
-            , @PageableDefault(size = 20, sort = "createDate", direction = Sort.Direction.ASC)
-                                                                Pageable pageable) {
-        return productService.searchProductByWord(query, pageable);
+    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query) {
+        return productService.searchProductByWord(query);
     }
 
 }

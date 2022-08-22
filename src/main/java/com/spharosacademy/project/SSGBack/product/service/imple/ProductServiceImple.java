@@ -152,8 +152,8 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable) {
-        List<Product> productList = productRepository.findAllBysearchWord(keyword, pageable);
+    public List<OutputSearchProductDto> searchProductByWord(String keyword) {
+        List<Product> productList = productRepository.findAllBysearchWord(keyword);
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
             System.out.println("검색 결과가 없습니다");

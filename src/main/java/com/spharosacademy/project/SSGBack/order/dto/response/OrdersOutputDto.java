@@ -23,8 +23,8 @@ public class OrdersOutputDto {
     private String userPhoneNumber;
     private String orderMsg;
     private String productName;
-    private Long productPrice;
-    private Long qty;
+    private float productPrice;
+    private int qty;
 
 //    List<OrdersOptionOutputDto> orderOptionOutputDtoList;
 }
