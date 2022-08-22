@@ -6,8 +6,8 @@ import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
-import org.springframework.data.domain.Pageable;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface ProductService {

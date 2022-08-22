@@ -18,8 +18,11 @@ import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundExcep
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
+import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.domain.User;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +37,7 @@ import java.util.List;
 @Slf4j
 public class CartServiceimple implements CartService {
 
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final OptionRepository optionRepository;
@@ -47,7 +50,7 @@ public class CartServiceimple implements CartService {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = iUserRepository.findById(cartInputDto.getUserId())
+        User user = userRepository.findById(cartInputDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         Long duplicate;
@@ -57,7 +60,7 @@ public class CartServiceimple implements CartService {
                     .qty(cartOptionDto.getQty())
                     .build());
 
-            duplicate = cartRepository.findByUserIdAndOptionId(user.getId(), cartOptionDto.getOptionId());
+            duplicate = cartRepository.findByUserIdAndOptionId(user.getMemberId(), cartOptionDto.getOptionId());
 
             if (duplicate == null) {
 
@@ -118,8 +121,8 @@ public class CartServiceimple implements CartService {
             Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
             Product product = productRepository.findById(cart.getProduct().getId()).get();
             OrderDetail orderDetail = orderDetailRepository.save(OrderDetail.builder()
-                    .address(user.getAddress())
-                    .userId(user.getId())
+                    .address(user.getUserAddress())
+                    .userId(user.getMemberId())
                     .qty(orderOptionRequestDto.getQty())
                     .optionId(cartRepository.findById(orderOptionRequestDto.getCartId())
                             .get().getOptionId())

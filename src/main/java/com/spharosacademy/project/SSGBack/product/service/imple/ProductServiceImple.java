@@ -23,15 +23,15 @@ import com.spharosacademy.project.SSGBack.product.option.entity.Size;
 import com.spharosacademy.project.SSGBack.product.option.repository.ColorRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.option.repository.SizeRepository;
-import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
+import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
+import java.awt.print.Pageable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 

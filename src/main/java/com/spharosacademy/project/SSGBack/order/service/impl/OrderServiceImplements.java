@@ -13,8 +13,8 @@ import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundExceptio
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImplements implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
     private final OptionRepository optionRepository;
@@ -44,7 +44,7 @@ public class OrderServiceImplements implements OrderService {
         orderDetailRepository.save(OrderDetail.builder()
                 .product(product)
                 .optionId(optionList.getId())
-                .address(user.getAddress())
+                .address(user.getUserAddress())
                 .qty(orderInputDto.getQty())
                 .totalPrice(orderInputDto.getQty() * product.getNewPrice())
                 .orders(orders)

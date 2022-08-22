@@ -4,24 +4,19 @@ import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.OutputSearchProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
-import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+import java.awt.print.Pageable;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -74,7 +69,8 @@ public class ProductController {
 
     @GetMapping("/search")
     public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query
-            , @PageableDefault(size = 20, sort = "createDate", direction = Sort.Direction.ASC) Pageable pageable) {
+            , @PageableDefault(size = 20, sort = "createDate", direction = Sort.Direction.ASC)
+                                                                Pageable pageable) {
         return productService.searchProductByWord(query, pageable);
     }
 

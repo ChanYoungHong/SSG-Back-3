@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.category.dto.input;
+package com.spharosacademy.project.SSGBack.user.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class RequestCategoryLDto {
+public class UserEditInputDto {
 
-    private int id;
-    private String name;
-
+    private String userPhoneNumber;
+    private String userEmail;
 }

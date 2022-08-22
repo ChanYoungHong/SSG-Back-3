@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 
+@SpringBootApplication(scanBasePackages = "com.spharosacademy")
 @EnableJpaAuditing
-@SpringBootApplication
 public class SsgBackApplication {
 
     public static void main(String[] args) {
