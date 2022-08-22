@@ -34,7 +34,7 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public LoginSuccessOutputDto createToken(String userPk, String roles) {
+    public String createToken(String userPk, String roles) {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles", roles);
         Date now = new Date();

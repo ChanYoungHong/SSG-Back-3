@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginSuccessOutputDto {
 
-    private boolean isSuccess;
+    private String isSuccess;
     private String message;
     private String result;
+    private String userEmail;
+    private String userPwd;
 
 }
