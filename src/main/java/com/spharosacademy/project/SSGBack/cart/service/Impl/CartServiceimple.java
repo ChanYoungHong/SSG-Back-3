@@ -15,12 +15,11 @@ import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
-import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ import java.util.List;
 @Slf4j
 public class CartServiceimple implements CartService {
 
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final OptionRepository optionRepository;
@@ -47,7 +46,7 @@ public class CartServiceimple implements CartService {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = iUserRepository.findById(cartInputDto.getUserId())
+        User user = userRepository.findById(cartInputDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
@@ -75,7 +74,7 @@ public class CartServiceimple implements CartService {
     @Override
     public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {
         Cart cart = cartRepository.findById(cartOrderRequestDto.getUserId()).get();
-        User user = iUserRepository.findById(cartOrderRequestDto.getUserId())
+        User user = userRepository.findById(cartOrderRequestDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         orderRepository.save(Orders.builder()

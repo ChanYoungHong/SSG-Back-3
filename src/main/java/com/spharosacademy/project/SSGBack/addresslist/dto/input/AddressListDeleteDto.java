@@ -1,16 +1,18 @@
-package com.spharosacademy.project.SSGBack.review.Image.dto;
+package com.spharosacademy.project.SSGBack.addresslist.dto.input;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+public class AddressListDeleteDto {
 
-public class InputReviewImgDto {
-
-    private String reviewImgUrl;
+    private Long userId;
+    private int addressId;
 }
+
