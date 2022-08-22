@@ -19,11 +19,8 @@ import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundExceptio
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
-import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
-import com.spharosacademy.project.SSGBack.user.domain.User;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -96,7 +93,7 @@ public class CartServiceimple implements CartService {
 
     @Override
     public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {
-        User user = iUserRepository.findById(cartOrderRequestDto.getUserId())
+        User user = userRepository.findById(cartOrderRequestDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         List<OrderOptionRequestDto> orderOptionRequestDtos = new ArrayList<>();
@@ -186,8 +183,8 @@ public class CartServiceimple implements CartService {
                 .productid(cart.getProduct().getId())
                 .productName(cart.getProduct().getName())
                 .titleImgUrl(cart.getProduct().getThumbnailUrl())
-                .useraddress(cart.getUser().getAddress())
-                .username(cart.getUser().getName())
+                .useraddress(cart.getUser().getUserAddress())
+                .username(cart.getUser().getUsername())
                 .productBrand(cart.getProduct().getBrand())
                 .price(cart.getProduct().getNewPrice())
                 .optionCartOutputDto(OptionCartOutputDto.builder()
@@ -212,8 +209,8 @@ public class CartServiceimple implements CartService {
                     .productid(cart.getProduct().getId())
                     .productName(cart.getProduct().getName())
                     .titleImgUrl(cart.getProduct().getThumbnailUrl())
-                    .useraddress(cart.getUser().getAddress())
-                    .username(cart.getUser().getName())
+                    .useraddress(cart.getUser().getUserAddress())
+                    .username(cart.getUser().getUsername())
                     .productBrand(cart.getProduct().getBrand())
                     .price(cart.getProduct().getNewPrice())
                     .qty(cart.getQty())

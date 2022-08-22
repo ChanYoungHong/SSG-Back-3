@@ -16,7 +16,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Coupon addCoupon(CouponInputDto couponInputDto) {
 
-        return couponRepository.save();
+        return null;
     }
 
 }

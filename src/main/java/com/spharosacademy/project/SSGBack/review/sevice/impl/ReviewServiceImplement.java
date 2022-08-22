@@ -7,7 +7,7 @@ import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundExcep
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
-import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
+import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDeleteDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDto;
@@ -21,8 +21,8 @@ import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class ReviewServiceImplement implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
     private final ReviewImageRepository reviewImageRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final OptionRepository optionRepository;
@@ -47,7 +47,7 @@ public class ReviewServiceImplement implements ReviewService {
                 .orElseThrow(NotOrderProductException::new);
         Product product = productRepository.findById(orderDetail.getProduct().getId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = iUserRepository.findById(orderDetail.getUserId())
+        User user = userRepository.findById(orderDetail.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         Review review = reviewRepository.save(Review.builder()
@@ -151,7 +151,7 @@ public class ReviewServiceImplement implements ReviewService {
 
     @Override
     public Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto) {
-        User user = iUserRepository.findById(requestUpdateReviewDto.getMemberId())
+        User user = userRepository.findById(requestUpdateReviewDto.getMemberId())
                 .orElseThrow(UserNotFoundException::new);
         Product product = productRepository.findById(requestUpdateReviewDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);

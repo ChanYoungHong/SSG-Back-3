@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.orderlist.dto.request;
 
-import com.spharosacademy.project.SSGBack.tmpProduct.Product;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.util.List;

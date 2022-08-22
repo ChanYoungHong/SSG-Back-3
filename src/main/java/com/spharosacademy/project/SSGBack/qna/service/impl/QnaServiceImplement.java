@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.qna.service.impl;
 
 import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
+import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.qna.dto.input.RequestDeleteQnaDto;
 import com.spharosacademy.project.SSGBack.qna.dto.input.RequestQnaDto;
 import com.spharosacademy.project.SSGBack.qna.dto.input.RequestUpdateQnaDto;
@@ -9,8 +9,8 @@ import com.spharosacademy.project.SSGBack.qna.dto.output.ResponseProductQnaDto;
 import com.spharosacademy.project.SSGBack.qna.entity.QnA;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
 import com.spharosacademy.project.SSGBack.qna.service.QnaService;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +23,11 @@ public class QnaServiceImplement implements QnaService {
 
     private final QnaRepository qnaRepository;
     private final ProductRepository productRepository;
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void addQna(RequestQnaDto requestQnaDto) {
-        User user = iUserRepository.findById(requestQnaDto.getUserId()).get();
+        User user = userRepository.findById(requestQnaDto.getUserId()).get();
         Product product = productRepository.findById(requestQnaDto.getProductId()).get();
         qnaRepository.save(QnA.builder()
                 .user(user)
@@ -62,7 +62,7 @@ public class QnaServiceImplement implements QnaService {
     @Override
     public QnA editQna(RequestUpdateQnaDto requestUpdateQnaDto) {
         Product product = productRepository.findById(requestUpdateQnaDto.getProductId()).get();
-        User user = iUserRepository.findById(requestUpdateQnaDto.getMemberId()).get();
+        User user = userRepository.findById(requestUpdateQnaDto.getMemberId()).get();
         QnA qnA = qnaRepository.save(QnA.builder()
                 .product(product)
                 .user(user)

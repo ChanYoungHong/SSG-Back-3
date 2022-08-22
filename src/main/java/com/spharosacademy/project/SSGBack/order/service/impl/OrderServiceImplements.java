@@ -12,7 +12,7 @@ import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundExcep
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
-import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
+import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
