@@ -19,7 +19,7 @@ public class OrderDetail extends BaseTimeEntity {
     private Long id;
     private String address;
     private Long optionId;
-    private float qty;
+    private int qty;
     private float totalPrice;
     private Long userId;
 

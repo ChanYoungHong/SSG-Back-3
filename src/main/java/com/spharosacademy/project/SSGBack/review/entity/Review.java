@@ -21,7 +21,7 @@ public class Review extends BaseTimeEntity {
     private Long id;
     private String reviewContent;
     private String reviewTitle;
-    private float reviewScore;
+    private double reviewScore;
     private Long orderDetailId;
 
     @ManyToOne

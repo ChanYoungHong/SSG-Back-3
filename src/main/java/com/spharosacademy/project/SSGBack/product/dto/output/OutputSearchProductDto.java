@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
+import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,8 +22,8 @@ public class OutputSearchProductDto {
     private String priceTxt;
     private float newPrice;
     private float oldPrice;
-    private Long reviewCount;
-    private float reviewScore;
+    private float discountRate;
+    private ReviewTotalDto reviewTotalDto;
     private String thumbnailImgUrl;
     private LocalDateTime regDate;
 }

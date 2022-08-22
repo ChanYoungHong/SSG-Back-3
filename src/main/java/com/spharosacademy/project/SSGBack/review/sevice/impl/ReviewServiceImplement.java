@@ -14,6 +14,7 @@ import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDt
 import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.exception.NotOrderProductException;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
@@ -85,7 +86,7 @@ public class ReviewServiceImplement implements ReviewService {
                         .reviewImgTxt(reviewImage.getReviewImgTxt())
                         .build());
             }
-
+            ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(productId);
             OrderDetail detail = orderDetailRepository.findById(review.getOrderDetailId()).get();
             OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
             responseProductReviewDtos.add(ResponseProductReviewDto.builder()
@@ -94,7 +95,7 @@ public class ReviewServiceImplement implements ReviewService {
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
                     .userLoginId(review.getUser().getUserId())
-                    .reviewScore(review.getReviewScore())
+                    .reviewTotalDto(reviewTotalDto)
                     .regDate(review.getCreateDate())
                     .updateDate(review.getUpdatedDate())
                     .color(optionList.getColors().getName())

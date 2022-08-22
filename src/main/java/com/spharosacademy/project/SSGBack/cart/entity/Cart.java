@@ -20,7 +20,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private float qty;
+    private int qty;
     private Long optionId;
 
     @Column(nullable = true)

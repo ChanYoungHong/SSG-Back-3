@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.dto.output;
 
+import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,9 @@ public class ResponseRecommendProductDto {
     private String mallText;
     private String brand;
     private String priceText;
-    private float price;
+    private float oldPrice;
+    private float newPrice;
+    private float discountRate;
+    ReviewTotalDto reviewTotalDto;
     private LocalDateTime regDate;
 }

@@ -21,5 +21,5 @@ public class OrderOutputDto {
     private String size;
     private float oldPrice;
     private float newPrice;
-    private float qty;
+    private int qty;
 }

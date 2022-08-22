@@ -22,10 +22,9 @@ public class ResponseUserReviewDto {
     private String color;
     private String size;
     private String reviewContent;
-    private float reviewScore;
+    private double reviewScore;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
     private String userLoginId;
-
     List<OutputReviewImgDto> outputReviewImgDtos;
 }

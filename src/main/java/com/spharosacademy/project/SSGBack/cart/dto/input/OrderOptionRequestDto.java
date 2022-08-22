@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class OrderOptionRequestDto {
 
     private Long cartId;
-    private float qty;
+    private int qty;
 }

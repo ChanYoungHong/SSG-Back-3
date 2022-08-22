@@ -17,5 +17,5 @@ public class OrderInputDto {
     private Long productId;
     private Long optionId;
     private Long cartId;
-    private float qty;
+    private int qty;
 }

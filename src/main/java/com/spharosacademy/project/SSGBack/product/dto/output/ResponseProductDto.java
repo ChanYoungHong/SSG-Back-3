@@ -3,6 +3,7 @@ package com.spharosacademy.project.SSGBack.product.dto.output;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputDetailImgDto;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputTitleImgDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,16 +22,16 @@ public class ResponseProductDto {
 
     private Long id;
     private String productName;
-    private String priceText;
+    private String mallTxt;
     private String productBrand;
     private int productCnt;
-    private String mallTxt;
     private String thumbnailImgUrl;
     private int sellAmount;
     private float oldPrice;
     private float newPrice;
     private float discountRate;
-    private Long reviewCount;
+    private String priceText;
+    ReviewTotalDto reviewTotalDto;
     private Long qnaCount;
     private String explanation;
     private LocalDateTime regDate;

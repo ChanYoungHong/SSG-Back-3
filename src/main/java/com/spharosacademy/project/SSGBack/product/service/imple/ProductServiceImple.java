@@ -26,7 +26,7 @@ import com.spharosacademy.project.SSGBack.product.option.repository.SizeReposito
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
-import com.spharosacademy.project.SSGBack.review.entity.Review;
+import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -154,27 +154,27 @@ public class ProductServiceImple implements ProductService {
     @Override
     public List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable) {
         List<Product> productList = productRepository.findAllBysearchWord(keyword, pageable);
-
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
         } else {
             for (Product product : productList) {
-                List<Review> reviewList = reviewRepository.findAllByProductId(product.getId());
-                reviewList.forEach
-                        (review -> outputSearchProductDtos.add(OutputSearchProductDto.builder()
-                                .id(product.getId())
-                                .name(product.getName())
-                                .brand(product.getBrand())
-                                .mallTxt(product.getMallText())
-                                .oldPrice(product.getOldPrice())
-                                .newPrice(product.getNewPrice())
-                                .reviewCount(reviewRepository.countByProductId(product.getId()))
-                                .reviewScore(review.getReviewScore())
-                                .thumbnailImgUrl(product.getThumbnailUrl())
-                                .priceTxt(product.getPriceText())
-                                .regDate(product.getCreateDate())
-                                .build()));
+                log.info("df");
+                ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
+                outputSearchProductDtos.add(OutputSearchProductDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .brand(product.getBrand())
+                        .mallTxt(product.getMallText())
+                        .oldPrice(product.getOldPrice())
+                        .newPrice(product.getNewPrice())
+                        .discountRate(product.getDiscountRate())
+                        .reviewTotalDto(reviewTotalDto)
+                        .thumbnailImgUrl(product.getThumbnailUrl())
+                        .priceTxt(product.getPriceText())
+                        .regDate(product.getCreateDate())
+                        .build());
+
 
             }
         }
@@ -287,14 +287,17 @@ public class ProductServiceImple implements ProductService {
     @Override
     public ResponseRecommendProductDto getRecommendProductById(Long id) {
         Product recproduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(id);
         return ResponseRecommendProductDto.builder()
                 .id(recproduct.getId())
                 .name(recproduct.getName())
                 .mallText(recproduct.getMallText())
                 .brand(recproduct.getBrand())
                 .priceText(recproduct.getPriceText())
-                .price(recproduct.getNewPrice())
-
+                .oldPrice(recproduct.getOldPrice())
+                .newPrice(recproduct.getNewPrice())
+                .discountRate(recproduct.getDiscountRate())
+                .reviewTotalDto(reviewTotalDto)
                 .titleImgUrl(recproduct.getThumbnailUrl())
                 .regDate(recproduct.getCreateDate())
                 .build();
@@ -306,7 +309,7 @@ public class ProductServiceImple implements ProductService {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
-        Long reviewCount = reviewRepository.countByProductId(id);
+        ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
         Long qnaCount = qnaRepository.countByProductId(id);
         for (ProductDetailImage detailImage : detailImageList) {
             detailDtoList.add(OutputDetailImgDto.builder()
@@ -387,7 +390,7 @@ public class ProductServiceImple implements ProductService {
                 .mallTxt(product.getMallText())
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
-                .reviewCount(reviewCount)
+                .reviewTotalDto(reviewTotalDto)
                 .qnaCount(qnaCount)
                 .explanation(product.getExplanation())
                 .pofCategoryLList(categoryLlist)
