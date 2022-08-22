@@ -23,7 +23,13 @@ public class JwtTokenProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
+//    private long tokenValidTime = 30 * 60 * 1000L;
+
+    // 유효기간 30분
+    public static final long TokenValidTime = 1_800_000L;
+
+    // 유효기간 1달
+    public static final long RefreshTokenValidTime = 2_629_700_000L;
 
     private final UserDetailsService userDetailsService;
 
@@ -41,10 +47,25 @@ public class JwtTokenProvider {
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(now)
-            .setExpiration(new Date(now.getTime() + tokenValidTime))
+            .setExpiration(new Date(now.getTime() + TokenValidTime))
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
     }
+
+
+//    public String createRefreshToken(String userPk, String roles) {
+//        Claims claims = Jwts.claims().setSubject(userPk);
+//        claims.put("roles", roles);
+//        Date now = new Date();
+//
+//        return Jwts.builder()
+//            .setClaims(claims)
+//            .setIssuedAt(now)
+//            .setExpiration(new Date(now.getTime() + RefreshTokenValidTime))
+//            .signWith(SignatureAlgorithm.HS256, secretKey)
+//            .compact();
+//    }
+
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthenication(String token){

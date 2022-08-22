@@ -1,13 +1,14 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
-import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
 import com.spharosacademy.project.SSGBack.user.exception.UserdropCheckNotfound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,19 +29,21 @@ public class UserServieImpl implements UserService {
 
     @Override
     @Transactional
-    public User registerUser(UserInputDto userInputDto) {
+    public void registerUser(UserAddInputDto userAddInputDto) {
 
-        return userRepository.save(
+        userRepository.save(
             User.builder()
-                .userId(userInputDto.getUserId())
-                .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
-                .userAddress(userInputDto.getUserAddress())
-                .userName(userInputDto.getUserName())
-                .userEmail(userInputDto.getUserEmail())
-                .userPhone(userInputDto.getUserPhoneNumber())
-                .userBirthDate(userInputDto.getUserBirthDate())
-                .gender(userInputDto.getGender())
-                .memberType(userInputDto.getMemberType())
+                .userId(userAddInputDto.getUserId())
+                .userPwd(passwordEncoder.encode(userAddInputDto.getUserPwd()))
+                .userAddress(userAddInputDto.getUserAddress())
+                .userName(userAddInputDto.getUserName())
+                .userEmail(userAddInputDto.getUserEmail())
+                .userPhone(userAddInputDto.getUserPhoneNumber())
+                .userBirthDate((userAddInputDto.getUserBirthDate()))
+                .gender(userAddInputDto.getGender())
+                .roles(userAddInputDto.getRole())
+                .userDropCheck(userAddInputDto.getUserDropCheck())
+                .memberType(userAddInputDto.getMemberType())
                 .build()
         );
     }

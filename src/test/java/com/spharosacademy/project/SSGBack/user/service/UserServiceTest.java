@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.service;
 
-import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,8 +13,7 @@ class UserServiceTest {
 
     @Test
     public void testRegister() {
-        UserInputDto userInputDto = UserInputDto.builder()
-//            .memberId(5L)
+        UserAddInputDto userAddInputDto = UserAddInputDto.builder()
             .userId(String.valueOf(123))
             .userPwd("1234")
             .userAddress("광안리 수영구 138-1")
@@ -27,7 +26,7 @@ class UserServiceTest {
             .build();
 
 
-        System.out.println(userService.registerUser(userInputDto));
+//        System.out.println(userService.registerUser(userAddInputDto));
     }
 
 

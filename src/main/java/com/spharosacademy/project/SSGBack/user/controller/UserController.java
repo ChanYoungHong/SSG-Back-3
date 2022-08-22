@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.controller;
 
-import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
@@ -30,8 +31,8 @@ public class UserController {
     // 회원가입 등록
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody UserInputDto userInputDto) {
-        return userService.registerUser(userInputDto);
+    public void addUser(@RequestBody UserAddInputDto userAddInputDto) {
+        userService.registerUser(userAddInputDto);
     }
 
     // 회원가입 조회
