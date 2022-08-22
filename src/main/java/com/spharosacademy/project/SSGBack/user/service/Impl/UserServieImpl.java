@@ -8,7 +8,6 @@ import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
 import com.spharosacademy.project.SSGBack.user.exception.UserdropCheckNotfound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,9 +95,8 @@ public class UserServieImpl implements UserService {
     public User removeUserInfo(Long memberId, UserOutputDto userOutputDto) {
 
         Optional<User> check =
-            Optional.ofNullable(
-                userRepository.findById(userOutputDto.getMemberId()).orElseThrow(
-                    MemberIdNotfound::new));
+            Optional.ofNullable(userRepository.findById(userOutputDto.getMemberId()).orElseThrow(
+                MemberIdNotfound::new));
 
         if (check.isPresent()) {
             if (userOutputDto.getUserDropCheck().equals(true)) {
@@ -109,5 +107,4 @@ public class UserServieImpl implements UserService {
         }
         return null;
     }
-
 }

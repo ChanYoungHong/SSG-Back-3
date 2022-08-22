@@ -11,18 +11,19 @@ class OrderRepositoryTest {
 
     @Autowired
     private OrderListRepository orderListRepository;
+
     @Test
     public void insertOrder(){
 
         IntStream.rangeClosed(1, 300).forEach(i -> {
 
-            OrderList order = OrderList.builder()
-                .orderId((long) i)
+            OrderList orderList = OrderList.builder()
+                .orderListId((long) i)
                 .orderAnOrderer("user" + i)
                 .orderMsg("경비실에 부탁해용~")
                 .build();
 
-            orderListRepository.save(order);
+            orderListRepository.save(orderList);
         });
 
     }

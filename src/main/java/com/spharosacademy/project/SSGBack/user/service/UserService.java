@@ -18,6 +18,4 @@ public interface UserService {
 
     User removeUserInfo(Long memberId, UserOutputDto userOutputDto);
 
-
-
 }

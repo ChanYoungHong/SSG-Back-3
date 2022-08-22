@@ -1,6 +1,13 @@
 package com.spharosacademy.project.SSGBack.orderlist.entity;
 
+<<<<<<< HEAD
+import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.tmpProduct.Product;
+=======
+import com.spharosacademy.project.SSGBack.Cart;
+import com.spharosacademy.project.SSGBack.Product;
+import com.spharosacademy.project.SSGBack.order.entity.Orders;
+>>>>>>> origin/feature/orderList
 import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.time.LocalDateTime;
@@ -22,17 +29,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-@Table(name = "order_list")
+@Table(name = "order_list") // Order이라는 어노테이션이 있어서 OrderList로 표기함
 public class OrderList extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
-
-    private Long userId;
-
-    @Column(name = "order_state")
-    private Boolean orderState;
+    @Column(name = "order_list_id")
+    private Long orderListId;
 
     @Column(name = "order_msg")
     private String orderMsg;
@@ -46,19 +49,26 @@ public class OrderList extends BaseEntity {
     @Column(name = "order_AnOrderer")
     private String orderAnOrderer;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private User user;
+    @Column(name = "user_address")
+    private String userAddress;
+
+    @Column(name = "option_id")
+    private Long optionId;
+
+    @Column(name = "member_id")
+    private Long memberId;
+
+    private Long qty;
+
+    private String userPhoneNumber;
+    private String userEmail;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    private String productColor;
-
-//    @ManyToOne
-//    @JoinColumn(name = "cart_id", nullable = false)
-//    private Cart cart;
-
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Orders orders;
 
 }

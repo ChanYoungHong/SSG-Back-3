@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.service;
 
 import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +27,7 @@ class UserServiceTest {
             .build();
 
 
-//        System.out.println(userService.registerUser(userAddInputDto));
+        System.out.println(userService.registerUser(userInputDto));
     }
 
 
