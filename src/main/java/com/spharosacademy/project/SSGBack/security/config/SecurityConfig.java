@@ -45,12 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/user/**").hasRole("USER")
             .antMatchers("/admin/**").hasRole("MANAGER")
             .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                    UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-//        http.formLogin();
-    http.httpBasic().disable();
+        http.httpBasic().disable();
         http.csrf().disable();
         http.logout();
 

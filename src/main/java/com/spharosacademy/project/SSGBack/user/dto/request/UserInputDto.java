@@ -1,5 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -15,8 +17,6 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class UserInputDto {
 
-
-//    private Long memberId;
 
     @NotBlank(message = "아이디를 입력해주세요.")
     private String userId;
@@ -36,7 +36,8 @@ public class UserInputDto {
     @NotBlank(message = "핸드폰 번호를 입력해주세요.")
     private String userPhoneNumber;
 
-    private LocalDateTime userBirthDate;
+//    @JsonFormat(pattern = "YYYY-MM-dd")
+    private LocalDate userBirthDate;
 
     private String memberType;
 

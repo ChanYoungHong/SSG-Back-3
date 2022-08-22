@@ -37,7 +37,7 @@ public class UserController {
     // 회원가입 조회
     @GetMapping("/get/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUser(@PathVariable Long userId) {
+    public List<User> getAllUser(@PathVariable String userId) {
         return userService.findAllByUserId(userId);
     }
 

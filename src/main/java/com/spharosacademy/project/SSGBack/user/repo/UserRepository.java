@@ -18,5 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select m from User m where m.fromSocial = :social and m.userEmail =:userEmail")
     Optional<User> findByUserEmail(@Param("userEmail") String email, @Param("social") boolean social);
 
-    List<User> findAllByUserId(Long userId);
+    List<User> findAllByUserId(String userId);
 }

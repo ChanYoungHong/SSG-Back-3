@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.util;
 
+import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -9,8 +10,6 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +23,8 @@ public class JwtTokenProvider {
 
     // 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
+    private long RefreshtokenValidTime = 30 * 60 * 1000L;
+
 
     private final UserDetailsService userDetailsService;
 
@@ -33,7 +34,7 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userPk, String roles) {
+    public LoginSuccessOutputDto createToken(String userPk, String roles) {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("roles", roles);
         Date now = new Date();

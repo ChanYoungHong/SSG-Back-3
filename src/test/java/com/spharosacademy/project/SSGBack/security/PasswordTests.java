@@ -14,7 +14,7 @@ public class PasswordTests {
     @Test
     public void testEncode(){
 
-        String password = "1111";
+        String password = "1234";
 
         String enPw = passwordEncoder.encode(password);
 

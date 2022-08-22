@@ -1,5 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -60,7 +62,9 @@ public class User extends BaseEntity implements UserDetails {
     private String roles;
 
     @Column(name = "user_birthdate")
-    private LocalDateTime userBirthDate;
+
+    @JsonFormat(pattern = "YYYY-MM-dd")
+    private LocalDate userBirthDate;
 
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;

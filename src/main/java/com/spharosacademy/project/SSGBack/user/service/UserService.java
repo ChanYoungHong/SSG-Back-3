@@ -13,7 +13,7 @@ public interface UserService {
 
     User registerUser(UserInputDto userInputDto);
 
-    List<User> findAllByUserId(Long userId);
+    List<User> findAllByUserId(String userId);
 
     void modifyUserInfo(Long memberId,UserOutputDto userOutputDto);
 
