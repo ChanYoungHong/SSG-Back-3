@@ -1,15 +1,8 @@
 package com.spharosacademy.project.SSGBack.orderlist.entity;
 
-<<<<<<< HEAD
 import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.tmpProduct.Product;
-=======
-import com.spharosacademy.project.SSGBack.Cart;
-import com.spharosacademy.project.SSGBack.Product;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
->>>>>>> origin/feature/orderList
 import com.spharosacademy.project.SSGBack.user.entity.BaseEntity;
-import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
