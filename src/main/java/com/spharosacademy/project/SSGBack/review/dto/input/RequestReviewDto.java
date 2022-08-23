@@ -15,7 +15,6 @@ public class RequestReviewDto {
 
     private Long userId;
     private Long orderDetailId;
-    private String reviewTitle;
     private String reviewContent;
     private float reviewScore;
 

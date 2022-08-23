@@ -28,7 +28,7 @@ public class QnAController {
         return qnaService.getQnaByProductId(productId);
     }
 
-    @PutMapping("edit")
+    @PutMapping("/edit")
     public String updateQna(@RequestBody RequestUpdateQnaDto requestUpdateQnaDto){
         qnaService.editQna(requestUpdateQnaDto);
         return "문의가 수정되었습니다";

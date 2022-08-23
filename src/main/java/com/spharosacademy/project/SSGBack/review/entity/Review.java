@@ -20,7 +20,6 @@ public class Review extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String reviewContent;
-    private String reviewTitle;
     private double reviewScore;
     private Long orderDetailId;
 

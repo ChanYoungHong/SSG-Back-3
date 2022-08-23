@@ -25,8 +25,15 @@ import com.spharosacademy.project.SSGBack.product.option.repository.OptionReposi
 import com.spharosacademy.project.SSGBack.product.option.repository.SizeRepository;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+import com.spharosacademy.project.SSGBack.qna.dto.output.ResponseProductQnaDto;
+import com.spharosacademy.project.SSGBack.qna.entity.QnA;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
+import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
+import com.spharosacademy.project.SSGBack.review.entity.Review;
+import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
+import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import java.awt.print.Pageable;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +62,7 @@ public class ProductServiceImple implements ProductService {
     private final SizeRepository sizeRepository;
     private final ReviewRepository reviewRepository;
     private final QnaRepository qnaRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
 
     @Override
@@ -309,8 +317,46 @@ public class ProductServiceImple implements ProductService {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
+        List<Review> reviewList = reviewRepository.findFirst5ByProductId(id);
         ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
         Long qnaCount = qnaRepository.countByProductId(id);
+        List<ResponseProductReviewDto> responseProductReviewDtoList = new ArrayList<>();
+        reviewList.forEach(review -> {
+            List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
+            List<OutputReviewImgDto> outputReviewImgDtos = new ArrayList<>();
+            reviewImageList.forEach(reviewImage -> {
+                outputReviewImgDtos.add(OutputReviewImgDto.builder()
+                        .reviewImgUrl(reviewImage.getReviewImgUrl())
+                        .reviewImgTxt(reviewImage.getReviewImgTxt())
+                        .build());
+            });
+            responseProductReviewDtoList.add(
+                    ResponseProductReviewDto.builder()
+                            .reviewId(review.getId())
+                            .updateDate(review.getUpdatedDate())
+                            .regDate(review.getCreateDate())
+                            .orderDetailId(review.getOrderDetailId())
+                            .reviewContent(review.getReviewContent())
+                            .outputReviewImgDtos(outputReviewImgDtos)
+                            .build());
+        });
+
+        List<QnA> qnAList = qnaRepository.findFirst5ByProductId(id);
+        List<ResponseProductQnaDto> responseProductQnaDtoList = new ArrayList<>();
+        qnAList.forEach(qnA -> {
+            responseProductQnaDtoList.add(ResponseProductQnaDto.builder()
+                    .productId(qnA.getProduct().getId())
+                    .userLoginId(qnA.getUser().getUserId())
+                    .qnaType(qnA.getQnaType())
+                    .qnaId(qnA.getId())
+                    .qnaContent(qnA.getQnaContent())
+                    .qnaTitle(qnA.getQnaTitle())
+                    .isSecret(qnA.getIsSecret())
+                    .updateDate(qnA.getUpdatedDate())
+                    .regDate(qnA.getCreateDate())
+                    .build());
+        });
+
         for (ProductDetailImage detailImage : detailImageList) {
             detailDtoList.add(OutputDetailImgDto.builder()
                     .productDetailImgTxt(detailImage.getProductDetailImgTxt())
@@ -391,6 +437,8 @@ public class ProductServiceImple implements ProductService {
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
                 .reviewTotalDto(reviewTotalDto)
+                .responseProductReviewDtos(responseProductReviewDtoList)
+                .responseProductQnaDtoList(responseProductQnaDtoList)
                 .qnaCount(qnaCount)
                 .explanation(product.getExplanation())
                 .pofCategoryLList(categoryLlist)

@@ -3,6 +3,8 @@ package com.spharosacademy.project.SSGBack.product.dto.output;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputDetailImgDto;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputTitleImgDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.qna.dto.output.ResponseProductQnaDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +34,8 @@ public class ResponseProductDto {
     private float discountRate;
     private String priceText;
     ReviewTotalDto reviewTotalDto;
+    List<ResponseProductReviewDto> responseProductReviewDtos;
+    List<ResponseProductQnaDto> responseProductQnaDtoList;
     private Long qnaCount;
     private String explanation;
     private LocalDateTime regDate;

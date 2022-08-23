@@ -18,7 +18,6 @@ public class RequestUpdateReviewDto {
     private Long productId;
     private Long orderDetailId;
     private float reviewScore;
-    private String reviewTitle;
     private String reviewContent;
     List<RequestUpdateReviewImgDto> requestUpdateReviewImgDtos;
 }
