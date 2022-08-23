@@ -17,5 +17,5 @@ public class RequestQnaDto {
     private String qnaContent;
     private int isSecret;
     private int QnaType;
-    private boolean qnaStatus;
+    private int qnaStatus;
 }
