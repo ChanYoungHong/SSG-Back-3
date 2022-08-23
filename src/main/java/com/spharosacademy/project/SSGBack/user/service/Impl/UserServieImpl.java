@@ -32,7 +32,7 @@ public class UserServieImpl implements UserService {
 
         userRepository.save(
             User.builder()
-                .userId(userAddInputDto.getUserId())
+                .userId(userAddInputDto.getLoginId())
                 .userPwd(passwordEncoder.encode(userAddInputDto.getUserPwd()))
                 .userAddress(userAddInputDto.getUserAddress())
                 .userName(userAddInputDto.getUserName())

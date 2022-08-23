@@ -118,7 +118,8 @@ public class CartServiceimple implements CartService {
             Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
             Product product = productRepository.findById(cart.getProduct().getId()).get();
             OrderList orderList = orderListRepository.save(OrderList.builder()
-
+                    .orders(orders)
+                    .optionId(cart.getOptionId())
                     .build());
 
             optionRepository.save(OptionList.builder()

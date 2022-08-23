@@ -40,17 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-            .antMatchers().permitAll()
-            .antMatchers("/test/**").authenticated() // 인증이 필요하다고 요청 함
-            .antMatchers("/user/**").hasRole("USER")
-            .antMatchers("/admin/**").hasRole("MANAGER")
-            .and()
+                .antMatchers().permitAll()
+                .antMatchers("/test/**").authenticated() // 인증이 필요하다고 요청 함
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("MANAGER")
+                .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                    UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 //        http.formLogin();
-    http.httpBasic().disable();
+        http.httpBasic().disable();
         http.csrf().disable();
         http.logout();
 
