@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
-    @Override
+    @Override // 인증처리 interface다
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -54,13 +54,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout();
 
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
-//        auth.inMemoryAuthentication().withUser("user1")
-//            .password("$2a$10$e8l1kOMmhkXEl7d74H7KnevgYHFeFXXO.upleUtO7bi93LA5Rsb62")
-//            .roles("USER");
-//    }
 
 }

@@ -4,6 +4,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.entity.UserRole;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
 import com.spharosacademy.project.SSGBack.user.exception.UserdropCheckNotfound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
@@ -37,8 +38,10 @@ public class UserServieImpl implements UserService {
                 .userAddress(userInputDto.getUserAddress())
                 .userName(userInputDto.getUserName())
                 .userEmail(userInputDto.getUserEmail())
+                .role(UserRole.USER)
                 .userPhone(userInputDto.getUserPhoneNumber())
                 .userBirthDate(userInputDto.getUserBirthDate())
+                .userDropCheck(userInputDto.getUserDropCheck())
                 .gender(userInputDto.getGender())
                 .memberType(userInputDto.getMemberType())
                 .build()
@@ -73,7 +76,6 @@ public class UserServieImpl implements UserService {
                 userRepository.save(
                     User.builder()
 
-                        .memberId(result.get().getMemberId())
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
                         .userAddress(result.get().getUserAddress())

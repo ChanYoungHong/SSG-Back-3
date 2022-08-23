@@ -36,14 +36,15 @@ class UserTest {
                 .gender("")
                 .build();
 
-            user.addUserRole(UserRole.ROLE_USER);
+            user.addUserRole(UserRole.USER);
+            user.addUserRole(UserRole.USER);
 
             if( i > 80) {
-                user.addUserRole(UserRole.ROLE_MANAGER);
+                user.addUserRole(UserRole.MANAGER);
             }
 
             if( i > 90) {
-                user.addUserRole(UserRole.ROLE_ADMIN);
+                user.addUserRole(UserRole.ADMIN);
             }
 
             userRepository.save(user);

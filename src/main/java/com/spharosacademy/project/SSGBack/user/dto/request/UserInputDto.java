@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.spharosacademy.project.SSGBack.user.entity.UserRole;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,13 +40,15 @@ public class UserInputDto {
 //    @JsonFormat(pattern = "YYYY-MM-dd")
     private LocalDate userBirthDate;
 
+    private Boolean userDropCheck;
+
     private String memberType;
 
     @Length(max = 1)
     private String gender;
 
-    @Length(max = 6)
-    private String role;
+//    @Length(max = 6)
+////    private UserRole role;
 
 
 

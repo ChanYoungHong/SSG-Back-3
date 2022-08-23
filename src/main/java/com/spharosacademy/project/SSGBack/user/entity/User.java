@@ -31,8 +31,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
-    private Long memberId;
+    private Long id;
 
     // 사용자 ID
     @Column(name = "user_id")
@@ -59,11 +58,10 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "gender")
     private String gender;
 
-    private String roles;
+    private UserRole role;
 
     @Column(name = "user_birthdate")
-
-    @JsonFormat(pattern = "YYYY-MM-dd")
+//    @JsonFormat(pattern = "YYYY-MM-dd")
     private LocalDate userBirthDate;
 
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.

@@ -24,8 +24,4 @@ public abstract class BaseEntity {
     @Column(name = "updated_at")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     public LocalDateTime updatedAt;
-
-    @LastModifiedBy
-    @Column(name = "order_decidedDate")
-    private LocalDateTime orderDecidedDate;
 }

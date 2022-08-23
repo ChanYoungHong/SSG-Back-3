@@ -20,6 +20,7 @@ public class CustomUseDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    // UserDetails를 가져오기 위한 DAO다
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 

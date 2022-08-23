@@ -22,7 +22,7 @@ class UserServiceTest {
             .userName("홍찬영")
             .userPhoneNumber("01036699883")
             .gender("남")
-            .role("사용자")
+//            .role("사용자")
             .memberType("프렌드")
             .build();
 

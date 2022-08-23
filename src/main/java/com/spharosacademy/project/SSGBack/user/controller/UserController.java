@@ -30,8 +30,9 @@ public class UserController {
     // 회원가입 등록
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody UserInputDto userInputDto) {
-        return userService.registerUser(userInputDto);
+    public String addUser(@RequestBody UserInputDto userInputDto) {
+        userService.registerUser(userInputDto);
+        return "회원가입 되셨습니다.";
     }
 
     // 회원가입 조회
@@ -42,11 +43,11 @@ public class UserController {
     }
 
     // 회원정보 변경과 수정
-    @PutMapping("/modify/{memberId}")
+    @PutMapping("/modify/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public void modifyUserInfo(@PathVariable Long memberId,
+    public void modifyUserInfo(@PathVariable Long userId,
                                @RequestBody UserOutputDto userOutputDto) {
-        userService.modifyUserInfo(memberId, userOutputDto);
+        userService.modifyUserInfo(userId, userOutputDto);
     }
 
     // 회원 탈퇴, 삭제
