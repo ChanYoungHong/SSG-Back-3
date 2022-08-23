@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users/addresslist")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AddressListController {
 
     private final AddressListService addressListService;

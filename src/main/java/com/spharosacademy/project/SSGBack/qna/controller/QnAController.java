@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/qna")
 @RequiredArgsConstructor
+
 public class QnAController {
 
     private final QnaService qnaService;

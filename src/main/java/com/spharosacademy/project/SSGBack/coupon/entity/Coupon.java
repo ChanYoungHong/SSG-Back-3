@@ -5,12 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+
 import javax.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -18,23 +21,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Coupon extends BaseEntity {
+public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long couponId;
 
+    private Long id;
     private String couponName;
-
-    private float discountRate;
-
-    private Long discountAmount;
-
+    private Float discountRate;
     private boolean expiredStatus;
-
     private String couponCondition;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
     private User user;
 }
