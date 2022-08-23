@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.review.image.repo;
 
+import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 

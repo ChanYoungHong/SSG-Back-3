@@ -92,10 +92,8 @@ public class ReviewServiceImplement implements ReviewService {
             responseProductReviewDtos.add(ResponseProductReviewDto.builder()
                     .reviewId(review.getId())
                     .orderDetailId(detail.getId())
-                    .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
-                    .userLoginId(review.getUser().getUserId())
-                    .reviewTotalDto(reviewTotalDto)
+                    .userLoginId(review.getUser().getLoginId())
                     .regDate(review.getCreateDate())
                     .updateDate(review.getUpdatedDate())
                     .color(optionList.getColors().getName())
@@ -139,7 +137,7 @@ public class ReviewServiceImplement implements ReviewService {
                             .size(optionList.getSize().getType())
                             .regDate(review.getCreateDate())
                             .updateDate(review.getUpdatedDate())
-                            .userLoginId(review.getUser().getUserId())
+                            .userLoginId(review.getUser().getLoginId())
                             .outputReviewImgDtos(outputReviewImgDtos)
                             .build());
 

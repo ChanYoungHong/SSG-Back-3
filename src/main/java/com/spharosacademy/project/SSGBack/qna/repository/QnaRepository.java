@@ -12,4 +12,6 @@ public interface QnaRepository extends JpaRepository<QnA, Long> {
     Long countByProductId(Long productId);
 
     List<QnA> findAllByUserId(Long userId);
+
+    List<QnA> findFirst5ByProductId(Long productId);
 }
