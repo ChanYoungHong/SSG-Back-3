@@ -20,6 +20,7 @@ public class ResponseProductQnaDto {
     private String qnaContent;
     private int isSecret;
     private int qnaType;
+    private boolean qnaStatus;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 }

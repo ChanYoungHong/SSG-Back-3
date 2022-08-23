@@ -25,6 +25,7 @@ public class QnA extends BaseTimeEntity {
     private String qnaContent;
     private int isSecret;
     private int qnaType;
+    private boolean qnaStatus;
 
     @ManyToOne
     Product product;
