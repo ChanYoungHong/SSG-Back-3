@@ -24,6 +24,7 @@ public class UserAuthMemberDto extends User {
                              boolean fromSocial,
                              Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
+
         this.userName = userEmail;
         this.fromSocial = fromSocial;
     }

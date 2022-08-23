@@ -16,5 +16,6 @@ public class LoginSuccessOutputDto {
     private String result;
     private String userEmail;
     private String userPwd;
+    private String userId;
 
 }

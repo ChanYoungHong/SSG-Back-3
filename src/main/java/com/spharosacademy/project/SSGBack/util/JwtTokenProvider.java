@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.util;
 
-import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
+import com.spharosacademy.project.SSGBack.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -21,22 +21,24 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
     private String secretKey = "charlie12345";
 
-    // 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
-    private long RefreshtokenValidTime = 30 * 60 * 1000L;
-
+    // 유효시간 1시간
+    private long tokenValidTime = 36000000L;
+    // 유효시간 30일
+//    private long RefreshtokenValidTime = 30 * 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
     // secretKey를 Base64로 인코딩하는 것.
+
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userPk, String roles) {
-        Claims claims = Jwts.claims().setSubject(userPk);
-        claims.put("roles", roles);
+    public String createToken(Long userId, String role) {
+        // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
+        Claims claims = Jwts.claims().setSubject(userId.toString());
+        claims.put("role", role);
         Date now = new Date();
 
         return Jwts.builder()

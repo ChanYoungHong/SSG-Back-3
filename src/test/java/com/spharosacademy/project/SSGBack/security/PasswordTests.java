@@ -38,15 +38,15 @@ public class PasswordTests {
 
     @Test
     public void RealTestEncode() {
-        LoginSuccessOutputDto loginSuccessOutputDto = new LoginSuccessOutputDto();
-        User user = new User();
-
-        Optional<User>
-            result = userRepository.findByUserEmail(user.getUserPwd(), false);
-
-        if(passwordEncoder.matches(result.get().getUserPwd(), loginSuccessOutputDto.getUserPwd())) {
-            assertThat(true);
-        };
+//        LoginSuccessOutputDto loginSuccessOutputDto = new LoginSuccessOutputDto();
+//        User user = new User();
+//
+//        Optional<User>
+//            result = userRepository.findByUserId(user.getUserPwd(), false);
+//
+//        if(passwordEncoder.matches(result.get().getUserPwd(), loginSuccessOutputDto.getUserPwd())) {
+//            assertThat(true);
+//        };
 
     }
 

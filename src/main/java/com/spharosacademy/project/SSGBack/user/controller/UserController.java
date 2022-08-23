@@ -4,7 +4,10 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import java.util.List;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,26 +23,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-
-    // 회원가입 등록
-    @PostMapping("/signup")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addUser(@RequestBody UserInputDto userInputDto) {
-        userService.registerUser(userInputDto);
-        return "회원가입 되셨습니다.";
-    }
-
-    // 회원가입 조회
-    @GetMapping("/get/{userId}")
+    // 회원정보 조회
+    @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUser(@PathVariable String userId) {
-        return userService.findAllByUserId(userId);
+    public Optional<User> findByUserId(HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+
+        return
+            userService.findByUserId(Long.valueOf(jwtTokenProvider.getUserPk(token)));
     }
 
     // 회원정보 변경과 수정

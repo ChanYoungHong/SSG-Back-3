@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.service;
 
+import com.spharosacademy.project.SSGBack.security.service.SignUpService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class UserServiceTest {
 
     @Autowired
-    private UserService userService;
+    private SignUpService signUpService;
 
     @Test
     public void testRegister() {
@@ -21,13 +22,11 @@ class UserServiceTest {
             .userEmail("cksdu9883@naver.com")
             .userName("홍찬영")
             .userPhoneNumber("01036699883")
-            .gender("남")
-//            .role("사용자")
             .memberType("프렌드")
             .build();
 
 
-        System.out.println(userService.registerUser(userInputDto));
+        System.out.println(signUpService.registerUser(userInputDto));
     }
 
 

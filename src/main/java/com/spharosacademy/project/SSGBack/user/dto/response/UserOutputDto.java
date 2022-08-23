@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.dto.response;
 
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
+import com.spharosacademy.project.SSGBack.user.entity.UserRole;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserOutputDto {
 
-    private Long memberId;
+    private Long id;
     private String userId;
     private String userPwd;
     private String userName;
@@ -22,7 +23,7 @@ public class UserOutputDto {
     private String userEmail;
     private String userPhone;
     private String memberType;
-    private String role;
+    private UserRole role;
     private String gender;
     private LocalDateTime userBirthDate, createdAt, updatedAt;
     private Boolean userDropCheck;
