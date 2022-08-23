@@ -17,8 +17,7 @@ public class OrdersInputDto {
     private Long memberId;
     private Long productId;
     private Long ordersId;
-
+    private String orderMsg;
     List<OrdersOptioninputDto> ordersOptioninputDtoList;
     List<OrdersUpdateDto> ordersUpdateDtoList;
-
 }
