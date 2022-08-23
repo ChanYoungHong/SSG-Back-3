@@ -7,11 +7,14 @@ import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
 import com.spharosacademy.project.SSGBack.order.entity.Orders;
 import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.order.exception.OrderedProductNotFound;
+import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.order.repo.OrdersRepository;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
+import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.entity.User;
@@ -35,6 +38,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderListRepository orderListRepository;
+    private final OptionRepository optionRepository;
 
 
     @Override
@@ -42,34 +46,30 @@ public class OrdersServiceImpl implements OrdersService {
 
         Optional<User> user = userRepository.findById(ordersInputDto.getMemberId());
         Product product = productRepository.findById(ordersInputDto.getProductId()).get();
-        Optional<OrderList> orderList = orderListRepository.findById(
-                ordersInputDto.getOrdersOptioninputDtoList().get(0).getOptionListId());
+
+        List<OrdersOptioninputDto> ordersOptioninputDtoList = new ArrayList<>();
+        for (OrdersOptioninputDto ordersOptioninputDto : ordersInputDto.getOrdersOptioninputDtoList()) {
+            ordersOptioninputDtoList.add(OrdersOptioninputDto.builder()
+                    .optionListId(ordersOptioninputDto.getOptionListId())
+                    .qty(ordersOptioninputDto.getQty())
+                    .build());
+        }
+        ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
+            if (ordersOptioninputDto.getQty() > optionRepository.findById(ordersOptioninputDto.getOptionListId()).get().getStock()) {
+                throw new OutOfStockException();
+            }
+        });
         Orders order = ordersRepository.save(
                 Orders.builder()
                         .user(user.get())
                         .OrderedDate(LocalDateTime.now())
                         .build()
         );
-
-        List<OrdersOptioninputDto> ordersOptioninputDtoList = new ArrayList<>();
-
-        for (OrdersOptioninputDto ordersOptioninputDto : ordersInputDto.getOrdersOptioninputDtoList()) {
-            ordersOptioninputDtoList.add(ordersOptioninputDto.builder()
-                    .optionListId(ordersOptioninputDto.getOptionListId())
-                    .orderMsg(ordersOptioninputDto.getOrderMsg())
-                    .qty(ordersOptioninputDto.getQty())
-                    .build());
-            log.info("List 벗겨서 for문 돌리기");
-        }
-
         ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
-            log.info("오더인풋디티오에 들어와서 for문이 도나?");
-            orderListRepository.save(
-
+            OrderList orderList = orderListRepository.save(
                     OrderList.builder()
                             .orderAnOrderer(user.get().getUsername())
-                            .optionId(ordersOptioninputDto.getOptionListId())
-                            .orderMsg(ordersOptioninputDto.getOrderMsg())
+                            .optionId(optionRepository.findById(ordersOptioninputDto.getOptionListId()).get().getId())
                             .orderReceiver(user.get().getUsername())
                             .userAddress(user.get().getUserAddress())
                             .orderDecidedDate(LocalDateTime.now())
@@ -78,9 +78,19 @@ public class OrdersServiceImpl implements OrdersService {
                             .userPhoneNumber(user.get().getUserPhone())
                             .qty(ordersOptioninputDto.getQty())
                             .memberId(user.get().getId())
+                            .orderMsg(ordersInputDto.getOrderMsg())
+                            .userEmail(ordersInputDto.getUserEmail())
                             .build()
             );
-            log.info("save가 되는지 확인하는 로그");
+            optionRepository.save(OptionList.builder()
+                    .id(orderList.getOrderListId())
+                    .colors(optionRepository.findById(orderList.getOrderListId()).get().getColors())
+                    .size(optionRepository.findById(orderList.getOrderListId()).get().getSize())
+                    .product(optionRepository.findById(orderList.getOrderListId()).get().getProduct())
+                    .stock(optionRepository.findById(orderList.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getStock()
+                            - orderList.getQty())
+                    .build());
         });
     }
 
@@ -102,7 +112,7 @@ public class OrdersServiceImpl implements OrdersService {
                         .productId(orderlist.getProduct().getId())
                         .productName(orderlist.getProduct().getName())
                         .userName(user.get().getUsername())
-                        .userAddress(user.get().getUserAddress())
+                        .receiveAddress(user.get().getUserAddress())
                         .productPrice(orderlist.getProduct().getNewPrice())
                         .orderMsg(orderlist.getOrderMsg())
                         .userPhoneNumber(user.get().getUserPhone())
@@ -118,49 +128,62 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public void editMyOrderDetail(Long memberId, OrdersInputDto ordersInputDto) {
+    public void editMyOrderDetail(OrdersUpdateDto ordersUpdateDto) {
 
-        Optional<User> user = userRepository.findById(ordersInputDto.getMemberId());
-        Optional<OrderList> orderedUser = orderListRepository.findById(
-                ordersInputDto.getOrdersUpdateDtoList().get(0).getOrderListId());
-        Optional<Product> product = productRepository.findById(ordersInputDto.getProductId());
-        Optional<Orders> orders = ordersRepository.findById(ordersInputDto.getOrdersId());
+        User user = userRepository.findById(ordersUpdateDto.getUserId()).get();
+        Product product = productRepository.findById(ordersUpdateDto.getProductId()).get();
+        OrderList orderList = orderListRepository.findById(ordersUpdateDto.getOrderListId()).get();
+        Orders orders = ordersRepository.findById(orderList.getOrders().getOrderId()).get();
 
-        List<OrdersUpdateDto> ordersUpdateDtoList = new ArrayList<>();
-
-        for (OrdersUpdateDto ordersUpdateDto : ordersInputDto.getOrdersUpdateDtoList()) {
-            ordersUpdateDtoList.add(ordersUpdateDto.builder()
-                    .orderListId(ordersUpdateDto.getOrderListId())
-                    .userAddress(ordersUpdateDto.getUserAddress())
-                    .userEmail(ordersUpdateDto.getUserEmail())
-                    .orderMsg(ordersUpdateDto.getOrderMsg())
-                    .orderReceiver(ordersUpdateDto.getOrderReceiver())
-                    .build());
-        }
-
-        if (orderedUser.isPresent()) {
-            ordersUpdateDtoList.forEach(ordersUpdateDto -> {
-                orderListRepository.save(
-
-                        OrderList.builder()
-                                .orderListId(ordersUpdateDto.getOrderListId())
-                                .orderAnOrderer(user.get().getUsername())
-                                .optionId(orderedUser.get().getOptionId())
-                                .orderMsg(ordersUpdateDto.getOrderMsg())
-                                .orderReceiver(ordersUpdateDto.getOrderReceiver())
-                                .userAddress(ordersUpdateDto.getUserAddress())
-                                .orderDecidedDate(LocalDateTime.now())
-                                .product(product.get())
-                                .orders(orders.get())
-                                .userEmail(ordersUpdateDto.getUserEmail())
-                                .userPhoneNumber(user.get().getUserPhone())
-                                .qty(orderedUser.get().getQty())
-                                .memberId(user.get().getId())
-                                .build()
-                );
-
-            });
-        }
+        orderListRepository.save(
+                OrderList.builder()
+                        .orderReceiver(ordersUpdateDto.getOrderReceiver())
+                        .orderAnOrderer(ordersUpdateDto.getOrderAnOrderer())
+                        .memberId(user.getId())
+                        .orderDecidedDate(orders.getOrderedDate())
+                        .orderMsg(ordersUpdateDto.getOrderMsg())
+                        .orderListId(ordersUpdateDto.getOrderListId())
+                        .userEmail(ordersUpdateDto.getUserEmail())
+                        .userAddress(ordersUpdateDto.getUserAddress())
+                        .orders(orders)
+                        .optionId(orderList.getOptionId())
+                        .product(product)
+                        .qty(orderList.getQty())
+                        .userPhoneNumber(ordersUpdateDto.getUserPhoneNumber())
+                        .build()
+        );
+//        for (OrdersUpdateDto ordersUpdateDto : ordersInputDto.getOrdersUpdateDtoList()) {
+//            ordersUpdateDtoList.add(ordersUpdateDto.builder()
+//                    .orderListId(ordersUpdateDto.getOrderListId())
+//                    .userAddress(ordersUpdateDto.getUserAddress())
+//                    .userEmail(ordersUpdateDto.getUserEmail())
+//                    .orderMsg(ordersUpdateDto.getOrderMsg())
+//                    .orderReceiver(ordersUpdateDto.getOrderReceiver())
+//                    .build());
+//        }
+//
+//        if (orderedUser.isPresent()) {
+//            ordersUpdateDtoList.forEach(ordersUpdateDto -> {
+//                orderListRepository.save(
+//
+//                        OrderList.builder()
+//                                .orderListId(ordersUpdateDto.getOrderListId())
+//                                .orderAnOrderer(user.getUsername())
+//                                .optionId(orderedUser.get().getOptionId())
+//                                .orderMsg(ordersUpdateDto.getOrderMsg())
+//                                .orderReceiver(ordersUpdateDto.getOrderReceiver())
+//                                .userAddress(ordersUpdateDto.getUserAddress())
+//                                .orderDecidedDate(LocalDateTime.now())
+//                                .product(product.get())
+//                                .userEmail(ordersUpdateDto.getUserEmail())
+//                                .userPhoneNumber(user.get().getUserPhone())
+//                                .qty(orderedUser.get().getQty())
+//                                .memberId(user.get().getId())
+//                                .build()
+//                );
+//
+//            });
+//        }
     }
 
     @Override

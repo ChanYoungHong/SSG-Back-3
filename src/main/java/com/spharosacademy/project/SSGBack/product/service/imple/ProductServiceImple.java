@@ -35,7 +35,6 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
-import java.awt.print.Pageable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -324,12 +323,10 @@ public class ProductServiceImple implements ProductService {
         reviewList.forEach(review -> {
             List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
             List<OutputReviewImgDto> outputReviewImgDtos = new ArrayList<>();
-            reviewImageList.forEach(reviewImage -> {
-                outputReviewImgDtos.add(OutputReviewImgDto.builder()
-                        .reviewImgUrl(reviewImage.getReviewImgUrl())
-                        .reviewImgTxt(reviewImage.getReviewImgTxt())
-                        .build());
-            });
+            reviewImageList.forEach(reviewImage -> outputReviewImgDtos.add(OutputReviewImgDto.builder()
+                    .reviewImgUrl(reviewImage.getReviewImgUrl())
+                    .reviewImgTxt(reviewImage.getReviewImgTxt())
+                    .build()));
             responseProductReviewDtoList.add(
                     ResponseProductReviewDto.builder()
                             .reviewId(review.getId())
@@ -343,19 +340,17 @@ public class ProductServiceImple implements ProductService {
 
         List<QnA> qnAList = qnaRepository.findFirst5ByProductId(id);
         List<ResponseProductQnaDto> responseProductQnaDtoList = new ArrayList<>();
-        qnAList.forEach(qnA -> {
-            responseProductQnaDtoList.add(ResponseProductQnaDto.builder()
-                    .productId(qnA.getProduct().getId())
-                    .userLoginId(qnA.getUser().getUserId())
-                    .qnaType(qnA.getQnaType())
-                    .qnaId(qnA.getId())
-                    .qnaContent(qnA.getQnaContent())
-                    .qnaTitle(qnA.getQnaTitle())
-                    .isSecret(qnA.getIsSecret())
-                    .updateDate(qnA.getUpdatedDate())
-                    .regDate(qnA.getCreateDate())
-                    .build());
-        });
+        qnAList.forEach(qnA -> responseProductQnaDtoList.add(ResponseProductQnaDto.builder()
+                .productId(qnA.getProduct().getId())
+                .userLoginId(qnA.getUser().getUserId())
+                .qnaType(qnA.getQnaType())
+                .qnaId(qnA.getId())
+                .qnaContent(qnA.getQnaContent())
+                .qnaTitle(qnA.getQnaTitle())
+                .isSecret(qnA.getIsSecret())
+                .updateDate(qnA.getUpdatedDate())
+                .regDate(qnA.getCreateDate())
+                .build()));
 
         for (ProductDetailImage detailImage : detailImageList) {
             detailDtoList.add(OutputDetailImgDto.builder()

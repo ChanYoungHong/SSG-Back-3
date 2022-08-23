@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Data
 public class OrdersOptioninputDto {
-
     private Long optionListId;
-    private String orderMsg;
     private int qty;
-
 }

@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.order.controller;
 
 import com.spharosacademy.project.SSGBack.order.dto.request.OrdersInputDto;
+import com.spharosacademy.project.SSGBack.order.dto.request.OrdersUpdateDto;
 import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
 import com.spharosacademy.project.SSGBack.order.dto.response.OrdersRemoveOutputDto;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
@@ -40,12 +41,11 @@ public class OrdersController {
     }
 
     // 주문 이메일, 주소, 이름(받는 사람) 변경
-    @PutMapping("/edit/{memberId}")
+    @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public void editMyOrderDetail(@PathVariable Long memberId,
-                                  @RequestBody OrdersInputDto ordersInputDto) {
+    public void editMyOrderDetail(@RequestBody OrdersUpdateDto ordersUpdateDto) {
 
-        ordersService.editMyOrderDetail(memberId, ordersInputDto);
+        ordersService.editMyOrderDetail(ordersUpdateDto);
     }
 
     // 주문 삭제

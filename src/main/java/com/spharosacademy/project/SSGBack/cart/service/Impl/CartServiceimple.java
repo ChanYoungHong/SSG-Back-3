@@ -120,6 +120,11 @@ public class CartServiceimple implements CartService {
             OrderList orderList = orderListRepository.save(OrderList.builder()
                     .orders(orders)
                     .optionId(cart.getOptionId())
+                            .orderAnOrderer(user.getUsername())
+                            .memberId(user.getId())
+                            .orderDecidedDate(orders.getOrderedDate())
+                            .orderReceiver(user.getUsername())
+
                     .build());
 
             optionRepository.save(OptionList.builder()
