@@ -392,24 +392,50 @@ public class ProductServiceImple implements ProductService {
                     .name(categoryProductList.getSSname())
                     .build());
         }
-
-        User user = iUserRepository.findById(userId).get();
-        Long recentProduct = recentWatchProductRepository.findByUserIdAndProductId(userId, id);
-        if (recentProduct == null) {
-            recentWatchProductRepository.save(RecentWatchProduct.builder()
-                    .product(product)
-                    .user(user)
-                    .build());
-        }
-
         Long duplicate;
-        boolean inWish;
         duplicate = wishListRepository.findByUserIdAndProductId(userId, id);
-        if (duplicate == null) {
-            inWish = false;
-        } else {
-            inWish = true;
+        Long wishId;
+        if (userId != null) {
+            User user = iUserRepository.findById(userId).get();
+            Long recentProduct = recentWatchProductRepository.findByUserIdAndProductId(userId, id);
+            if (recentProduct == null) {
+                recentWatchProductRepository.save(RecentWatchProduct.builder()
+                        .product(product)
+                        .user(user)
+                        .build());
+            }
+
+            if (duplicate == null) {
+                wishId = null;
+            } else {
+                wishId = duplicate;
+            }
+
+            return ResponseProductDto.builder()
+                    .pid(product.getId())
+                    .name(product.getName())
+                    .oprice(product.getOldPrice())
+                    .nprice(product.getNewPrice())
+                    .drate(product.getDiscountRate())
+                    .brand(product.getBrand())
+                    .mall(product.getMallText())
+                    .thumbnailImgUrl(product.getThumbnailUrl())
+                    .sellAmount(product.getSellAmt())
+                    .reviewTotalDto(reviewTotalDto)
+                    .wishId(wishId)
+                    .qnaCount(qnaCount)
+                    .explanation(product.getExplanation())
+                    .pofCategoryLList(categoryLlist)
+                    .pofCategoryMList(categoryMList)
+                    .pofCategorySList(categorySList)
+                    .pofCategorySSList(categorySSList)
+                    .outputDetailImgDtos(detailDtoList)
+                    .outputTitleImgDtos(titleDtoList)
+                    .optionOutputDtos(optionOutputDtoList)
+                    .regDate(product.getCreateDate())
+                    .build();
         }
+        wishId = null;
 
         return ResponseProductDto.builder()
                 .pid(product.getId())
@@ -422,7 +448,7 @@ public class ProductServiceImple implements ProductService {
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
                 .reviewTotalDto(reviewTotalDto)
-                .inWish(inWish)
+                .wishId(wishId)
                 .qnaCount(qnaCount)
                 .explanation(product.getExplanation())
                 .pofCategoryLList(categoryLlist)

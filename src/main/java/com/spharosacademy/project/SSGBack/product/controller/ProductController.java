@@ -58,6 +58,12 @@ public class ProductController {
         return productService.getByProductId(id, userId);
     }
 
+    //
+    @GetMapping("/get/{id}")
+    public ResponseProductDto getProductById(@PathVariable Long id) {
+        return productService.getByProductId(id);
+    }
+
     //특정 상품 수정 
     @PutMapping("/update")
     public String editProduct
