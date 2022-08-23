@@ -16,7 +16,7 @@ public interface ProductService {
 
     List<ResponseProductDto> getAll();
 
-    ResponseProductDto getByProductId(Long id);
+    ResponseProductDto getByProductId(Long id, Long userId);
 
     Product editProductById(UpdateProductDto updateProductDto) throws Exception;
 
@@ -24,5 +24,5 @@ public interface ProductService {
 
     ResponseRecommendProductDto getRecommendProductById(Long id);
 
-    List<OutputSearchProductDto> searchProductByWord(String keyword , Pageable pageable);
+    List<OutputSearchProductDto> searchProductByWord(Long userId, String keyword , Pageable pageable);
 }

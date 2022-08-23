@@ -22,6 +22,7 @@ public class ResponseRecommendProductDto {
     private String priceText;
     private float oldPrice;
     private float newPrice;
+    private boolean inWish;
     private float discountRate;
     ReviewTotalDto reviewTotalDto;
     private LocalDateTime regDate;

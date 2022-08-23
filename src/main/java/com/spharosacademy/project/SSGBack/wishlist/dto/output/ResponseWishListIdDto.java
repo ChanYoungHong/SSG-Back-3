@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.wishlist.dto.input;
+package com.spharosacademy.project.SSGBack.wishlist.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestWishListDto {
+public class ResponseWishListIdDto {
+    private Long wishListId;
     private Long productId;
-    private Long userId;
 }

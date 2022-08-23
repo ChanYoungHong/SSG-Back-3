@@ -19,6 +19,7 @@ public class OutputSearchProductDto {
     private String name;
     private String brand;
     private String mall;
+    private boolean inWish;
     private float nprice;
     private float oprice;
     private float drate;

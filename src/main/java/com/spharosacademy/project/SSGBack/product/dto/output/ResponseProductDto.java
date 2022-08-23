@@ -31,6 +31,7 @@ public class ResponseProductDto {
     private float drate;
     ReviewTotalDto reviewTotalDto;
     private Long qnaCount;
+    private boolean inWish;
     private String explanation;
     private LocalDateTime regDate;
     List<PofCategorySS> pofCategorySSList;

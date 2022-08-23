@@ -66,9 +66,9 @@ public class IUserServiceimple implements IUserService {
                     .orderId(orderDetail.getOrders().getId())
                     .orderDetailId(orderDetail.getId())
                     .userName(iUserRepository.findById(userId)
-                            .orElseThrow(UserNotFoundException::new).getName())
+                            .orElseThrow(UserNotFoundException::new).getUserName())
                     .userAddress(iUserRepository.findById(userId).
-                            orElseThrow(UserNotFoundException::new).getAddress())
+                            orElseThrow(UserNotFoundException::new).getUserAddress())
                     .productName(orderDetail.getProduct().getName())
                     .productThumbnailImageUrl(productRepository.findById(orderDetail.getProduct().getId())
                             .orElseThrow(ProductNotFoundException::new).getThumbnailUrl())

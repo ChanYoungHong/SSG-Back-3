@@ -53,9 +53,9 @@ public class ProductController {
     }
 
     //특정 상품 조회
-    @GetMapping("/get/{id}")
-    public ResponseProductDto getProductById(@PathVariable Long id) {
-        return productService.getByProductId(id);
+    @GetMapping("/get/{id}/{userId}")
+    public ResponseProductDto getProductById(@PathVariable Long id, @PathVariable Long userId) {
+        return productService.getByProductId(id, userId);
     }
 
     //특정 상품 수정 
@@ -67,15 +67,15 @@ public class ProductController {
     }
 
     //추천 상품들에 해당하는 상품 조회
-    @GetMapping("/recommend/{id}")
+    @GetMapping("/recommend/{id}/{userId}")
     public ResponseRecommendProductDto getRecommendProductById(@PathVariable Long id) {
         return productService.getRecommendProductById(id);
     }
 
-    @GetMapping("/search")
-    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query
+    @GetMapping("/{userId}/search")
+    public List<OutputSearchProductDto> SearchProductByWord(@PathVariable Long userId, @RequestParam String query
             , @PageableDefault(size = 20, sort = "createDate", direction = Sort.Direction.ASC) Pageable pageable) {
-        return productService.searchProductByWord(query, pageable);
+        return productService.searchProductByWord(userId, query, pageable);
     }
 
 }

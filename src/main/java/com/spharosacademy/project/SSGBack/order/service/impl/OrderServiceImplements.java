@@ -44,7 +44,7 @@ public class OrderServiceImplements implements OrderService {
         orderDetailRepository.save(OrderDetail.builder()
                 .product(product)
                 .optionId(optionList.getId())
-                .address(user.getAddress())
+                .address(user.getUserAddress())
                 .qty(orderInputDto.getQty())
                 .totalPrice(orderInputDto.getQty() * product.getNewPrice())
                 .orders(orders)

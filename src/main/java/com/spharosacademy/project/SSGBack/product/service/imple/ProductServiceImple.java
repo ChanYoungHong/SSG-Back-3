@@ -26,8 +26,13 @@ import com.spharosacademy.project.SSGBack.product.option.repository.SizeReposito
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
+import com.spharosacademy.project.SSGBack.recentWatch.entity.RecentWatchProduct;
+import com.spharosacademy.project.SSGBack.recentWatch.repository.RecentWatchProductRepository;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
+import com.spharosacademy.project.SSGBack.user.domain.User;
+import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -55,6 +60,9 @@ public class ProductServiceImple implements ProductService {
     private final SizeRepository sizeRepository;
     private final ReviewRepository reviewRepository;
     private final QnaRepository qnaRepository;
+    private final RecentWatchProductRepository recentWatchProductRepository;
+    private final IUserRepository iUserRepository;
+    private final WishListRepository wishListRepository;
 
 
     @Override
@@ -152,7 +160,7 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String keyword, Pageable pageable) {
+    public List<OutputSearchProductDto> searchProductByWord(Long userId, String keyword, Pageable pageable) {
         List<Product> productList = productRepository.findAllBysearchWord(keyword, pageable);
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
@@ -160,6 +168,15 @@ public class ProductServiceImple implements ProductService {
         } else {
             for (Product product : productList) {
                 log.info("df");
+
+                Long duplicate;
+                boolean inWish;
+                duplicate = wishListRepository.findByUserIdAndProductId(userId, product.getId());
+                if (duplicate == null) {
+                    inWish = false;
+                } else {
+                    inWish = true;
+                }
                 ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
                 outputSearchProductDtos.add(OutputSearchProductDto.builder()
                         .pid(product.getId())
@@ -168,6 +185,7 @@ public class ProductServiceImple implements ProductService {
                         .mall(product.getMallText())
                         .oprice(product.getOldPrice())
                         .nprice(product.getNewPrice())
+                        .inWish(inWish)
                         .drate(product.getDiscountRate())
                         .reviewTotalDto(reviewTotalDto)
                         .thumbnailImgUrl(product.getThumbnailUrl())
@@ -302,7 +320,7 @@ public class ProductServiceImple implements ProductService {
 
 
     @Override
-    public ResponseProductDto getByProductId(Long id) {
+    public ResponseProductDto getByProductId(Long id, Long userId) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
@@ -375,6 +393,24 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
+        User user = iUserRepository.findById(userId).get();
+        Long recentProduct = recentWatchProductRepository.findByUserIdAndProductId(userId, id);
+        if (recentProduct == null) {
+            recentWatchProductRepository.save(RecentWatchProduct.builder()
+                    .product(product)
+                    .user(user)
+                    .build());
+        }
+
+        Long duplicate;
+        boolean inWish;
+        duplicate = wishListRepository.findByUserIdAndProductId(userId, id);
+        if (duplicate == null) {
+            inWish = false;
+        } else {
+            inWish = true;
+        }
+
         return ResponseProductDto.builder()
                 .pid(product.getId())
                 .name(product.getName())
@@ -386,6 +422,7 @@ public class ProductServiceImple implements ProductService {
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
                 .reviewTotalDto(reviewTotalDto)
+                .inWish(inWish)
                 .qnaCount(qnaCount)
                 .explanation(product.getExplanation())
                 .pofCategoryLList(categoryLlist)
@@ -397,6 +434,7 @@ public class ProductServiceImple implements ProductService {
                 .optionOutputDtos(optionOutputDtoList)
                 .regDate(product.getCreateDate())
                 .build();
+
     }
 
     @Override

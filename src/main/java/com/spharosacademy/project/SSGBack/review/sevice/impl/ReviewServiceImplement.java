@@ -94,7 +94,7 @@ public class ReviewServiceImplement implements ReviewService {
                     .orderDetailId(detail.getId())
                     .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
-                    .userLoginId(review.getUser().getUserId())
+                    .userLoginId(review.getUser().getLoginId())
                     .reviewTotalDto(reviewTotalDto)
                     .regDate(review.getCreateDate())
                     .updateDate(review.getUpdatedDate())
@@ -139,7 +139,7 @@ public class ReviewServiceImplement implements ReviewService {
                             .size(optionList.getSize().getType())
                             .regDate(review.getCreateDate())
                             .updateDate(review.getUpdatedDate())
-                            .userLoginId(review.getUser().getUserId())
+                            .userLoginId(review.getUser().getLoginId())
                             .outputReviewImgDtos(outputReviewImgDtos)
                             .build());
 

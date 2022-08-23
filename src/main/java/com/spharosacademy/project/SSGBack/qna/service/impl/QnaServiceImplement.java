@@ -47,7 +47,7 @@ public class QnaServiceImplement implements QnaService {
             responseProductQnaDtoList.add(ResponseProductQnaDto.builder()
                     .productId(qnA.getProduct().getId())
                     .qnaId(qnA.getId())
-                    .userLoginId(qnA.getUser().getUserId())
+                    .userLoginId(qnA.getUser().getLoginId())
                     .isSecret(qnA.getIsSecret())
                     .qnaContent(qnA.getQnaContent())
                     .qnaTitle(qnA.getQnaTitle())
