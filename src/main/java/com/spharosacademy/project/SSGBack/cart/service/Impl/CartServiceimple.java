@@ -120,7 +120,6 @@ public class CartServiceimple implements CartService {
             OrderList orderList = orderListRepository.save(OrderList.builder()
                     .orders(orders)
                     .optionId(cart.getOptionId())
-                    .orderMsg()
                     .build());
 
             optionRepository.save(OptionList.builder()
