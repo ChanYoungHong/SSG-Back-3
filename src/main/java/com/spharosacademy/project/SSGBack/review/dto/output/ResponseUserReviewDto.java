@@ -16,7 +16,6 @@ public class ResponseUserReviewDto {
 
     private Long reviewId;
     private Long productId;
-    private String reviewTitle;
     private Long orderDetailId;
     private String productName;
     private String color;

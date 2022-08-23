@@ -15,7 +15,6 @@ import java.util.List;
 public class ResponseProductReviewDto {
 
     private Long reviewId;
-    private String reviewTitle;
     private String reviewContent;
     private String userLoginId;
     private Long orderDetailId;

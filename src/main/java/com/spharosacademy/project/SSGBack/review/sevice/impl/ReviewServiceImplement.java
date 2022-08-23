@@ -56,7 +56,6 @@ public class ReviewServiceImplement implements ReviewService {
                 .orderDetailId(orderList.getOrderListId())
                 .reviewContent(requestReviewDto.getReviewContent())
                 .reviewScore(requestReviewDto.getReviewScore())
-                .reviewTitle(requestReviewDto.getReviewTitle())
                 .build());
 
         requestReviewDto.getRequestReviewImageDtos().forEach(inputReviewImageDto ->
@@ -92,7 +91,6 @@ public class ReviewServiceImplement implements ReviewService {
             responseProductReviewDtos.add(ResponseProductReviewDto.builder()
                     .reviewId(review.getId())
                     .orderDetailId(detail.getOrderListId())
-                    .reviewTitle(review.getReviewTitle())
                     .reviewContent(review.getReviewContent())
                     .userLoginId(review.getUser().getUserId())
                     .reviewTotalDto(reviewTotalDto)
@@ -134,7 +132,6 @@ public class ReviewServiceImplement implements ReviewService {
                             .productName(review.getProduct().getName())
                             .reviewContent(review.getReviewContent())
                             .reviewScore(review.getReviewScore())
-                            .reviewTitle(review.getReviewTitle())
                             .color(optionList.getColors().getName())
                             .size(optionList.getSize().getType())
                             .regDate(review.getCreateDate())
@@ -157,7 +154,6 @@ public class ReviewServiceImplement implements ReviewService {
                 .orElseThrow(ProductNotFoundException::new);
 
         Review review = reviewRepository.save(Review.builder()
-                .reviewTitle(requestUpdateReviewDto.getReviewTitle())
                 .orderDetailId(requestUpdateReviewDto.getOrderDetailId())
                 .reviewContent(requestUpdateReviewDto.getReviewContent())
                 .reviewScore(requestUpdateReviewDto.getReviewScore())
