@@ -66,6 +66,7 @@ public class OrdersServiceImpl implements OrdersService {
                         .build()
         );
         ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
+            OptionList optionList = optionRepository.findById(ordersOptioninputDto.getOptionListId()).get();
             OrderList orderList = orderListRepository.save(
                     OrderList.builder()
                             .orderAnOrderer(user.get().getUsername())
@@ -83,13 +84,13 @@ public class OrdersServiceImpl implements OrdersService {
                             .build()
             );
             optionRepository.save(OptionList.builder()
-                    .id(orderList.getOrderListId())
-                    .colors(optionRepository.findById(orderList.getOrderListId()).get().getColors())
-                    .size(optionRepository.findById(orderList.getOrderListId()).get().getSize())
-                    .product(optionRepository.findById(orderList.getOrderListId()).get().getProduct())
+                    .id(optionList.getId())
+                    .colors(optionRepository.findById(orderList.getOptionId()).get().getColors())
+                    .size(optionRepository.findById(orderList.getOptionId()).get().getSize())
+                    .product(optionRepository.findById(orderList.getOptionId()).get().getProduct())
                     .stock(optionRepository.findById(orderList.getOptionId())
                             .orElseThrow(OptionNotFoundException::new).getStock()
-                            - orderList.getQty())
+                            - ordersOptioninputDto.getQty())
                     .build());
         });
     }
