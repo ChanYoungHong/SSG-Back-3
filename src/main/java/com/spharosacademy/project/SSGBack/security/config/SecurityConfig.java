@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
-    @Override
+    @Override // 인증처리 interface다
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -40,28 +40,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers().permitAll()
-                .antMatchers("/test/**").authenticated() // 인증이 필요하다고 요청 함
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("MANAGER")
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+            .antMatchers().permitAll()
+            .antMatchers("/test/**").authenticated() // 인증이 필요하다고 요청 함
+            .antMatchers("/user/**").hasRole("USER")
+            .antMatchers("/admin/**").hasRole("MANAGER")
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-//        http.formLogin();
         http.httpBasic().disable();
         http.csrf().disable();
         http.logout();
 
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
-//        auth.inMemoryAuthentication().withUser("user1")
-//            .password("$2a$10$e8l1kOMmhkXEl7d74H7KnevgYHFeFXXO.upleUtO7bi93LA5Rsb62")
-//            .roles("USER");
-//    }
 
 }

@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
-import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServieImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -27,42 +28,25 @@ public class UserServieImpl implements UserService {
 
 
     @Override
-    @Transactional
-    public void registerUser(UserAddInputDto userAddInputDto) {
-
-        userRepository.save(
-            User.builder()
-                .userId(userAddInputDto.getLoginId())
-                .userPwd(passwordEncoder.encode(userAddInputDto.getUserPwd()))
-                .userAddress(userAddInputDto.getUserAddress())
-                .userName(userAddInputDto.getUserName())
-                .userEmail(userAddInputDto.getUserEmail())
-                .userPhone(userAddInputDto.getUserPhoneNumber())
-                .userBirthDate((userAddInputDto.getUserBirthDate()))
-                .gender(userAddInputDto.getGender())
-                .roles(userAddInputDto.getRole())
-                .userDropCheck(userAddInputDto.getUserDropCheck())
-                .memberType(userAddInputDto.getMemberType())
-                .build()
-        );
+    public boolean duplicateUserId(String userId) {
+        return userRepository.existsByUserId(userId);
     }
 
     @Override
-    public List<User> findAllByUserId(Long userId) {
-        return userRepository.findAllByUserId(userId);
+    public Optional<User> findByUserId(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    @Transactional
-    public void modifyUserInfo(Long memberId, UserOutputDto userOutputDto) {
+    public void modifyUserInfo(Long id, UserInputDto userInputDto) {
 
         Optional<User> result = Optional.ofNullable(
-            userRepository.findById(memberId)
+            userRepository.findById(id)
                 .orElseThrow(MemberIdNotfound::new));
 
         List<UserEditInputDto> userEditInputDtoList = new ArrayList<>();
 
-        for (UserEditInputDto userEditInputDto : userOutputDto.getUserEditInputDtoList()) {
+        for (UserEditInputDto userEditInputDto : userInputDto.getUserEditInputDtoList()) {
             userEditInputDtoList.add(userEditInputDto.builder()
                 .userPhoneNumber(userEditInputDto.getUserPhoneNumber())
                 .userEmail(userEditInputDto.getUserEmail())
@@ -74,37 +58,40 @@ public class UserServieImpl implements UserService {
             userEditInputDtoList.forEach(userEditInputDto -> {
                 userRepository.save(
                     User.builder()
-
-                        .id(result.get().getId())
+                        .id(id)
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
                         .userAddress(result.get().getUserAddress())
                         .userPhone(userEditInputDto.getUserPhoneNumber())
                         .userName(result.get().getUsername())
+                        .role(result.get().getRole())
+                        .userDropCheck(result.get().getUserDropCheck())
                         .userEmail(userEditInputDto.getUserEmail())
-                        .userBirthDate(result.get().getUserBirthDate())
-                        .gender(result.get().getGender())
                         .memberType(result.get().getMemberType())
+//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                         .build()
                 );
+
             });
         }
     }
 
     @Override
-    public User removeUserInfo(Long memberId, UserOutputDto userOutputDto) {
+    public User removeUserInfo(Long id, UserOutputDto userOutputDto) {
 
         Optional<User> check =
-            Optional.ofNullable(userRepository.findById(userOutputDto.getMemberId()).orElseThrow(
-                MemberIdNotfound::new));
+            Optional.ofNullable(
+                userRepository.findById(id).orElseThrow(
+                    MemberIdNotfound::new));
 
         if (check.isPresent()) {
             if (userOutputDto.getUserDropCheck().equals(true)) {
-                userRepository.deleteById(userOutputDto.getMemberId());
+                userRepository.deleteById(userOutputDto.getId());
             }
         } else {
             new UserdropCheckNotfound();
         }
         return null;
     }
+
 }

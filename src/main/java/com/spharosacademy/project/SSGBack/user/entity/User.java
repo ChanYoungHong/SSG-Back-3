@@ -1,14 +1,14 @@
 package com.spharosacademy.project.SSGBack.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +19,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -31,6 +32,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     // 사용자 ID
@@ -55,30 +57,45 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "member_type")
     private String memberType;
 
-    @Column(name = "gender")
-    private String gender;
+//    @Column(name = "gender")
+//    private String gender;
 
-    private String roles;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
-    private LocalDateTime userBirthDate;
+//    @Column(name = "user_birthdate")
+//    private LocalDate userBirthDate;
 
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;
 
-    @Column(name = "")
     private boolean fromSocial;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<UserRole> roleSet = new HashSet<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Builder.Default
+//    private List<String> roles = new ArrayList<>();
 
-    public void addUserRole(UserRole userRole) {
-        roleSet.add(userRole);
-    }
+//    @ElementCollection(fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<UserRole> roleSet = new HashSet<>();
+//
+//    public void addUserRole(UserRole userRole) {
+//        roleSet.add(userRole);
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+//        return this.roles.stream()
+//            .map(SimpleGrantedAuthority::new)
+//            .collect(Collectors.toList());
+
+        UserRole userRole = getRole();
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(authority);
+
+        return authorities;
     }
 
     @Override
@@ -88,7 +105,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userEmail;
+        return userName;
     }
 
     @Override

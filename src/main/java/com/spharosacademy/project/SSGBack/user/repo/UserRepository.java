@@ -14,9 +14,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUserId(String userId);
 
-    @EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select m from User m where m.fromSocial = :social and m.userEmail =:userEmail")
-    Optional<User> findByUserEmail(@Param("userEmail") String email, @Param("social") boolean social);
+//    @EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
+//    @Query("select m from User m where m.fromSocial = :social and m.userId =:userId")
+//    Optional<User> findByUserId(@Param("userId") String userId, @Param("social") boolean social);
 
-    List<User> findAllByUserId(Long userId);
+//    @Query("select m from User m where m.userEmail =:userEmail")
+//    Optional<User> findByUserEmail(@Param("userEmail") String email);
+
+
+    Optional<User> findByUserId(String userId);
+
 }

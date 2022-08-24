@@ -1,21 +1,18 @@
 package com.spharosacademy.project.SSGBack.user.service;
 
-import com.spharosacademy.project.SSGBack.user.dto.request.UserAddInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
-import java.util.List;
-import org.springframework.context.annotation.Primary;
+import java.util.Optional;
 
 
-@Primary
 public interface UserService {
 
-    void registerUser(UserAddInputDto userAddInputDto);
+    boolean duplicateUserId(String userId);
+    Optional<User> findByUserId(Long id);
 
-    List<User> findAllByUserId(Long userId);
+    void modifyUserInfo(Long id, UserInputDto userInputDto);
 
-    void modifyUserInfo(Long memberId,UserOutputDto userOutputDto);
-
-    User removeUserInfo(Long memberId, UserOutputDto userOutputDto);
+    User removeUserInfo(Long id, UserOutputDto userOutputDto);
 
 }
