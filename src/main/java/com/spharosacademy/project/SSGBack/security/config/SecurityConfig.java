@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/test/**").authenticated() // 인증이 필요하다고 요청 함
             .antMatchers("/user/**").hasRole("USER")
             .antMatchers("/admin/**").hasRole("MANAGER")
+            .antMatchers("/").authenticated()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class);
