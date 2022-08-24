@@ -16,6 +16,5 @@ public class OrderInputDto {
     private Long userId;
     private Long productId;
     private Long optionId;
-    private Long cartId;
     private int qty;
 }
