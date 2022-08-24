@@ -5,7 +5,6 @@ import com.spharosacademy.project.SSGBack.coupon.dto.request.CouponInputDto;
 import com.spharosacademy.project.SSGBack.coupon.dto.request.CouponOutputDto;
 import com.spharosacademy.project.SSGBack.coupon.service.CouponService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
