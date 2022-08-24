@@ -30,17 +30,16 @@ public class UserServieImpl implements UserService {
     }
 
     @Override
-    public void modifyUserInfo(Long memberId, UserInputDto userInputDto) {
+    public void modifyUserInfo(Long id, UserInputDto userInputDto) {
 
         Optional<User> result = Optional.ofNullable(
-            userRepository.findById(memberId)
+            userRepository.findById(id)
                 .orElseThrow(MemberIdNotfound::new));
 
         List<UserEditInputDto> userEditInputDtoList = new ArrayList<>();
 
         for (UserEditInputDto userEditInputDto : userInputDto.getUserEditInputDtoList()) {
             userEditInputDtoList.add(userEditInputDto.builder()
-                .userAddress(userEditInputDto.getUserAddress())
                 .userPhoneNumber(userEditInputDto.getUserPhoneNumber())
                 .userEmail(userEditInputDto.getUserEmail())
                 .build());
@@ -51,9 +50,10 @@ public class UserServieImpl implements UserService {
             userEditInputDtoList.forEach(userEditInputDto -> {
                 userRepository.save(
                     User.builder()
+                        .id(id)
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
-                        .userAddress(userEditInputDto.getUserAddress())
+                        .userAddress(result.get().getUserAddress())
                         .userPhone(userEditInputDto.getUserPhoneNumber())
                         .userName(result.get().getUsername())
                         .role(result.get().getRole())
@@ -63,6 +63,7 @@ public class UserServieImpl implements UserService {
 //                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                         .build()
                 );
+
             });
         }
     }

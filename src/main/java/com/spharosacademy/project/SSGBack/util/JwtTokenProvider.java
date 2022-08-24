@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
 @Component
@@ -23,6 +25,7 @@ public class JwtTokenProvider {
 
     // 유효시간 1시간
     private long tokenValidTime = 36000000L;
+
     // 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
 
@@ -36,6 +39,7 @@ public class JwtTokenProvider {
     }
 
     public String createToken(Long userId, String role) {
+
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
         Claims claims = Jwts.claims().setSubject(userId.toString());
         claims.put("role", role);
@@ -62,6 +66,12 @@ public class JwtTokenProvider {
 
     // Request의 Header에서 token 값을 가져온다 "Authorization"
     public String resolveToken(HttpServletRequest request) {
+        return request.getHeader("Authorization");
+    }
+
+    public String customResolveToken() {
+        HttpServletRequest request = ((ServletRequestAttributes)
+            RequestContextHolder.currentRequestAttributes()).getRequest();
         return request.getHeader("Authorization");
     }
 

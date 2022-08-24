@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserEditInputDto {
 
-    private String userAddress;
     private String userPhoneNumber;
     private String userEmail;
 
