@@ -53,7 +53,7 @@ public class ReviewServiceImplement implements ReviewService {
         Review review = reviewRepository.save(Review.builder()
                 .product(product)
                 .user(user)
-                .orderDetailId(orderList.getOrderListId())
+                .orderDetailId(requestReviewDto.getOrderDetailId())
                 .reviewContent(requestReviewDto.getReviewContent())
                 .reviewScore(requestReviewDto.getReviewScore())
                 .build());
@@ -90,7 +90,7 @@ public class ReviewServiceImplement implements ReviewService {
             OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
             responseProductReviewDtos.add(ResponseProductReviewDto.builder()
                     .reviewId(review.getId())
-                    .orderDetailId(detail.getOrderListId())
+                    .orderDetailId(review.getOrderDetailId())
                     .reviewContent(review.getReviewContent())
                     .userLoginId(review.getUser().getUserId())
                     .reviewTotalDto(reviewTotalDto)
@@ -127,7 +127,7 @@ public class ReviewServiceImplement implements ReviewService {
 
                     responseUserReviewDtos.add(ResponseUserReviewDto.builder()
                             .reviewId(review.getId())
-                            .orderDetailId(detail.getOrderListId())
+                            .orderDetailId(review.getOrderDetailId())
                             .productId(review.getProduct().getId())
                             .productName(review.getProduct().getName())
                             .reviewContent(review.getReviewContent())
