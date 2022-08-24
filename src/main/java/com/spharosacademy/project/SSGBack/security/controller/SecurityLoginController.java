@@ -1,6 +1,8 @@
 package com.spharosacademy.project.SSGBack.security.controller;
 
 import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
@@ -27,26 +29,26 @@ public class SecurityLoginController {
 
     @PostMapping("/login")
     public LoginSuccessOutputDto loginUser(
-        @RequestBody LoginSuccessOutputDto loginSuccessOutputDto) {
+        @RequestBody UserLoginDto userLoginDto) {
 
-        User result = userRepository.findByUserId(loginSuccessOutputDto.getUserId())
+        User result = userRepository.findByUserId(userLoginDto.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 email입니다."));
 
-        log.info(loginSuccessOutputDto);
+        log.info(userLoginDto);
 
-        if (passwordEncoder.matches(loginSuccessOutputDto.getUserPwd(), result.getUserPwd())) {
+        if (passwordEncoder.matches(userLoginDto.getUserPwd(), result.getUserPwd())) {
             return LoginSuccessOutputDto.builder()
                 .message("토큰이 생성 되었습니다.")
                 .result(String.valueOf(
                     jwtTokenProvider.createToken(result.getId(),
                         String.valueOf(result.getRole()))))
                 .isSuccess("성공")
-                .userEmail(loginSuccessOutputDto.getUserEmail())
+                .userEmail(userLoginDto.getUserEmail())
                 .build();
         } else {
             new LoginFailException();
         }
-        return loginSuccessOutputDto;
+        return null;
     }
 
 

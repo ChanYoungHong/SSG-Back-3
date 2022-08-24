@@ -100,9 +100,9 @@ public class OrdersServiceImpl implements OrdersService {
 
 
     @Override
-    public List<OrdersOutputDto> checkMyOrder(Long memberId) {
+    public List<OrdersOutputDto> checkMyOrder(Long userId) {
 
-        Optional<User> user = userRepository.findById(memberId);
+        Optional<User> user = userRepository.findById(userId);
 
         List<OrdersOutputDto> ordersOutputDtoList = new ArrayList<>();
 

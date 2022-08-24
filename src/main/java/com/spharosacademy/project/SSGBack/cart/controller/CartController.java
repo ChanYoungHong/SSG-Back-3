@@ -9,6 +9,7 @@ import com.spharosacademy.project.SSGBack.cart.service.CartService;
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //장바구니 담기 클릭
     @PostMapping("/add")
@@ -35,8 +37,10 @@ public class CartController {
         return cartService.getAllCart();
     }
 
-    @GetMapping("/getByUserId/{userid}")
-    public List<CartOutputDto> getCartByUserId(@PathVariable Long userid){
+    @GetMapping("/getByUserId")
+    public List<CartOutputDto> getCartByUserId(){
+        String token = jwtTokenProvider.customResolveToken();
+        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return cartService.getCartByUserId(userid);
     }
 
@@ -52,8 +56,9 @@ public class CartController {
     }
 
     @PostMapping("/order")
-    public List<OrderStockOutputDto> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto){
-         return cartService.orderCart(cartOrderRequestDto);
+    public ResponseEntity<String> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto){
+         cartService.orderCart(cartOrderRequestDto);
+         return ResponseEntity.status(HttpStatus.OK).body("주문이 완료되었습니다");
     }
 
     @PutMapping("/update")

@@ -23,7 +23,6 @@ public class Product extends BaseTimeEntity {
     private float discountRate;
     private String priceText;
     private String brand;
-    private int cnt;
     private int sellAmt;
     private String explanation;
     private String thumbnailUrl;

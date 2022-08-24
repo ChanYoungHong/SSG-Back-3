@@ -18,5 +18,4 @@ public class ResponseWishListDto {
     private String thumbnailImgUrl;
     private float price;
     private String priceTxt;
-    private int stock;
 }

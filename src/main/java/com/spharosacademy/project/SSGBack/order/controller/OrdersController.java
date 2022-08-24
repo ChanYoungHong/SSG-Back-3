@@ -7,6 +7,8 @@ import com.spharosacademy.project.SSGBack.order.dto.response.OrdersRemoveOutputD
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
 import java.util.List;
+
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrdersController {
 
     private final OrdersService ordersService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 주문 등록
     @PostMapping("/add")
@@ -27,11 +30,12 @@ public class OrdersController {
     }
 
     // 회원번호로 주문목록 조회, 회원 아이디 아님
-    @GetMapping("/check/{memberId}")
+    @GetMapping("/check")
     @ResponseStatus(HttpStatus.OK)
-    public List<OrdersOutputDto> checkMyOrder(@PathVariable Long memberId) {
-
-        return ordersService.checkMyOrder(memberId);
+    public List<OrdersOutputDto> checkMyOrder() {
+        String token = jwtTokenProvider.customResolveToken();
+        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return ordersService.checkMyOrder(userid);
     }
 
     // 주문 이메일, 주소, 이름(받는 사람) 변경

@@ -58,19 +58,16 @@ public class UserController {
     // 회원정보 수정, 토큰으로 수정 memberId 지움
     @PutMapping("/modify")
     @ResponseStatus(HttpStatus.OK)
-    public void modifyUserInfo(HttpServletRequest request,
-                               @RequestBody UserInputDto userInputDto) {
-        String token = jwtTokenProvider.resolveToken(request);
-
+    public void modifyUserInfo(@RequestBody UserInputDto userInputDto) {
+        String token = jwtTokenProvider.customResolveToken();
         Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
         userService.modifyUserInfo(id, userInputDto);
     }
 
     // 회원 탈퇴, 삭제 + 토큰으로 삭제하기 memberId 지움
     @DeleteMapping("/remove")
-    public User removeUserInfo(HttpServletRequest request,
-                               @RequestBody UserOutputDto userOutputDto) {
-        String token = jwtTokenProvider.resolveToken(request);
+    public User removeUserInfo(@RequestBody UserOutputDto userOutputDto) {
+        String token = jwtTokenProvider.customResolveToken();
         Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return userService.removeUserInfo(id, userOutputDto);
     }

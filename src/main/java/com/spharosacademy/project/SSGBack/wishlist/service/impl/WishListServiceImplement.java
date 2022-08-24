@@ -51,7 +51,6 @@ public class WishListServiceImplement implements WishListService {
                     .mallTxt(wishList.getProduct().getMallText())
                     .priceTxt(wishList.getProduct().getPriceText())
                     .thumbnailImgUrl(wishList.getProduct().getThumbnailUrl())
-                    .stock(wishList.getProduct().getCnt())
                     .build());
         }
         return responseWishListDtos;

@@ -1,10 +1,14 @@
 package com.spharosacademy.project.SSGBack.user.dto.request;
 
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserLoginDto {
 
     private String userEmail;
     private String userPwd;
+    private String userId;
 }

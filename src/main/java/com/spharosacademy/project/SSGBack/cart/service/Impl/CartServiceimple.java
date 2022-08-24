@@ -79,7 +79,7 @@ public class CartServiceimple implements CartService {
                         .id(duplicate)
                         .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
                                 .orElseThrow(OptionNotFoundException::new).getSize().getId())
-                        .optionId(cartRepository.findById(cartOptionDto.getOptionId()).get().getOptionId())
+                        .optionId(cartRepository.findById(duplicate).get().getOptionId())
                         .qty(cartOptionDto.getQty() + cartRepository.findById(duplicate).get().getQty())
                         .colorId(optionRepository.findById(cartOptionDto.getOptionId())
                                 .orElseThrow(OptionNotFoundException::new).getColors().getId())
@@ -105,8 +105,8 @@ public class CartServiceimple implements CartService {
 
         }
         orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
-            if (orderOptionRequestDto.getQty() > optionRepository.findById(orderOptionRequestDto
-                    .getCartId()).get().getStock()) {
+            Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
+            if (orderOptionRequestDto.getQty() > optionRepository.findById(cart.getOptionId()).get().getStock()) {
                 throw new OutOfStockException();
             }
         });
@@ -120,11 +120,15 @@ public class CartServiceimple implements CartService {
             OrderList orderList = orderListRepository.save(OrderList.builder()
                     .orders(orders)
                     .optionId(cart.getOptionId())
-                            .orderAnOrderer(user.getUsername())
-                            .memberId(user.getId())
-                            .orderDecidedDate(orders.getOrderedDate())
-                            .orderReceiver(user.getUsername())
-
+                    .orderAnOrderer(user.getUsername())
+                    .memberId(user.getId())
+                    .orderDecidedDate(orders.getOrderedDate())
+                    .orderReceiver(user.getUsername())
+                    .userEmail(user.getUserEmail())
+                    .userPhoneNumber(user.getUserPhone())
+                    .qty(orderOptionRequestDto.getQty())
+                    .userId(user.getId())
+                    .product(product)
                     .build());
 
             optionRepository.save(OptionList.builder()

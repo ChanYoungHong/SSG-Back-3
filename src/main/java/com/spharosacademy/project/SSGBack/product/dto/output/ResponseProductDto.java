@@ -33,9 +33,11 @@ public class ResponseProductDto {
     private float newPrice;
     private float discountRate;
     private String priceText;
-    ReviewTotalDto reviewTotalDto;
-    List<ResponseProductReviewDto> responseProductReviewDtos;
-    List<ResponseProductQnaDto> responseProductQnaDtoList;
+    ReviewTotalDto reviewStatic;
+    //전체리뷰 중 5개만
+    List<ResponseProductReviewDto> someOfReview;
+    //전체QnA 중 5개만
+    List<ResponseProductQnaDto> someOfQnA;
     private Long qnaCount;
     private String explanation;
     private LocalDateTime regDate;
