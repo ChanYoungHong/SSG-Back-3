@@ -39,6 +39,7 @@ public class UserServieImpl implements UserService {
 
         for (UserEditInputDto userEditInputDto : userOutputDto.getUserEditInputDtoList()) {
             userEditInputDtoList.add(userEditInputDto.builder()
+                .userAddress(userEditInputDto.getUserAddress())
                 .userPhoneNumber(userEditInputDto.getUserPhoneNumber())
                 .userEmail(userEditInputDto.getUserEmail())
                 .build());
@@ -49,15 +50,16 @@ public class UserServieImpl implements UserService {
             userEditInputDtoList.forEach(userEditInputDto -> {
                 userRepository.save(
                     User.builder()
-
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
-                        .userAddress(result.get().getUserAddress())
+                        .userAddress(userEditInputDto.getUserAddress())
                         .userPhone(userEditInputDto.getUserPhoneNumber())
                         .userName(result.get().getUsername())
+                        .role(result.get().getRole())
+                        .userDropCheck(result.get().getUserDropCheck())
                         .userEmail(userEditInputDto.getUserEmail())
-//                        .userBirthDate(result.get().getUserBirthDate())
                         .memberType(result.get().getMemberType())
+//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                         .build()
                 );
             });

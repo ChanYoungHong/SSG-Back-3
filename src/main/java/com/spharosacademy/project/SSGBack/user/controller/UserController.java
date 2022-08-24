@@ -32,7 +32,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<User> findByUserId(HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request);
-
         return userService.findByUserId(Long.valueOf(jwtTokenProvider.getUserPk(token)));
     }
 

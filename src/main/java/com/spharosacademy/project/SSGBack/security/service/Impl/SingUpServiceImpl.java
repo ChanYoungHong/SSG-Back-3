@@ -31,7 +31,6 @@ public class SingUpServiceImpl implements SignUpService {
                 .userEmail(userInputDto.getUserEmail())
                 .role(UserRole.ROLE_USER)
                 .userPhone(userInputDto.getUserPhoneNumber())
-//                .userBirthDate(userInputDto.getUserBirthDate())
                 .userDropCheck(userInputDto.getUserDropCheck())
                 .memberType(userInputDto.getMemberType())
                 .build()
