@@ -7,10 +7,12 @@ import java.util.Optional;
 
 
 public interface UserService {
+
+    boolean duplicateUserId(String userId);
     Optional<User> findByUserId(Long id);
 
-    void modifyUserInfo(Long userId, UserInputDto userInputDto);
+    void modifyUserInfo(Long id, UserInputDto userInputDto);
 
-    User removeUserInfo(Long memberId, UserOutputDto userOutputDto);
+    User removeUserInfo(Long id, UserOutputDto userOutputDto);
 
 }

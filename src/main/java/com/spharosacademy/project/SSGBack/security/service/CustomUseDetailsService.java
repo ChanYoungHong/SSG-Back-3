@@ -22,9 +22,9 @@ public class CustomUseDetailsService implements UserDetailsService {
 
     // UserDetails를 가져오기 위한 DAO다
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
-        Optional<User> result = userRepository.findById(Long.valueOf(userId));
+        Optional<User> result = userRepository.findById(Long.valueOf(id));
 
         // 책에는 !가 없음, 근데 로직상 !가 있어야 할 것 같음.
         if(result.isEmpty()){

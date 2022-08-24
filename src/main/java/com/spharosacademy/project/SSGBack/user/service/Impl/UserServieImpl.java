@@ -25,6 +25,11 @@ public class UserServieImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    public boolean duplicateUserId(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
+    @Override
     public Optional<User> findByUserId(Long id) {
         return userRepository.findById(id);
     }
@@ -69,11 +74,11 @@ public class UserServieImpl implements UserService {
     }
 
     @Override
-    public User removeUserInfo(Long memberId, UserOutputDto userOutputDto) {
+    public User removeUserInfo(Long id, UserOutputDto userOutputDto) {
 
         Optional<User> check =
             Optional.ofNullable(
-                userRepository.findById(userOutputDto.getId()).orElseThrow(
+                userRepository.findById(id).orElseThrow(
                     MemberIdNotfound::new));
 
         if (check.isPresent()) {
