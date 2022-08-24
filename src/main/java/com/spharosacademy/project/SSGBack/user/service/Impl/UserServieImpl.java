@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
@@ -29,7 +30,7 @@ public class UserServieImpl implements UserService {
     }
 
     @Override
-    public void modifyUserInfo(Long memberId, UserOutputDto userOutputDto) {
+    public void modifyUserInfo(Long memberId, UserInputDto userInputDto) {
 
         Optional<User> result = Optional.ofNullable(
             userRepository.findById(memberId)
@@ -37,7 +38,7 @@ public class UserServieImpl implements UserService {
 
         List<UserEditInputDto> userEditInputDtoList = new ArrayList<>();
 
-        for (UserEditInputDto userEditInputDto : userOutputDto.getUserEditInputDtoList()) {
+        for (UserEditInputDto userEditInputDto : userInputDto.getUserEditInputDtoList()) {
             userEditInputDtoList.add(userEditInputDto.builder()
                 .userAddress(userEditInputDto.getUserAddress())
                 .userPhoneNumber(userEditInputDto.getUserPhoneNumber())

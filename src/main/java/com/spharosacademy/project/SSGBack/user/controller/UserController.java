@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.controller;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
@@ -39,9 +40,9 @@ public class UserController {
     @PutMapping("/modify")
     @ResponseStatus(HttpStatus.OK)
     public void modifyUserInfo(HttpServletRequest request,
-                               @RequestBody UserOutputDto userOutputDto) {
+                               @RequestBody UserInputDto userInputDto) {
         String token = jwtTokenProvider.resolveToken(request);
-        userService.modifyUserInfo(Long.valueOf(jwtTokenProvider.getUserPk(token)), userOutputDto);
+        userService.modifyUserInfo(Long.valueOf(jwtTokenProvider.getUserPk(token)), userInputDto);
     }
 
     // 회원 탈퇴, 삭제 + 토큰으로 삭제하기 memberId 지움

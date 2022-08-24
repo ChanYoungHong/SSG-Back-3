@@ -47,6 +47,6 @@ public class UserInputDto {
 //    @Length(max = 6)
 ////    private UserRole role;
 
-
+    List<UserEditInputDto> userEditInputDtoList;
 
 }
