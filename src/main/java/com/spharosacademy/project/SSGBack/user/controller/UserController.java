@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.controller;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
@@ -31,6 +32,15 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+
+    // 비밀번호 변경
+    @PutMapping("/changePassword/{userId}")
+    public Optional<User> changeNewPassWord(@RequestParam(value = "userId") String userId,
+                                            @RequestParam(value = "userPwd")
+                                                String userPwd) {
+
+        return userService.changePassword(userId, userPwd);
+    }
 
     // 회원아이디 중복검사
     @GetMapping("/duplicate/{userId}")

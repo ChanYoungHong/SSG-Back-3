@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserServieImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public boolean duplicateUserId(String userId) {
@@ -91,4 +94,38 @@ public class UserServieImpl implements UserService {
         return null;
     }
 
+    @Override
+    public Optional<User> changePassword(String userId, String userPwd) {
+
+        Optional<User> user = userRepository.findByUserId(userId);
+
+//        UserChangePwdInputDto newPwd = UserChangePwdInputDto.builder()
+//            .userPwd(userChangePwdInputDto.getUserPwd())
+//            .build();
+        log.info("--==========================================");
+//        log.info(userChangePwdInputDto.getUserPwd());
+        log.info("--==========================================");
+
+        if (user.isPresent()) {
+
+            userRepository.save(
+                User.builder()
+                    .id(user.get().getId())
+                    .userId(user.get().getUserId())
+                    .userPwd(userPwd)
+                    .userAddress(user.get().getUserAddress())
+                    .userPhone(user.get().getUserPhone())
+                    .userName(user.get().getUsername())
+                    .role(user.get().getRole())
+                    .userDropCheck(user.get().getUserDropCheck())
+                    .userEmail(user.get().getUserEmail())
+                    .memberType(user.get().getMemberType())
+//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
+                    .build()
+
+            );
+        }
+        return user;
+    }
 }
+
