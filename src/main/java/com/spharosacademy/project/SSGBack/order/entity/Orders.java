@@ -1,6 +1,6 @@
 package com.spharosacademy.project.SSGBack.order.entity;
 
-import com.spharosacademy.project.SSGBack.user.domain.User;
+import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

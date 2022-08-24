@@ -21,8 +21,8 @@ import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class ReviewServiceImplement implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
     private final ReviewImageRepository reviewImageRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final OptionRepository optionRepository;
@@ -47,7 +47,7 @@ public class ReviewServiceImplement implements ReviewService {
                 .orElseThrow(NotOrderProductException::new);
         Product product = productRepository.findById(orderDetail.getProduct().getId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = iUserRepository.findById(orderDetail.getUserId())
+        User user = userRepository.findById(orderDetail.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         Review review = reviewRepository.save(Review.builder()
@@ -93,7 +93,7 @@ public class ReviewServiceImplement implements ReviewService {
                     .reviewId(review.getId())
                     .orderDetailId(detail.getId())
                     .reviewContent(review.getReviewContent())
-                    .userLoginId(review.getUser().getLoginId())
+                    .userLoginId(review.getUser().getUserId())
                     .regDate(review.getCreateDate())
                     .updateDate(review.getUpdatedDate())
                     .color(optionList.getColors().getName())
@@ -137,7 +137,7 @@ public class ReviewServiceImplement implements ReviewService {
                             .size(optionList.getSize().getType())
                             .regDate(review.getCreateDate())
                             .updateDate(review.getUpdatedDate())
-                            .userLoginId(review.getUser().getLoginId())
+                            .userLoginId(review.getUser().getUserId())
                             .outputReviewImgDtos(outputReviewImgDtos)
                             .build());
 
@@ -149,7 +149,7 @@ public class ReviewServiceImplement implements ReviewService {
 
     @Override
     public Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto) {
-        User user = iUserRepository.findById(requestUpdateReviewDto.getMemberId())
+        User user = userRepository.findById(requestUpdateReviewDto.getMemberId())
                 .orElseThrow(UserNotFoundException::new);
         Product product = productRepository.findById(requestUpdateReviewDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);

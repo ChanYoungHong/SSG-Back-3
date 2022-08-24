@@ -19,8 +19,8 @@ import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundExceptio
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 public class CartServiceimple implements CartService {
 
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final OptionRepository optionRepository;
@@ -47,7 +47,7 @@ public class CartServiceimple implements CartService {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = iUserRepository.findById(cartInputDto.getUserId())
+        User user = userRepository.findById(cartInputDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         Long duplicate;
@@ -92,7 +92,7 @@ public class CartServiceimple implements CartService {
 
     @Override
     public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {
-        User user = iUserRepository.findById(cartOrderRequestDto.getUserId())
+        User user = userRepository.findById(cartOrderRequestDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         List<OrderOptionRequestDto> orderOptionRequestDtos = new ArrayList<>();
@@ -117,7 +117,7 @@ public class CartServiceimple implements CartService {
             Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
             Product product = productRepository.findById(cart.getProduct().getId()).get();
             OrderDetail orderDetail = orderDetailRepository.save(OrderDetail.builder()
-                    .address(user.getAddress())
+                    .address(user.getUserAddress())
                     .userId(user.getId())
                     .qty(orderOptionRequestDto.getQty())
                     .optionId(cartRepository.findById(orderOptionRequestDto.getCartId())
@@ -182,8 +182,8 @@ public class CartServiceimple implements CartService {
                 .productid(cart.getProduct().getId())
                 .productName(cart.getProduct().getName())
                 .titleImgUrl(cart.getProduct().getThumbnailUrl())
-                .useraddress(cart.getUser().getAddress())
-                .username(cart.getUser().getName())
+                .useraddress(cart.getUser().getUserAddress())
+                .username(cart.getUser().getUsername())
                 .productBrand(cart.getProduct().getBrand())
                 .price(cart.getProduct().getNewPrice())
                 .optionCartOutputDto(OptionCartOutputDto.builder()
@@ -208,8 +208,8 @@ public class CartServiceimple implements CartService {
                     .productid(cart.getProduct().getId())
                     .productName(cart.getProduct().getName())
                     .titleImgUrl(cart.getProduct().getThumbnailUrl())
-                    .useraddress(cart.getUser().getAddress())
-                    .username(cart.getUser().getName())
+                    .useraddress(cart.getUser().getUserAddress())
+                    .username(cart.getUser().getUsername())
                     .productBrand(cart.getProduct().getBrand())
                     .price(cart.getProduct().getNewPrice())
                     .qty(cart.getQty())

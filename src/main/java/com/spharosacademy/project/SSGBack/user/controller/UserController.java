@@ -1,45 +1,49 @@
 package com.spharosacademy.project.SSGBack.user.controller;
 
-import com.spharosacademy.project.SSGBack.order.dto.output.OrderOutputDto;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.service.IUserService;
+import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.service.UserService;
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api")
+@CrossOrigin
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final IUserService iUserService;
-    @PostMapping("/user/add")
-    public User addUser(@RequestBody User user) {
-        return iUserService.addUser(user);
+
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    // 회원정보 조회, 토큰으로 회원조회, memberId 지움
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public User findByUserId() {
+        String token = jwtTokenProvider.te();
+
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return userService.findByUserId(userId);
     }
 
-    @GetMapping("/user/get/{id}")
-    public User getUser(@PathVariable Long id) {
-        return iUserService.getUserById(id);
+    // 회원정보 수정, 토큰으로 수정 memberId 지움
+    @PutMapping("/modify")
+    @ResponseStatus(HttpStatus.OK)
+    public void modifyUserInfo(HttpServletRequest request,
+                               @RequestBody UserOutputDto userOutputDto) {
+        String token = jwtTokenProvider.resolveToken(request);
+        userService.modifyUserInfo(Long.valueOf(jwtTokenProvider.getUserPk(token)), userOutputDto);
     }
 
-    @GetMapping("/user/getAll")
-    public List<User> getAll() {
-        return iUserService.getAll();
-    }
+    // 회원 탈퇴, 삭제 + 토큰으로 삭제하기 memberId 지움
+    @DeleteMapping("/remove")
+    public User removeUserInfo(HttpServletRequest request,
+                               @RequestBody UserOutputDto userOutputDto) {
+        String token = jwtTokenProvider.resolveToken(request);
 
-    @DeleteMapping("/user/delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        iUserService.deleteUser(id);
-    }
-
-    @PutMapping("/user/edit")
-    public User editUser(@RequestBody User user) {
-        return iUserService.editUser(user);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<OrderOutputDto> getOrderList(@PathVariable Long userId){
-        return iUserService.getOrderList(userId);
+        return userService.removeUserInfo(Long.valueOf(jwtTokenProvider.getUserPk(token)), userOutputDto);
     }
 }

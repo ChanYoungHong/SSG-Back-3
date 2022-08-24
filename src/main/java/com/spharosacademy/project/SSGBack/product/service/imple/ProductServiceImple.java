@@ -345,7 +345,7 @@ public class ProductServiceImple implements ProductService {
         qnAList.forEach(qnA -> {
             responseProductQnaDtoList.add(ResponseProductQnaDto.builder()
                     .productId(qnA.getProduct().getId())
-                    .userLoginId(qnA.getUser().getLoginId())
+                    .userLoginId(qnA.getUser().getUserId())
                     .qnaType(qnA.getQnaType())
                     .qnaId(qnA.getId())
                     .qnaContent(qnA.getQnaContent())

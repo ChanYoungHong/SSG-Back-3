@@ -2,8 +2,8 @@ package com.spharosacademy.project.SSGBack.wishlist.service.impl;
 
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.repository.ProductRepository;
-import com.spharosacademy.project.SSGBack.user.domain.User;
-import com.spharosacademy.project.SSGBack.user.repository.IUserRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repository.UserRepository;
 import com.spharosacademy.project.SSGBack.wishlist.dto.input.RequestWishListDto;
 import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListDto;
 import com.spharosacademy.project.SSGBack.wishlist.entity.WishList;
@@ -21,13 +21,13 @@ import java.util.Optional;
 public class WishListServiceImplement implements WishListService {
 
     private final ProductRepository productRepository;
-    private final IUserRepository iUserRepository;
+    private final UserRepository userRepository;
     private final WishListRepository wishListRepository;
 
     @Override
     public void addProduct(RequestWishListDto requestWishListDto) {
         Optional<Product> product = productRepository.findById(requestWishListDto.getProductId());
-        Optional<User> user = iUserRepository.findById(requestWishListDto.getUserId());
+        Optional<User> user = userRepository.findById(requestWishListDto.getUserId());
         Long duplicate;
         if (product.isPresent() && user.isPresent()) {
             duplicate = wishListRepository.findByUserIdAndProductId(requestWishListDto.getUserId()
