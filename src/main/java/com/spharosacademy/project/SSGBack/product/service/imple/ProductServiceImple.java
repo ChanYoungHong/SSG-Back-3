@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
@@ -16,7 +17,9 @@ import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.Colors;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.entity.Size;
@@ -478,6 +481,20 @@ public class ProductServiceImple implements ProductService {
                     .build());
         });
 
+        List<OptionList> optionLists = optionRepository.findByProductId(id);
+        List<ColorOutputDto> colorOutputDtoList = new ArrayList<>();
+        List<SizeOutputDto> sizeOutputDtoList = new ArrayList<>();
+        optionLists.forEach(optionList1 -> {
+            colorOutputDtoList.add(ColorOutputDto.builder()
+                    .colorId(optionList1.getColors().getId())
+                    .color(optionList1.getColors().getName())
+                    .build());
+
+            sizeOutputDtoList.add(SizeOutputDto.builder()
+                    .sizeId(optionList1.getSize().getId())
+                    .size(optionList1.getSize().getType())
+                    .build());
+        });
         return ResponseProductDto.builder()
                 .id(product.getId())
                 .productName(product.getName())
@@ -501,6 +518,8 @@ public class ProductServiceImple implements ProductService {
                 .pofCategorySSList(categorySSList)
                 .outputDetailImgDtos(detailDtoList)
                 .outputTitleImgDtos(titleDtoList)
+                .sizeOutputDtos(sizeOutputDtoList)
+                .colorOutputDtos(colorOutputDtoList)
                 .optionOutputDtos(optionOutputDtoList)
                 .regDate(product.getCreateDate())
                 .wishId(wishId)
