@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.wishlist.dto.input;
+package com.spharosacademy.project.SSGBack.util.wishlist.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class RequestWishListDto {
 
     private Long productId;
-    private Long userId;
 }

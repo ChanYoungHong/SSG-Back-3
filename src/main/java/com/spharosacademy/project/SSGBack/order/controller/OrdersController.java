@@ -26,7 +26,10 @@ public class OrdersController {
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.OK)
     public void createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
-        ordersService.createDirectOrder(ordersInputDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+
+        ordersService.createDirectOrder(ordersInputDto, userId);
     }
 
     // 회원번호로 주문목록 조회, 회원 아이디 아님
@@ -34,15 +37,18 @@ public class OrdersController {
     @ResponseStatus(HttpStatus.OK)
     public List<OrdersOutputDto> checkMyOrder() {
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return ordersService.checkMyOrder(userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return ordersService.checkMyOrder(userId);
     }
 
     // 주문 이메일, 주소, 이름(받는 사람) 변경
     @PutMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
     public void editMyOrderDetail(@RequestBody OrdersUpdateDto ordersUpdateDto) {
-        ordersService.editMyOrderDetail(ordersUpdateDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+
+        ordersService.editMyOrderDetail(ordersUpdateDto, userId);
     }
 
     // 주문 삭제

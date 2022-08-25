@@ -9,6 +9,7 @@ import com.spharosacademy.project.SSGBack.addresslist.repository.AddressListRepo
 import com.spharosacademy.project.SSGBack.addresslist.service.AddressListService;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-
 public class AddressListServiceImpl implements AddressListService {
 
     private final AddressListRepository addressListRepository;
     private final UserRepository userRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Override
-    public void addAddressList(AddressListInputDto addressListInputDto) {
-        User user = userRepository.findById(addressListInputDto.getUserId()).get();
+    public void addAddressList(AddressListInputDto addressListInputDto, Long userId) {
+
+        User user = userRepository.findById(userId).get();
         addressListRepository.save(AddressList.builder()
                 .user(user)
                 .addressNickname(addressListInputDto.getAddressNickname())
@@ -56,8 +59,8 @@ public class AddressListServiceImpl implements AddressListService {
     }
 
     @Override
-    public AddressList editAddressList(AddressListUpdateDto addressListUpdateDto) {
-        User user = userRepository.findById(addressListUpdateDto.getUserId()).get();
+    public AddressList editAddressList(AddressListUpdateDto addressListUpdateDto, Long userId) {
+        User user = userRepository.findById(userId).get();
         AddressList addressList = addressListRepository.save(AddressList.builder()
                 .user(user)
                         .id(addressListUpdateDto.getAddressId())
@@ -70,7 +73,7 @@ public class AddressListServiceImpl implements AddressListService {
     }
 
     @Override
-    public void deleteAddressList(AddressListDeleteDto addressListDeleteDto) {
+    public void deleteAddressList(AddressListDeleteDto addressListDeleteDto, Long userId) {
         addressListRepository.deleteById(addressListDeleteDto.getAddressId());
 
     }

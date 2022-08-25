@@ -11,11 +11,11 @@ import java.util.Optional;
 
 public interface OrdersService {
 
-    void createDirectOrder(OrdersInputDto ordersInputDto);
+    void createDirectOrder(OrdersInputDto ordersInputDto, Long userId);
 
     List<OrdersOutputDto> checkMyOrder(Long userId);
 
-    void editMyOrderDetail(OrdersUpdateDto ordersUpdateDto);
+    void editMyOrderDetail(OrdersUpdateDto ordersUpdateDto, Long userId);
 
     void removeMyOrderAndOrderList(Long orderId);
 

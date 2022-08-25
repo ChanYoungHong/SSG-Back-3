@@ -40,9 +40,9 @@ public class OrdersServiceImpl implements OrdersService {
 
 
     @Override
-    public void createDirectOrder(OrdersInputDto ordersInputDto) {
+    public void createDirectOrder(OrdersInputDto ordersInputDto, Long userId) {
 
-        Optional<User> user = userRepository.findById(ordersInputDto.getMemberId());
+        Optional<User> user = userRepository.findById(userId);
         Product product = productRepository.findById(ordersInputDto.getProductId()).get();
 
         List<OrdersOptioninputDto> ordersOptioninputDtoList = new ArrayList<>();
@@ -132,9 +132,9 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public void editMyOrderDetail(OrdersUpdateDto ordersUpdateDto) {
+    public void editMyOrderDetail(OrdersUpdateDto ordersUpdateDto, Long userId) {
 
-        User user = userRepository.findById(ordersUpdateDto.getUserId()).get();
+        User user = userRepository.findById(userId).get();
         Product product = productRepository.findById(ordersUpdateDto.getProductId()).get();
         OrderList orderList = orderListRepository.findById(ordersUpdateDto.getOrderListId()).get();
         Orders orders = ordersRepository.findById(orderList.getOrders().getOrderId()).get();
@@ -156,38 +156,6 @@ public class OrdersServiceImpl implements OrdersService {
                 .userPhoneNumber(ordersUpdateDto.getUserPhoneNumber())
                 .build()
         );
-//        for (OrdersUpdateDto ordersUpdateDto : ordersInputDto.getOrdersUpdateDtoList()) {
-//            ordersUpdateDtoList.add(ordersUpdateDto.builder()
-//                    .orderListId(ordersUpdateDto.getOrderListId())
-//                    .userAddress(ordersUpdateDto.getUserAddress())
-//                    .userEmail(ordersUpdateDto.getUserEmail())
-//                    .orderMsg(ordersUpdateDto.getOrderMsg())
-//                    .orderReceiver(ordersUpdateDto.getOrderReceiver())
-//                    .build());
-//        }
-//
-//        if (orderedUser.isPresent()) {
-//            ordersUpdateDtoList.forEach(ordersUpdateDto -> {
-//                orderListRepository.save(
-//
-//                        OrderList.builder()
-//                                .orderListId(ordersUpdateDto.getOrderListId())
-//                                .orderAnOrderer(user.getUsername())
-//                                .optionId(orderedUser.get().getOptionId())
-//                                .orderMsg(ordersUpdateDto.getOrderMsg())
-//                                .orderReceiver(ordersUpdateDto.getOrderReceiver())
-//                                .userAddress(ordersUpdateDto.getUserAddress())
-//                                .orderDecidedDate(LocalDateTime.now())
-//                                .product(product.get())
-//                                .userEmail(ordersUpdateDto.getUserEmail())
-//                                .userPhoneNumber(user.get().getUserPhone())
-//                                .qty(orderedUser.get().getQty())
-//                                .memberId(user.get().getId())
-//                                .build()
-//                );
-//
-//            });
-//        }
     }
 
     @Override

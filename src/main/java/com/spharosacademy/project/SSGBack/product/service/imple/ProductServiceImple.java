@@ -36,14 +36,13 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
-import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
+import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 
-import java.awt.print.Pageable;
 import java.util.*;
 
 @Service

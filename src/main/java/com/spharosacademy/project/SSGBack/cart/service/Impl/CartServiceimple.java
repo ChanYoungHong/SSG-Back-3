@@ -43,11 +43,11 @@ public class CartServiceimple implements CartService {
 
 
     @Override
-    public Cart addProductToCart(CartInputDto cartInputDto, Long userid) {
+    public Cart addProductToCart(CartInputDto cartInputDto, Long userId) {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = userRepository.findById(userid)
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         Long duplicate;
@@ -92,8 +92,8 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
-    public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto) {
-        User user = userRepository.findById(cartOrderRequestDto.getUserId())
+    public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         List<OrderOptionRequestDto> orderOptionRequestDtos = new ArrayList<>();
@@ -201,8 +201,8 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
-    public List<CartOutputDto> getCartByUserId(Long userid) {
-        List<Cart> carts = cartRepository.findByUserId(userid);
+    public List<CartOutputDto> getCartByUserId(Long userId) {
+        List<Cart> carts = cartRepository.findByUserId(userId);
         List<CartOutputDto> outputDtos = new ArrayList<>();
 
         for (Cart cart : carts) {
@@ -222,7 +222,7 @@ public class CartServiceimple implements CartService {
                             .size(optionRepository.findById(cart.getOptionId())
                                     .orElseThrow(OptionNotFoundException::new).getSize().getType())
                             .build())
-                    .count(cartRepository.countByUserId(userid))
+                    .count(cartRepository.countByUserId(userId))
                     .build());
         }
         return outputDtos;
