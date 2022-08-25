@@ -36,10 +36,8 @@ public class UserController {
     // 회원아이디 중복검사
     @GetMapping("/duplicate/{userId}")
     public ResponseEntity<?> duplicateUserId(@PathVariable String userId) {
-//        @RequestParam(value = "userId") String userId
 
         if (userService.duplicateUserId(userId) == true) {
-//            return ResponseEntity.badRequest().body("사용 중인 아이디입니다.");
              throw new DuplicatedUserIdCheck();
         } else {
             return ResponseEntity.ok("사용 가능한 아이디 입니다.");
