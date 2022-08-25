@@ -43,7 +43,6 @@ public class SecurityLoginController {
                     jwtTokenProvider.createToken(result.getId(),
                         String.valueOf(result.getRole()))))
                 .isSuccess("성공")
-                .userEmail(userLoginDto.getUserEmail())
                 .build();
         } else {
             new LoginFailException();

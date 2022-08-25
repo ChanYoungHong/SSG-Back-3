@@ -14,7 +14,7 @@ public class LoginSuccessOutputDto {
     private String isSuccess;
     private String message;
     private String result;
-    private String userEmail;
+//    private String userEmail;
 //    private String userPwd;
 //    private String userId;
 

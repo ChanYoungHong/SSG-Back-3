@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 
+import java.awt.print.Pageable;
 import java.util.*;
 
 @Service
@@ -158,8 +159,8 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String keyword) {
-        List<Product> productList = productRepository.findAllBysearchWord(keyword);
+    public List<OutputSearchProductDto> searchProductByWord(String keyword ) {
+        List<Product> productList = productRepository.findFirst20Bykeyword(keyword);
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
             System.out.println("검색 결과가 없습니다");

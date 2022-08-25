@@ -9,6 +9,7 @@ import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundExcep
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import java.awt.print.Pageable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
