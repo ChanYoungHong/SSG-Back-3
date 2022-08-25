@@ -16,7 +16,9 @@ import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.Colors;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.entity.Size;
@@ -319,6 +321,20 @@ public class ProductServiceImple implements ProductService {
         ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
         Long qnaCount = qnaRepository.countByProductId(id);
 
+        List<ColorOutputDto> colorOutputDtoList = new ArrayList<>();
+        List<SizeOutputDto> sizeOutputDtoList = new ArrayList<>();
+        List<OptionList> optionLists = optionRepository.findByProductId(id);
+        optionLists.forEach(optionList -> {
+            colorOutputDtoList.add(ColorOutputDto.builder()
+                    .color(optionList.getColors().getName())
+                    .colorId(optionList.getColors().getId())
+                    .build());
+
+            sizeOutputDtoList.add(SizeOutputDto.builder()
+                    .size(optionList.getSize().getType())
+                    .sizeId(optionList.getSize().getId())
+                    .build());
+        });
         List<ResponseProductReviewDto> responseProductReviewDtoList = new ArrayList<>();
         reviewList.forEach(review -> {
             List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
@@ -443,6 +459,8 @@ public class ProductServiceImple implements ProductService {
                 .pofCategorySList(categorySList)
                 .pofCategorySSList(categorySSList)
                 .outputDetailImgDtos(detailDtoList)
+                .colorOutputDtos(colorOutputDtoList)
+                .sizeOutputDtos(sizeOutputDtoList)
                 .outputTitleImgDtos(titleDtoList)
                 .optionOutputDtos(optionOutputDtoList)
                 .regDate(product.getCreateDate())
