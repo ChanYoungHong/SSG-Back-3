@@ -13,13 +13,8 @@ import lombok.NoArgsConstructor;
 
 public class AddressListInputDto {
 
-    private Long userId;
     private String addressNickname;
     private String addressReceiver;
     private int addressPhoneNumber;
     private int addressHomeNumber;
-
-
-
-
 }

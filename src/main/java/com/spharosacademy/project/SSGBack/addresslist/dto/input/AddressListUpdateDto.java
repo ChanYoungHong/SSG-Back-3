@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressListUpdateDto {
-    private Long userId;
+
     private int addressId;
     private String addressNickname;
     private String addressReceiver;

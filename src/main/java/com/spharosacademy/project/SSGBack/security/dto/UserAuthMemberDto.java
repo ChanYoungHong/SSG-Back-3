@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.User;
 @ToString
 public class UserAuthMemberDto extends User {
 
-    private Long memberId;
     private String userEmail;
     private String userName;
     private boolean fromSocial;

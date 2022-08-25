@@ -29,8 +29,8 @@ public class CartController {
     @PostMapping("/add")
     public String addCart(@RequestBody CartInputDto cartInputDto){
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        cartService.addProductToCart(cartInputDto, userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        cartService.addProductToCart(cartInputDto, userId);
         return "선택하신 상품이 장바구니에 담겼습니다";
     }
 
@@ -42,8 +42,8 @@ public class CartController {
     @GetMapping("/getByUserId")
     public List<CartOutputDto> getCartByUserId(){
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return cartService.getCartByUserId(userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return cartService.getCartByUserId(userId);
     }
 
     @GetMapping("/getOptionList/{productId}")
@@ -59,7 +59,9 @@ public class CartController {
 
     @PostMapping("/order")
     public ResponseEntity<String> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto){
-         cartService.orderCart(cartOrderRequestDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        cartService.orderCart(cartOrderRequestDto, userId);
          return ResponseEntity.status(HttpStatus.OK).body("주문이 완료되었습니다");
     }
 

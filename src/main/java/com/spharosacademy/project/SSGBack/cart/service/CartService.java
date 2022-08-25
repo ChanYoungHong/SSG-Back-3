@@ -13,15 +13,15 @@ import java.util.List;
 
 public interface CartService {
 
-    Cart addProductToCart(CartInputDto cartInputDto, Long userid);
+    Cart addProductToCart(CartInputDto cartInputDto, Long userId);
 
     List<CartOutputDto> getAllCart();
 
-    List<CartOutputDto> getCartByUserId(Long userid);
+    List<CartOutputDto> getCartByUserId(Long userId);
 
     void deleteCart(Long cartId);
 
-    List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto);
+    List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto, Long userId);
 
     void updateCart(CartUpdateRequestDto cartUpdateRequestDto);
 

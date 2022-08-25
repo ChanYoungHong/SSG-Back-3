@@ -1,11 +1,11 @@
-package com.spharosacademy.project.SSGBack.wishlist.controller;
+package com.spharosacademy.project.SSGBack.util.wishlist.controller;
 
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
-import com.spharosacademy.project.SSGBack.wishlist.dto.input.RequestWishListDto;
-import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListDto;
-import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListIdDto;
-import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
-import com.spharosacademy.project.SSGBack.wishlist.service.WishListService;
+import com.spharosacademy.project.SSGBack.util.wishlist.service.WishListService;
+import com.spharosacademy.project.SSGBack.util.wishlist.dto.input.RequestWishListDto;
+import com.spharosacademy.project.SSGBack.util.wishlist.dto.output.ResponseWishListDto;
+import com.spharosacademy.project.SSGBack.util.wishlist.dto.output.ResponseWishListIdDto;
+import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,13 @@ public class WishListController {
 
     @PostMapping("/add")
     public ResponseEntity<ResponseWishListIdDto> addWishList(@RequestBody RequestWishListDto requestWishListDto) {
-        wishListService.addProduct(requestWishListDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+
+        wishListService.addProduct(requestWishListDto, userId);
+
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWishListIdDto.builder()
-                .wishListId(wishListRepository.findByUserIdAndProductId(requestWishListDto.getUserId(), requestWishListDto.getProductId()))
+                .wishListId(wishListRepository.findByUserIdAndProductId(userId, requestWishListDto.getProductId()))
                 .build());
 
     }
@@ -34,8 +38,8 @@ public class WishListController {
     @GetMapping("/find")
     public List<ResponseWishListDto> findById() {
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return wishListService.findProductById(userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return wishListService.findProductById(userId);
     }
 
     @DeleteMapping("/delete/{wishlistId}")

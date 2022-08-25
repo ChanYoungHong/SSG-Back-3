@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.user.dto.response;
+package com.spharosacademy.project.SSGBack.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

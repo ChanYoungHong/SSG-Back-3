@@ -14,11 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class OrdersInputDto {
 
-    private Long memberId;
     private Long productId;
     private String orderMsg;
     private String receiveAddress;
     private String userEmail;
     List<OrdersOptioninputDto> ordersOptioninputDtoList;
-//    List<OrdersUpdateDto> ordersUpdateDtoList;
 }

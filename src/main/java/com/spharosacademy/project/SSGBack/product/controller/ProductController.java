@@ -62,14 +62,14 @@ public class ProductController {
     @GetMapping("/user/get/{id}")
     public ResponseProductDto getProductById(@PathVariable Long id) {
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return productService.getByProductId(id, userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.getByProductId(id, userId);
     }
 
     @GetMapping("/nonmember/get/{id}")
     public ResponseProductDto getProduct(@PathVariable Long id){
-        Long userid = -1L ;
-        return productService.getByProductId(id, userid);
+        Long userId = -1L ;
+        return productService.getByProductId(id, userId);
     }
 
     //특정 상품 수정 
@@ -84,8 +84,8 @@ public class ProductController {
     @GetMapping("/user/recommend/{id}")
     public ResponseRecommendProductDto getRecommendProductById(@PathVariable Long id) {
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return productService.getRecommendProductById(id, userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.getRecommendProductById(id, userId);
     }
 
     @GetMapping("/nonmember/recommend/{id}")
@@ -98,14 +98,14 @@ public class ProductController {
     @GetMapping("/user/search")
     public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query) {
         String token = jwtTokenProvider.customResolveToken();
-        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return productService.searchProductByWord(query, userid);
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.searchProductByWord(query, userId);
     }
 
     @GetMapping("/nonmember/search")
     public List<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query) {
-        Long userid = -1L;
-        return productService.searchProductByWord(query, userid);
+        Long userId = -1L;
+        return productService.searchProductByWord(query, userId);
     }
 
 }

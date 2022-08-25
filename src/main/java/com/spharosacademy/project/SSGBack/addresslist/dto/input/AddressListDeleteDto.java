@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressListDeleteDto {
-
-    private Long userId;
     private int addressId;
 }
 

@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class OrdersUpdateDto {
 
     private Long orderListId;
-    private Long userId;
     private String orderAnOrderer;
     private Long productId;
     private String userEmail;

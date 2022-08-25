@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface AddressListService {
 
-    void addAddressList(AddressListInputDto addressListInputDto);
+    void addAddressList(AddressListInputDto addressListInputDto, Long userId);
 
     List<AddressListOutputDto> getAddressListByUserId(Long memberId);
 
-    AddressList editAddressList(AddressListUpdateDto addressListUpdateDto);
+    AddressList editAddressList(AddressListUpdateDto addressListUpdateDto, Long userId);
 
-    void deleteAddressList(AddressListDeleteDto addressListDeleteDto);
+    void deleteAddressList(AddressListDeleteDto addressListDeleteDto, Long userId);
 
 
 
