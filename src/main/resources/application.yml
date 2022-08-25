@@ -1,7 +1,9 @@
+#server:
+#  port: 9000
 #spring:
 #  jpa:
 #    hibernate:
-#      ddl-auto: create-drop
+#      ddl-auto: update
 #    show-sql: true
 #    properties:
 #      hibernate:
@@ -9,9 +11,9 @@
 #        format_sql: true
 #
 #  datasource:
-#    url: jdbc:mysql://localhost:3306/ssgnew?useSSL=false&allowMultiQueries=true&serverTimezone=UTC
-#    username: root
-#    password: 1234
+#    url: jdbc:mysql://ssgnew.cunojsn8ha3m.ap-northeast-2.rds.amazonaws.com:3306/ssgnew?useSSL=false&allowMultiQueries=true&serverTimezone=UTC
+#    username: ssgnew
+#    password: ssgnewnew
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
