@@ -15,5 +15,5 @@ public interface CategorySSService {
 
     CategorySS editCategorySS(RequestCategorySSDto categorySSDto);
 
-    CategorySSDto getCategorySSById(Integer id);
+    CategorySSDto getCategorySSById(Integer id, Long userId);
 }

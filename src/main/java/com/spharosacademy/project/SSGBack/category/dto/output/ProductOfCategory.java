@@ -17,4 +17,5 @@ public class ProductOfCategory {
     private String mallTxt;
     private String thumbnailUrl;
     private float price;
+    private Long wishId;
 }

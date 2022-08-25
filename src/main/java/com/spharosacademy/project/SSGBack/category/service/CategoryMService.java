@@ -13,7 +13,7 @@ public interface CategoryMService {
 
     void deleteCategoryMById(Integer id);
 
-    CategoryMDto getCategoryMById(Integer id);
+    CategoryMDto getCategoryMById(Integer id, Long userId);
 
     CategoryM editCategoryM(RequestCategoryMDto categoryMDto);
 }

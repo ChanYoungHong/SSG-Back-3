@@ -4,6 +4,7 @@ import com.spharosacademy.project.SSGBack.category.dto.input.RequestCategorySSDt
 import com.spharosacademy.project.SSGBack.category.dto.output.CategorySSDto;
 import com.spharosacademy.project.SSGBack.category.entity.CategorySS;
 import com.spharosacademy.project.SSGBack.category.service.CategorySSService;
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategorySSController {
     private final CategorySSService categorySSService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/add")
     public CategorySS addCategorySS(@RequestBody RequestCategorySSDto categorySSDto) {
@@ -30,9 +32,17 @@ public class CategorySSController {
         categorySSService.deleteCategorySSById(id);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/user/get/{id}")
     public CategorySSDto categorySS(@PathVariable Integer id) {
-        return categorySSService.getCategorySSById(id);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return categorySSService.getCategorySSById(id, userId);
+    }
+
+    @GetMapping("nonmember/get/{id}")
+    public CategorySSDto categorySSDto(@PathVariable Integer id){
+        Long userId = -1L;
+        return categorySSService.getCategorySSById(id, userId);
     }
 
     @PutMapping("/edit")

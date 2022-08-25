@@ -26,7 +26,7 @@ public class CartController {
     private final JwtTokenProvider jwtTokenProvider;
 
     //장바구니 담기 클릭
-    @PostMapping("/add")
+    @PostMapping("/user/add")
     public String addCart(@RequestBody CartInputDto cartInputDto){
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
@@ -39,25 +39,25 @@ public class CartController {
         return cartService.getAllCart();
     }
 
-    @GetMapping("/getByUserId")
+    @GetMapping("/user/getByUserId")
     public List<CartOutputDto> getCartByUserId(){
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return cartService.getCartByUserId(userId);
     }
 
-    @GetMapping("/getOptionList/{productId}")
+    @GetMapping("/user/getOptionList/{productId}")
     public List<OptionList> getOptionByProduct(@PathVariable Long productId){
         return cartService.getOptionByProduct(productId);
     }
 
-    @DeleteMapping("/delete/{cartId}")
+    @DeleteMapping("/user/delete/{cartId}")
     public String deleteCart(@PathVariable Long cartId){
         cartService.deleteCart(cartId);
         return "선택하신 상품이 장바구니에서 삭제되었습니다";
     }
 
-    @PostMapping("/order")
+    @PostMapping("/user/order")
     public ResponseEntity<String> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto){
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));

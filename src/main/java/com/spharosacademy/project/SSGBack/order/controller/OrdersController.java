@@ -23,7 +23,7 @@ public class OrdersController {
     private final JwtTokenProvider jwtTokenProvider;
 
     // 주문 등록
-    @PostMapping("/add")
+    @PostMapping("/user/add")
     @ResponseStatus(HttpStatus.OK)
     public void createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
         String token = jwtTokenProvider.customResolveToken();
@@ -33,7 +33,7 @@ public class OrdersController {
     }
 
     // 회원번호로 주문목록 조회, 회원 아이디 아님
-    @GetMapping("/check")
+    @GetMapping("/user/check")
     @ResponseStatus(HttpStatus.OK)
     public List<OrdersOutputDto> checkMyOrder() {
         String token = jwtTokenProvider.customResolveToken();
@@ -42,7 +42,7 @@ public class OrdersController {
     }
 
     // 주문 이메일, 주소, 이름(받는 사람) 변경
-    @PutMapping("/edit")
+    @PutMapping("/user/edit")
     @ResponseStatus(HttpStatus.OK)
     public void editMyOrderDetail(@RequestBody OrdersUpdateDto ordersUpdateDto) {
         String token = jwtTokenProvider.customResolveToken();
@@ -52,7 +52,7 @@ public class OrdersController {
     }
 
     // 주문 삭제
-    @DeleteMapping("/remove/{orderId}")
+    @DeleteMapping("/user/remove/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteMyOrder(@PathVariable Long orderId) {
         ordersService.removeMyOrderAndOrderList(orderId);

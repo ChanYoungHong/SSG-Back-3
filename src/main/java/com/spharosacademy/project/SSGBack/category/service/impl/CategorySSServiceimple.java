@@ -10,6 +10,7 @@ import com.spharosacademy.project.SSGBack.category.repository.CategorySRepositor
 import com.spharosacademy.project.SSGBack.category.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategorySSService;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class CategorySSServiceimple implements CategorySSService {
     private final CategorySSRepository categorySSRepository;
     private final CategorySRepository categorySRepository;
     private final CategoryProductListRepository categoryProductListRepository;
+    private final WishListRepository wishListRepository;
 
     @Override
     public CategorySS addCategorySS(RequestCategorySSDto categorySSDto) {
@@ -62,12 +64,24 @@ public class CategorySSServiceimple implements CategorySSService {
 
 
     @Override
-    public CategorySSDto getCategorySSById(Integer id) {
+    public CategorySSDto getCategorySSById(Integer id, Long userId) {
+        Long duplicate;
+        Long wishId;
+
         CategorySS categorySS = categorySSRepository.findById(id).get();
         List<CategoryProductList> categoryProductLists = categoryProductListRepository.findAllByCategorySS(categorySS);
         List<ProductOfCategory> productOfCategoryList = new ArrayList<>();
 
         for (CategoryProductList categoryProductList : categoryProductLists) {
+            if (userId != -1) {
+                duplicate = wishListRepository.findByUserIdAndProductId(userId, categoryProductList.getProduct().getId());
+                if (duplicate == null) {
+                    wishId = null;
+                }
+                wishId = duplicate;
+            } else {
+                wishId = null;
+            }
             productOfCategoryList.add(ProductOfCategory.builder()
                     .id(categoryProductList.getProduct().getId())
                     .name(categoryProductList.getProduct().getName())
@@ -75,6 +89,7 @@ public class CategorySSServiceimple implements CategorySSService {
                     .brand(categoryProductList.getProduct().getBrand())
                     .mallTxt(categoryProductList.getProduct().getMallText())
                     .price(categoryProductList.getProduct().getNewPrice())
+                    .wishId(wishId)
                     .thumbnailUrl(categoryProductList.getProduct().getThumbnailUrl())
                     .build());
         }

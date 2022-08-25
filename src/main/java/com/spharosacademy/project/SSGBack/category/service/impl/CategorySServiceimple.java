@@ -14,6 +14,7 @@ import com.spharosacademy.project.SSGBack.category.repository.CategoryProductLis
 import com.spharosacademy.project.SSGBack.category.repository.CategorySRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategorySSRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategorySService;
+import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class CategorySServiceimple implements CategorySService {
     private final CategoryMRepository categoryMRepository;
     private final CategoryProductListRepository categoryProductListRepository;
     private final CategorySSRepository categorySSRepository;
+    private final WishListRepository wishListRepository;
 
     @Override
     public CategoryS addCategoryS(RequestCategorySDto categorySDto) {
@@ -69,8 +71,9 @@ public class CategorySServiceimple implements CategorySService {
 
 
     @Override
-    public CategorySDto getCategorySById(Integer id) {
-
+    public CategorySDto getCategorySById(Integer id, Long userId) {
+        Long duplicate;
+        Long wishId;
         CategoryS categoryS = categorySRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
         List<CategoryProductList> categoryProductLists = categoryProductListRepository.findAllByCategoryS(categoryS);
         List<CategorySS> ssList = categorySSRepository.findAllByCategoryS(categoryS);
@@ -85,6 +88,15 @@ public class CategorySServiceimple implements CategorySService {
 
         List<ProductOfCategory> productOfCategoryList = new ArrayList<>();
         for (CategoryProductList categoryProductList : categoryProductLists) {
+            if (userId != -1) {
+                duplicate = wishListRepository.findByUserIdAndProductId(userId, categoryProductList.getProduct().getId());
+                if (duplicate == null) {
+                    wishId = null;
+                }
+                wishId = duplicate;
+            } else {
+                wishId = null;
+            }
             productOfCategoryList.add(ProductOfCategory.builder()
                     .id(categoryProductList.getProduct().getId())
                     .name(categoryProductList.getProduct().getName())
@@ -93,6 +105,7 @@ public class CategorySServiceimple implements CategorySService {
                     .mallTxt(categoryProductList.getProduct().getMallText())
                     .price(categoryProductList.getProduct().getNewPrice())
                     .thumbnailUrl(categoryProductList.getProduct().getThumbnailUrl())
+                    .wishId(wishId)
                     .build());
         }
         return CategorySDto.builder()

@@ -13,5 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CartOrderRequestDto {
 
+    private String orderMsg;
+    private String receiveAddress;
+    private String userEmail;
     private List<OrderOptionRequestDto> orderOptionRequestDtos;
 }

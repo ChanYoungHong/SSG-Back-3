@@ -28,11 +28,6 @@ public class OrderList extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    private Long userId;
-
-    @Column(name = "order_state")
-    private Boolean orderState;
-
     @Column(name = "order_msg")
     private String orderMsg;
 

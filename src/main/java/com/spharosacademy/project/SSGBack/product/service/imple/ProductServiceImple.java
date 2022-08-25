@@ -365,7 +365,6 @@ public class ProductServiceImple implements ProductService {
             wishId = null;
         }
 
-
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();

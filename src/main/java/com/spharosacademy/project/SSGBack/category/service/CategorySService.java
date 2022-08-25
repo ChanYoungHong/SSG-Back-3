@@ -16,5 +16,5 @@ public interface CategorySService {
 
     CategoryS editCategoryS(RequestCategorySDto categorySDto);
 
-    CategorySDto getCategorySById(Integer id);
+    CategorySDto getCategorySById(Integer id, Long userId);
 }

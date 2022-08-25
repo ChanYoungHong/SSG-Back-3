@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +113,7 @@ public class CartServiceimple implements CartService {
         });
         Orders orders = orderRepository.save(Orders.builder()
                 .user(user)
+                .OrderedDate(LocalDateTime.now())
                 .build());
 
         orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
@@ -124,10 +126,11 @@ public class CartServiceimple implements CartService {
                     .memberId(user.getId())
                     .orderDecidedDate(orders.getOrderedDate())
                     .orderReceiver(user.getUsername())
+                    .userAddress(user.getUserAddress())
+                    .orderMsg(cartOrderRequestDto.getOrderMsg())
                     .userEmail(user.getUserEmail())
                     .userPhoneNumber(user.getUserPhone())
                     .qty(orderOptionRequestDto.getQty())
-                    .userId(user.getId())
                     .product(product)
                     .build());
 
