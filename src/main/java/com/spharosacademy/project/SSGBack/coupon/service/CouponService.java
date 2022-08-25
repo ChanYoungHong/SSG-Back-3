@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CouponService {
 
-    void addCoupon(CouponInputDto couponInputDto);
+    void addCoupon(CouponInputDto couponInputDto, Long userId);
 
     List<CouponOutputDto> getCouponByUserId(Long userId);
 

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestDeleteQnaDto {
 
-    private Long userId;
+
     private Long qnaId;
 }

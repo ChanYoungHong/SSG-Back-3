@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface ReviewService {
 
-    void addReview(RequestReviewDto requestReviewDto);
+    void addReview(RequestReviewDto requestReviewDto, Long userId);
 
-    void deleteReviewById(RequestReviewDeleteDto requestReviewDeleteDto);
+    void deleteReviewById(RequestReviewDeleteDto requestReviewDeleteDto, Long userId);
 
     List<ResponseUserReviewDto> getReviewByUserId(Long userId);
 
-    Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto);
+    Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto, Long userId);
 
     List<ResponseProductReviewDto> getAllByProductId(Long productId);
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestQnaDto {
 
-    private Long userId;
+
     private Long productId;
     private String qnaTitle;
     private String qnaContent;

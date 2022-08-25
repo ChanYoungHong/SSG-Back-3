@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface QnaService {
 
-    void addQna(RequestQnaDto requestQnaDto);
+    void addQna(RequestQnaDto requestQnaDto, Long userId);
 
     List<ResponseProductQnaDto> getQnaByProductId(Long productId);
 
-    QnA editQna(RequestUpdateQnaDto requestUpdateQnaDto);
+    QnA editQna(RequestUpdateQnaDto requestUpdateQnaDto, Long userId);
 
-    void deleteQna(RequestDeleteQnaDto requestDeleteQnaDto);
+    void deleteQna(RequestDeleteQnaDto requestDeleteQnaDto, Long userId);
 }

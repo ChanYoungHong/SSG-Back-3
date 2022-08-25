@@ -41,7 +41,7 @@ public class ReviewServiceImplement implements ReviewService {
     private final OptionRepository optionRepository;
 
     @Override
-    public void addReview(RequestReviewDto requestReviewDto) {
+    public void addReview(RequestReviewDto requestReviewDto, Long userId) {
 
         OrderList orderList = orderListRepository.findById(requestReviewDto.getOrderDetailId())
                 .orElseThrow(NotOrderProductException::new);
@@ -68,7 +68,7 @@ public class ReviewServiceImplement implements ReviewService {
     }
 
     @Override
-    public void deleteReviewById(RequestReviewDeleteDto requestReviewDeleteDto) {
+    public void deleteReviewById(RequestReviewDeleteDto requestReviewDeleteDto, Long userId) {
         reviewRepository.deleteById(requestReviewDeleteDto.getReviewId());
     }
 
@@ -148,8 +148,8 @@ public class ReviewServiceImplement implements ReviewService {
     }
 
     @Override
-    public Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto) {
-        User user = userRepository.findById(requestUpdateReviewDto.getMemberId())
+    public Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         Product product = productRepository.findById(requestUpdateReviewDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);

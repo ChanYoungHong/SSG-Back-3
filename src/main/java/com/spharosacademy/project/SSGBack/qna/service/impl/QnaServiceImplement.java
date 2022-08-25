@@ -26,8 +26,8 @@ public class QnaServiceImplement implements QnaService {
     private final UserRepository userRepository;
 
     @Override
-    public void addQna(RequestQnaDto requestQnaDto) {
-        User user = userRepository.findById(requestQnaDto.getUserId()).get();
+    public void addQna(RequestQnaDto requestQnaDto,Long userId) {
+        User user = userRepository.findById(userId).get();
         Product product = productRepository.findById(requestQnaDto.getProductId()).get();
         qnaRepository.save(QnA.builder()
                 .user(user)
@@ -62,9 +62,9 @@ public class QnaServiceImplement implements QnaService {
     }
 
     @Override
-    public QnA editQna(RequestUpdateQnaDto requestUpdateQnaDto) {
+    public QnA editQna(RequestUpdateQnaDto requestUpdateQnaDto, Long userId) {
         Product product = productRepository.findById(requestUpdateQnaDto.getProductId()).get();
-        User user = userRepository.findById(requestUpdateQnaDto.getMemberId()).get();
+        User user = userRepository.findById(userId).get();
         QnA qnA = qnaRepository.save(QnA.builder()
                 .product(product)
                 .user(user)
@@ -79,7 +79,7 @@ public class QnaServiceImplement implements QnaService {
     }
 
     @Override
-    public void deleteQna(RequestDeleteQnaDto requestDeleteQnaDto) {
+    public void deleteQna(RequestDeleteQnaDto requestDeleteQnaDto,Long userId) {
         qnaRepository.deleteById(requestDeleteQnaDto.getQnaId());
     }
 }

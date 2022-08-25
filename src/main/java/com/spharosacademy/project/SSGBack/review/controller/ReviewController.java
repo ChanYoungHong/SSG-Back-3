@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDt
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +18,14 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/add")
     public String addReview(@RequestBody RequestReviewDto requestReviewDto)
             throws Exception {
-        reviewService.addReview(requestReviewDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        reviewService.addReview(requestReviewDto, userId);
         return "글 작성이 완료 되었습니다";
     }
 
@@ -34,7 +38,9 @@ public class ReviewController {
     // 특정 리뷰 삭제
     @DeleteMapping("/delete")
     public String deleteReviewById(@RequestBody RequestReviewDeleteDto requestReviewDeleteDto) throws Exception {
-        reviewService.deleteReviewById(requestReviewDeleteDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        reviewService.deleteReviewById(requestReviewDeleteDto, userId);
         return "글 삭제가 완료 되었습니다";
     }
 
@@ -44,15 +50,19 @@ public class ReviewController {
     @PutMapping("/edit")
     public String editReviewById(@RequestBody RequestUpdateReviewDto requestUpdateReviewDto)
             throws Exception {
-        reviewService.editReviewById(requestUpdateReviewDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        reviewService.editReviewById(requestUpdateReviewDto,userId);
         return "리뷰가 정상적으로 수정되었습니다";
     }
 
     //
 //
     //사용자가 작성한 모든 리뷰 조회하는 화면
-    @GetMapping("/user/{userId}")
-    public List<ResponseUserReviewDto> getReviewByUserId(@PathVariable Long userId) {
+    @GetMapping("/getByUserId")
+    public List<ResponseUserReviewDto> getReviewByUserId() {
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return reviewService.getReviewByUserId(userId);
     }
 }

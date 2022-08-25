@@ -13,7 +13,6 @@ public class RequestUpdateQnaDto {
 
     private Long qnaId;
     private Long productId;
-    private Long memberId;
     private String qnaTitle;
     private String qnaContent;
     private int isSecret;

@@ -25,8 +25,8 @@ public class CouponServiceImpl implements CouponService {
     private final CouponImageRepository couponImageRepository;
 
 
-    public void addCoupon(CouponInputDto couponInputDto) {
-        User user = userRepository.findById(couponInputDto.getUserId()).get();
+    public void addCoupon(CouponInputDto couponInputDto, Long userId) {
+        User user = userRepository.findById(userId).get();
 
         Coupon coupon = couponRepository.save(Coupon.builder()
                 .user(user)

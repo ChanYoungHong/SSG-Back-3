@@ -14,7 +14,7 @@ import java.util.List;
 public class RequestUpdateReviewDto {
 
     private Long reviewId;
-    private Long memberId;
+
     private Long productId;
     private Long orderDetailId;
     private float reviewScore;

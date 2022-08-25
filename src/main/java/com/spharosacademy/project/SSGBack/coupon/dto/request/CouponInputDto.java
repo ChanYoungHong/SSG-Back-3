@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 public class CouponInputDto {
 
-    private Long userId;
+
     private String couponName;
     private float discountRate;
     private String couponCondition;
