@@ -5,10 +5,17 @@ import com.spharosacademy.project.SSGBack.product.dto.output.OutputSearchProduct
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
+import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
+import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+
 import java.awt.print.Pageable;
+
+import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -23,9 +30,12 @@ import java.util.List;
 @RequestMapping("/product")
 @RequiredArgsConstructor
 @CrossOrigin
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductRepository productRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/add")
     public String addProduct(
@@ -48,10 +58,12 @@ public class ProductController {
         return "상품 삭제가 완료되었습니다";
     }
 
-    //특정 상품 조회
+    //특정 상품 조회(회원)
     @GetMapping("/get/{id}")
     public ResponseProductDto getProductById(@PathVariable Long id) {
-        return productService.getByProductId(id);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.getByProductId(id, userid);
     }
 
     //특정 상품 수정 

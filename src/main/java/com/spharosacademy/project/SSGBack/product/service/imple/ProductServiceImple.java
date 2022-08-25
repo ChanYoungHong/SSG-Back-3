@@ -159,8 +159,8 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String keyword ) {
-        List<Product> productList = productRepository.findFirst20Bykeyword(keyword);
+    public List<OutputSearchProductDto> searchProductByWord(String keyword) {
+        List<Product> productList = productRepository.findAllBysearchWord(keyword);
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
@@ -311,7 +311,7 @@ public class ProductServiceImple implements ProductService {
 
 
     @Override
-    public ResponseProductDto getByProductId(Long id) {
+    public ResponseProductDto getByProductId(Long id, Long userid) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
