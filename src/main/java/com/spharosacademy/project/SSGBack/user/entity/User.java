@@ -58,19 +58,15 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "member_type")
     private String memberType;
 
-//    @Column(name = "gender")
-//    private String gender;
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-//    @Column(name = "user_birthdate")
-//    private LocalDate userBirthDate;
 
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;
 
     private boolean fromSocial;
+
+
 
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    @Builder.Default
