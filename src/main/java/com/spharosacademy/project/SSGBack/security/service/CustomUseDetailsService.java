@@ -33,18 +33,6 @@ public class CustomUseDetailsService implements UserDetailsService {
 
         User user = result.get();
 
-//        UserAuthMemberDto userAuthMemberDto = new UserAuthMemberDto(
-//            user.getUserEmail(),
-//            user.getUserPwd(),
-//            user.isFromSocial(),
-//            user.getRoleSet().stream()
-//                .map(role -> new SimpleGrantedAuthority
-//                    (role.name())).collect(Collectors.toSet())
-//        );
-
-//        userAuthMemberDto.setUserName(user.getUserEmail());
-//        userAuthMemberDto.setFromSocial(user.isFromSocial());
-
         return user;
     }
 }

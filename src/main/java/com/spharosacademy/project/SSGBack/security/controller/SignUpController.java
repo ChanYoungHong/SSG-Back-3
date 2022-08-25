@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.security.controller;
 
 import com.spharosacademy.project.SSGBack.security.service.SignUpService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RequiredArgsConstructor
 public class SignUpController {
-
     private final SignUpService signUpService;
 
     // 사용자 회원 로그인
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> addUser(@RequestBody UserInputDto userInputDto) {
-        signUpService.registerUser(userInputDto);
-        return ResponseEntity.ok("회원가입 되셨습니다.");
+        User registerUser = signUpService.registerUser(userInputDto);
+
+        return null;
     }
 
 }
