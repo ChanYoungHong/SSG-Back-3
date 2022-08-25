@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseWishListIdDto {
     private Long wishListId;
-    private Long productId;
 }

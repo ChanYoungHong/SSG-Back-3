@@ -66,7 +66,7 @@ public class ProductController {
         return productService.getByProductId(id, userid);
     }
 
-    @GetMapping("/nonMember/get/{id}")
+    @GetMapping("/nonmember/get/{id}")
     public ResponseProductDto getProduct(@PathVariable Long id){
         Long userid = -1L ;
         return productService.getByProductId(id, userid);
@@ -80,15 +80,32 @@ public class ProductController {
         return "상품 수정이 완료되었습니다";
     }
 
-    //추천 상품들에 해당하는 상품 조회
-    @GetMapping("/recommend/{id}")
+    //추천 상품들에 해당하는 상품 조회 - 회원
+    @GetMapping("/user/recommend/{id}")
     public ResponseRecommendProductDto getRecommendProductById(@PathVariable Long id) {
-        return productService.getRecommendProductById(id);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.getRecommendProductById(id, userid);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/nonmember/recommend/{id}")
+    public ResponseRecommendProductDto getRecommendProductByNonMember(@PathVariable Long id){
+        Long userid = -1L;
+        return productService.getRecommendProductById(id, userid);
+    }
+
+    //상품 검색 - 회원
+    @GetMapping("/user/search")
     public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query) {
-        return productService.searchProductByWord(query);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.searchProductByWord(query, userid);
+    }
+
+    @GetMapping("/nonmember/search")
+    public List<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query) {
+        Long userid = -1L;
+        return productService.searchProductByWord(query, userid);
     }
 
 }

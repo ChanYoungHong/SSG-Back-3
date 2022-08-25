@@ -28,7 +28,9 @@ public class CartController {
     //장바구니 담기 클릭
     @PostMapping("/add")
     public String addCart(@RequestBody CartInputDto cartInputDto){
-        cartService.addProductToCart(cartInputDto);
+        String token = jwtTokenProvider.customResolveToken();
+        Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        cartService.addProductToCart(cartInputDto, userid);
         return "선택하신 상품이 장바구니에 담겼습니다";
     }
 

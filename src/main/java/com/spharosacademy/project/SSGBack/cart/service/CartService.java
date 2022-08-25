@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface CartService {
 
-    Cart addProductToCart(CartInputDto cartInputDto);
+    Cart addProductToCart(CartInputDto cartInputDto, Long userid);
 
     List<CartOutputDto> getAllCart();
 

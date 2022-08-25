@@ -43,11 +43,11 @@ public class CartServiceimple implements CartService {
 
 
     @Override
-    public Cart addProductToCart(CartInputDto cartInputDto) {
+    public Cart addProductToCart(CartInputDto cartInputDto, Long userid) {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
-        User user = userRepository.findById(cartInputDto.getMemberId())
+        User user = userRepository.findById(userid)
                 .orElseThrow(UserNotFoundException::new);
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         Long duplicate;

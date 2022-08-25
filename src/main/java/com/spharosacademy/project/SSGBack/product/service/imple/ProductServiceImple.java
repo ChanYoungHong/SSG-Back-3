@@ -162,7 +162,9 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String keyword) {
+    public List<OutputSearchProductDto> searchProductByWord(String keyword, Long userid) {
+
+
         List<Product> productList = productRepository.findAllBysearchWord(keyword);
         List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
         if (productList.isEmpty()) {
@@ -171,6 +173,21 @@ public class ProductServiceImple implements ProductService {
             for (Product product : productList) {
                 log.info("df");
                 ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
+
+                Long duplicate;
+                Long wishId = null;
+
+                if (userid != -1) {
+                    duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
+                    if (duplicate == null) {
+                        wishId = null;
+                    } else {
+                        wishId = duplicate;
+                    }
+                } else {
+                    wishId = null;
+                }
+
                 outputSearchProductDtos.add(OutputSearchProductDto.builder()
                         .id(product.getId())
                         .name(product.getName())
@@ -183,6 +200,7 @@ public class ProductServiceImple implements ProductService {
                         .thumbnailImgUrl(product.getThumbnailUrl())
                         .priceTxt(product.getPriceText())
                         .regDate(product.getCreateDate())
+                        .wishId(wishId)
                         .build());
 
 
@@ -294,9 +312,24 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public ResponseRecommendProductDto getRecommendProductById(Long id) {
+    public ResponseRecommendProductDto getRecommendProductById(Long id, Long userid) {
         Product recproduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(id);
+
+        Long duplicate;
+        Long wishId = null;
+
+        if (userid != -1) {
+            duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
+            if (duplicate == null) {
+                wishId = null;
+            } else {
+                wishId = duplicate;
+            }
+        } else {
+            wishId = null;
+        }
+
         return ResponseRecommendProductDto.builder()
                 .id(recproduct.getId())
                 .name(recproduct.getName())
@@ -309,6 +342,7 @@ public class ProductServiceImple implements ProductService {
                 .reviewTotalDto(reviewTotalDto)
                 .titleImgUrl(recproduct.getThumbnailUrl())
                 .regDate(recproduct.getCreateDate())
+                .wishId(wishId)
                 .build();
     }
 
@@ -318,16 +352,18 @@ public class ProductServiceImple implements ProductService {
         Long duplicate;
         Long wishId = null;
 
-
-        if (userid != -1){
+        if (userid != -1) {
             duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
             if (duplicate == null) {
                 wishId = null;
             } else {
                 wishId = duplicate;
             }
+        } else {
             wishId = null;
         }
+
+
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
@@ -433,7 +469,6 @@ public class ProductServiceImple implements ProductService {
                     .name(categoryProductList.getSSname())
                     .build());
         }
-
 
 
         List<ReviewImage> reviewImageList = reviewImageRepository.findFirst8ByProductId(id);

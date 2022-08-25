@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartInputDto {
-    private Long memberId;
+
     private Long productId;
     private List<CartOptionDto> cartOptionDtos;
 }

@@ -22,8 +22,8 @@ public interface ProductService {
 
     void deleteProductById(Long id) throws Exception;
 
-    ResponseRecommendProductDto getRecommendProductById(Long id);
+    ResponseRecommendProductDto getRecommendProductById(Long id, Long userid);
 
-    List<OutputSearchProductDto> searchProductByWord(String keyword);
+    List<OutputSearchProductDto> searchProductByWord(String keyword, Long userid);
 
 }
