@@ -20,6 +20,7 @@ public class ResponseRecommendProductDto {
     private String mallText;
     private String brand;
     private String priceText;
+    private Long wishId;
     private float oldPrice;
     private float newPrice;
     private float discountRate;

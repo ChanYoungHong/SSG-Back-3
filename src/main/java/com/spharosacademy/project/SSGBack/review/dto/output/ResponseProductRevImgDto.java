@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.review.dto.output;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseProductReviewImgDto {
+public class ResponseProductRevImgDto {
 
     private String reviewImgUrl;
 }

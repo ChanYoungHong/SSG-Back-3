@@ -35,6 +35,7 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
+import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -63,6 +64,7 @@ public class ProductServiceImple implements ProductService {
     private final ReviewRepository reviewRepository;
     private final QnaRepository qnaRepository;
     private final ReviewImageRepository reviewImageRepository;
+    private final WishListRepository wishListRepository;
 
 
     @Override
@@ -418,6 +420,16 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
+        Long duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
+        Long wishId;
+
+        if (duplicate == null) {
+            wishId = null;
+        } else {
+            wishId = duplicate;
+        }
+
+
         return ResponseProductDto.builder()
                 .id(product.getId())
                 .productName(product.getName())
@@ -442,6 +454,7 @@ public class ProductServiceImple implements ProductService {
                 .outputTitleImgDtos(titleDtoList)
                 .optionOutputDtos(optionOutputDtoList)
                 .regDate(product.getCreateDate())
+                .wishId(wishId)
                 .build();
     }
 

@@ -34,6 +34,7 @@ public class ResponseProductDto {
     private float discountRate;
     private String priceText;
     ReviewTotalDto reviewStatic;
+    private Long wishId;
     //전체리뷰 중 5개만
     List<ResponseProductReviewDto> someOfReview;
     //전체QnA 중 5개만
@@ -48,4 +49,5 @@ public class ResponseProductDto {
     List<OutputDetailImgDto> outputDetailImgDtos;
     List<OutputTitleImgDto> outputTitleImgDtos;
     List<OptionOutputDto> optionOutputDtos;
+
 }

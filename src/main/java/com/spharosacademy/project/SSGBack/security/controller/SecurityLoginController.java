@@ -1,9 +1,8 @@
 package com.spharosacademy.project.SSGBack.security.controller;
 
+import com.spharosacademy.project.SSGBack.security.dto.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
-import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
-import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -47,8 +46,6 @@ public class SecurityLoginController {
         }
         throw new LoginFailException();
     }
-
-
 
 
 }

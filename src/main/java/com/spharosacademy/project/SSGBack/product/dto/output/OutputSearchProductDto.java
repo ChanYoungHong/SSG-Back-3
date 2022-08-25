@@ -26,4 +26,5 @@ public class OutputSearchProductDto {
     private ReviewTotalDto reviewTotalDto;
     private String thumbnailImgUrl;
     private LocalDateTime regDate;
+    private Long wishId;
 }
