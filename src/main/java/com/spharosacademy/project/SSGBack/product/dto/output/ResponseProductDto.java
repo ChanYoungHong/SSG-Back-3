@@ -50,6 +50,7 @@ public class ResponseProductDto {
     List<OutputDetailImgDto> outputDetailImgDtos;
     List<OutputTitleImgDto> outputTitleImgDtos;
     List<OptionOutputDto> optionOutputDtos;
+    //리뷰 사진 중 일부분
     List<ResponseProductReviewImageDto> responseProductReviewImageDtos;
 
 }

@@ -63,8 +63,8 @@ public class CartServiceimple implements CartService {
 
                 cartRepository.save(Cart.builder()
                         .product(product)
-                        .user(user)
                         .optionId(cartOptionDto.getOptionId())
+                        .user(user)
                         .qty(cartOptionDto.getQty())
                         .sizeId(optionRepository.findById(cartOptionDto.getOptionId())
                                 .orElseThrow(OptionNotFoundException::new).getSize().getId())
