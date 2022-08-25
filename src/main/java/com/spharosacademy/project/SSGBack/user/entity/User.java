@@ -1,15 +1,12 @@
 package com.spharosacademy.project.SSGBack.user.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Getter
 @Transactional
 @Builder
+@Setter
 @Table(name = "user")
 public class User extends BaseEntity implements UserDetails {
 
@@ -49,7 +48,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_address", nullable = false)
     private String userAddress;
 
-    @Column(name = "user_Email")
+    @Column(name = "user_email")
     private String userEmail;
 
     @Column(name = "user_phone")
@@ -66,6 +65,24 @@ public class User extends BaseEntity implements UserDetails {
 
     private boolean fromSocial;
 
+    private String picture;
+
+
+    public User(String userName, String userEmail, String picture) {
+
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.picture = picture;
+
+    }
+
+    public User update(String userName, String picture) {
+
+        this.userName = userName;
+        this.picture = picture;
+
+        return this;
+    }
 
 
 //    @ElementCollection(fetch = FetchType.EAGER)
