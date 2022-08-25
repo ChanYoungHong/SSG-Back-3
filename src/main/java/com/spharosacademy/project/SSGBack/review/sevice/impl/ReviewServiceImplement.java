@@ -63,6 +63,7 @@ public class ReviewServiceImplement implements ReviewService {
                         .reviewImgTxt(inputReviewImageDto.getReviewImgTxt())
                         .reviewImgUrl(inputReviewImageDto.getReviewImgUrl())
                         .review(review)
+                        .productId(product.getId())
                         .build()));
     }
 

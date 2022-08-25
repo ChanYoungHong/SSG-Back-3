@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +24,9 @@ public class SignUpController {
     // 사용자 회원 로그인
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public String addUser(@RequestBody UserInputDto userInputDto) {
+    public ResponseEntity<?> addUser(@RequestBody UserInputDto userInputDto) {
         signUpService.registerUser(userInputDto);
-        return "회원가입 되셨습니다.";
+        return ResponseEntity.ok("회원가입 되셨습니다.");
     }
 
 }

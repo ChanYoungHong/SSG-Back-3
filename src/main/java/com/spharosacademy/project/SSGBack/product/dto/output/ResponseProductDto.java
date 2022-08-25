@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputTitleIm
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.qna.dto.output.ResponseProductQnaDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewImageDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,5 +50,6 @@ public class ResponseProductDto {
     List<OutputDetailImgDto> outputDetailImgDtos;
     List<OutputTitleImgDto> outputTitleImgDtos;
     List<OptionOutputDto> optionOutputDtos;
+    List<ResponseProductReviewImageDto> responseProductReviewImageDtos;
 
 }

@@ -30,6 +30,7 @@ import com.spharosacademy.project.SSGBack.qna.entity.QnA;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
 import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
+import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewImageDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
@@ -314,6 +315,19 @@ public class ProductServiceImple implements ProductService {
 
     @Override
     public ResponseProductDto getByProductId(Long id, Long userid) {
+        Long duplicate;
+        Long wishId = null;
+
+
+        if (userid != -1){
+            duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
+            if (duplicate == null) {
+                wishId = null;
+            } else {
+                wishId = duplicate;
+            }
+            wishId = null;
+        }
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         List<ProductDetailImage> detailImageList = productDetailImgRepository.findAllByProduct(product);
         List<OutputDetailImgDto> detailDtoList = new ArrayList<>();
@@ -420,15 +434,15 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
-        Long duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
-        Long wishId;
 
-        if (duplicate == null) {
-            wishId = null;
-        } else {
-            wishId = duplicate;
-        }
 
+        List<ReviewImage> reviewImageList = reviewImageRepository.findFirst8ByProductId(id);
+        List<ResponseProductReviewImageDto> responseProductReviewImageDtos = new ArrayList<>();
+        reviewImageList.forEach(reviewImage -> {
+            responseProductReviewImageDtos.add(ResponseProductReviewImageDto.builder()
+                    .reviewImgUrl(reviewImage.getReviewImgUrl())
+                    .build());
+        });
 
         return ResponseProductDto.builder()
                 .id(product.getId())
@@ -448,6 +462,7 @@ public class ProductServiceImple implements ProductService {
                 .explanation(product.getExplanation())
                 .pofCategoryLList(categoryLlist)
                 .pofCategoryMList(categoryMList)
+                .responseProductReviewImageDtos(responseProductReviewImageDtos)
                 .pofCategorySList(categorySList)
                 .pofCategorySSList(categorySSList)
                 .outputDetailImgDtos(detailDtoList)

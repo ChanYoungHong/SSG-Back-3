@@ -59,10 +59,16 @@ public class ProductController {
     }
 
     //특정 상품 조회(회원)
-    @GetMapping("/get/{id}")
+    @GetMapping("/user/get/{id}")
     public ResponseProductDto getProductById(@PathVariable Long id) {
         String token = jwtTokenProvider.customResolveToken();
         Long userid = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        return productService.getByProductId(id, userid);
+    }
+
+    @GetMapping("/nonMember/get/{id}")
+    public ResponseProductDto getProduct(@PathVariable Long id){
+        Long userid = -1L ;
         return productService.getByProductId(id, userid);
     }
 

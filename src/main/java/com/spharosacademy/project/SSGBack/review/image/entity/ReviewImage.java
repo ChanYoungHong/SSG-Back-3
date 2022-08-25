@@ -20,6 +20,7 @@ public class ReviewImage {
     private Long id;
     private String reviewImgUrl;
     private String reviewImgTxt;
+    private Long productId;
 
     @ManyToOne
     Review review;

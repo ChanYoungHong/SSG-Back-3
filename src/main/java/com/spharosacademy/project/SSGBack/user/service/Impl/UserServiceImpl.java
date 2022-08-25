@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.service.Impl;
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
@@ -21,11 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserServieImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public boolean duplicateUserId(String userId) {
@@ -94,4 +94,30 @@ public class UserServieImpl implements UserService {
         return null;
     }
 
+    @Override
+    public Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
+
+        Optional<User> user = userRepository.findByUserId(userId);
+
+        if (user.isPresent()) {
+
+            userRepository.save(
+                User.builder()
+                    .id(user.get().getId())
+                    .userId(user.get().getUserId())
+                    .userPwd(passwordEncoder.encode(userChangePwdInputDto.getUserPwd()))
+                    .userAddress(user.get().getUserAddress())
+                    .userPhone(user.get().getUserPhone())
+                    .userName(user.get().getUsername())
+                    .role(user.get().getRole())
+                    .userDropCheck(user.get().getUserDropCheck())
+                    .userEmail(user.get().getUserEmail())
+                    .memberType(user.get().getMemberType())
+//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
+                    .build()
+
+            );
+        }
+        return user;
+    }
 }
