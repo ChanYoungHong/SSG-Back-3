@@ -17,6 +17,6 @@ public interface UserService {
 
     User removeUserInfo(Long id, UserOutputDto userOutputDto);
 
-    Optional<User> changePassword(String userId, String userPwd);
+    Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
 
 }

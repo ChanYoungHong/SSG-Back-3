@@ -95,16 +95,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> changePassword(String userId, String userPwd) {
+    public Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
 
         Optional<User> user = userRepository.findByUserId(userId);
-
-//        UserChangePwdInputDto newPwd = UserChangePwdInputDto.builder()
-//            .userPwd(userChangePwdInputDto.getUserPwd())
-//            .build();
-        log.info("--==========================================");
-//        log.info(userChangePwdInputDto.getUserPwd());
-        log.info("--==========================================");
 
         if (user.isPresent()) {
 
@@ -112,7 +105,7 @@ public class UserServiceImpl implements UserService {
                 User.builder()
                     .id(user.get().getId())
                     .userId(user.get().getUserId())
-                    .userPwd(userPwd)
+                    .userPwd(passwordEncoder.encode(userChangePwdInputDto.getUserPwd()))
                     .userAddress(user.get().getUserAddress())
                     .userPhone(user.get().getUserPhone())
                     .userName(user.get().getUsername())

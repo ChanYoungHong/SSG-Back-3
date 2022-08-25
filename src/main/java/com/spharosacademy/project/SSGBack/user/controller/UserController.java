@@ -29,17 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
     // 비밀번호 변경
     @PutMapping("/changePassword/{userId}")
-    public Optional<User> changeNewPassWord(@RequestParam(value = "userId") String userId,
-                                            @RequestParam(value = "userPwd")
-                                                String userPwd) {
-
-        return userService.changePassword(userId, userPwd);
+    public Optional<User> changeNewPassWord(@PathVariable String userId,
+                                            @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
+//        @RequestParam(value = "userId") String userId
+        return userService.changePassword(userId, userChangePwdInputDto);
     }
 
     // 회원아이디 중복검사
