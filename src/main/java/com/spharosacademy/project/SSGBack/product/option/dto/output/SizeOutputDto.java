@@ -1,15 +1,6 @@
 package com.spharosacademy.project.SSGBack.product.option.dto.output;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class SizeOutputDto {
-    private Long sizeId;
-    private String size;
+public interface SizeOutputDto {
+    Long getSizeId();
+    String getSize();
 }

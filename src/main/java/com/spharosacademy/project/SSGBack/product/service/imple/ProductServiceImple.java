@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
@@ -372,6 +371,7 @@ public class ProductServiceImple implements ProductService {
         ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
         Long qnaCount = qnaRepository.countByProductId(id);
         List<ResponseProductReviewDto> responseProductReviewDtoList = new ArrayList<>();
+
         reviewList.forEach(review -> {
             List<ReviewImage> reviewImageList = reviewImageRepository.findAllByReviewId(review.getId());
             List<OutputReviewImgDto> outputReviewImgDtos = new ArrayList<>();
@@ -421,12 +421,14 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
+        List<ColorOutputDto> colorOutputDtoList = optionRepository.getColorId(id);
+        List<SizeOutputDto> sizeOutputDtoList = optionRepository.getSizeId(id);
+
         List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
         List<OptionList> optionList = optionRepository.findAllByProduct(product);
 
         for (OptionList option : optionList) {
             log.info(Logger.ROOT_LOGGER_NAME);
-
             optionOutputDtoList.add(OptionOutputDto.builder()
                     .id(option.getId())
                     .color(option.getColors().getName())
@@ -435,6 +437,7 @@ public class ProductServiceImple implements ProductService {
                     .sizeId(option.getSize().getId())
                     .stock(option.getStock())
                     .build());
+
         }
 
         List<CategoryProductList> lists = categoryProductListRepository.findAllByProduct(product);
@@ -480,20 +483,7 @@ public class ProductServiceImple implements ProductService {
                     .build());
         });
 
-        List<OptionList> optionLists = optionRepository.findByProductId(id);
-        List<ColorOutputDto> colorOutputDtoList = new ArrayList<>();
-        List<SizeOutputDto> sizeOutputDtoList = new ArrayList<>();
-        optionLists.forEach(optionList1 -> {
-            colorOutputDtoList.add(ColorOutputDto.builder()
-                    .colorId(optionList1.getColors().getId())
-                    .color(optionList1.getColors().getName())
-                    .build());
 
-            sizeOutputDtoList.add(SizeOutputDto.builder()
-                    .sizeId(optionList1.getSize().getId())
-                    .size(optionList1.getSize().getType())
-                    .build());
-        });
         return ResponseProductDto.builder()
                 .id(product.getId())
                 .productName(product.getName())
