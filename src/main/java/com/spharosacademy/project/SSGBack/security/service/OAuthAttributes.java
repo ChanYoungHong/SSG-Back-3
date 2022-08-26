@@ -16,12 +16,11 @@ public class OAuthAttributes {
     private String picture;
 
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey,
-                           String userName, String userEmail, String picture) {
+                           String userName, String userEmail) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.userName = userName;
         this.userEmail = userEmail;
-        this.picture = picture;
     }
 
     public User toEntity() {
@@ -45,8 +44,7 @@ public class OAuthAttributes {
         return new OAuthAttributes(attributes,
             userNameAttributeName,
             (String) profile.get("nickname"),
-            (String) kakao_account.get("email"),
-            (String) profile.get("profile_image_url"));
+            (String) kakao_account.get("email"));
     }
 
 
@@ -55,9 +53,8 @@ public class OAuthAttributes {
 
         return new OAuthAttributes(attributes,
             userNameAttributeName,
-            (String) response.get("name"),
-            (String) response.get("email"),
-            (String) response.get("profile_image"));
+            (String) response.get("userName"),
+            (String) response.get("userEmail"));
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
@@ -65,7 +62,6 @@ public class OAuthAttributes {
         return new OAuthAttributes(attributes,
             userNameAttributeName,
             (String) attributes.get("name"),
-            (String) attributes.get("email"),
-            (String) attributes.get("picture"));
+            (String) attributes.get("email"));
     }
 }

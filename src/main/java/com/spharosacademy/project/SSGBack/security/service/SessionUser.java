@@ -7,12 +7,10 @@ public class SessionUser implements Serializable {
 
     private String userName;
     private String userEmail;
-    private String picture;
 
     public SessionUser(User user) {
         this.userName = userName;
         this.userEmail = userEmail;
-        this.picture = picture;
     }
 
 
@@ -32,11 +30,4 @@ public class SessionUser implements Serializable {
         this.userEmail = userEmail;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
 }
