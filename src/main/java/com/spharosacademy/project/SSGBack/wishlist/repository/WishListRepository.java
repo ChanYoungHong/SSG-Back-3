@@ -1,6 +1,6 @@
-package com.spharosacademy.project.SSGBack.util.wishlist.repository;
+package com.spharosacademy.project.SSGBack.wishlist.repository;
 
-import com.spharosacademy.project.SSGBack.util.wishlist.entity.WishList;
+import com.spharosacademy.project.SSGBack.wishlist.entity.WishList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

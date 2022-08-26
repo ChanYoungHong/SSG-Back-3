@@ -94,7 +94,6 @@ public class ReviewServiceImplement implements ReviewService {
                     .orderDetailId(review.getOrderDetailId())
                     .reviewContent(review.getReviewContent())
                     .userLoginId(review.getUser().getUserId())
-                    .reviewTotalDto(reviewTotalDto)
                     .regDate(review.getCreateDate())
                     .updateDate(review.getUpdatedDate())
                     .color(optionList.getColors().getName())

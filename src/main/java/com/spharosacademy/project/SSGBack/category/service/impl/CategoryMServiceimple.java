@@ -12,9 +12,7 @@ import com.spharosacademy.project.SSGBack.category.repository.CategoryMRepositor
 import com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository;
 import com.spharosacademy.project.SSGBack.category.repository.CategorySRepository;
 import com.spharosacademy.project.SSGBack.category.service.CategoryMService;
-import com.spharosacademy.project.SSGBack.product.entity.Product;
-import com.spharosacademy.project.SSGBack.util.wishlist.entity.WishList;
-import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
+import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

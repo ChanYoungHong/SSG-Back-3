@@ -20,7 +20,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/add")
+    @PostMapping("/user/add")
     public String addReview(@RequestBody RequestReviewDto requestReviewDto)
             throws Exception {
         String token = jwtTokenProvider.customResolveToken();
@@ -59,7 +59,7 @@ public class ReviewController {
     //
 //
     //사용자가 작성한 모든 리뷰 조회하는 화면
-    @GetMapping("/getByUserId")
+    @GetMapping("/user/getByUserId")
     public List<ResponseUserReviewDto> getReviewByUserId() {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));

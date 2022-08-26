@@ -1,7 +1,7 @@
-package com.spharosacademy.project.SSGBack.util.wishlist.service;
+package com.spharosacademy.project.SSGBack.wishlist.service;
 
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.input.RequestWishListDto;
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.output.ResponseWishListDto;
+import com.spharosacademy.project.SSGBack.wishlist.dto.input.RequestWishListDto;
+import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListDto;
 
 import java.util.List;
 

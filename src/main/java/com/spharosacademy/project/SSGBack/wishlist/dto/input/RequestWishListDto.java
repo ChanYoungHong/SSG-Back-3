@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.util.wishlist.dto.input;
+package com.spharosacademy.project.SSGBack.wishlist.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

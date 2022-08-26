@@ -1,14 +1,14 @@
-package com.spharosacademy.project.SSGBack.util.wishlist.service.impl;
+package com.spharosacademy.project.SSGBack.wishlist.service.impl;
 
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.output.ResponseWishListDto;
-import com.spharosacademy.project.SSGBack.util.wishlist.entity.WishList;
-import com.spharosacademy.project.SSGBack.util.wishlist.service.WishListService;
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.input.RequestWishListDto;
-import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
+import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListDto;
+import com.spharosacademy.project.SSGBack.wishlist.entity.WishList;
+import com.spharosacademy.project.SSGBack.wishlist.service.WishListService;
+import com.spharosacademy.project.SSGBack.wishlist.dto.input.RequestWishListDto;
+import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

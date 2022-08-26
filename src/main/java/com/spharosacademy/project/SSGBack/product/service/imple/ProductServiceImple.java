@@ -38,7 +38,9 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
-import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
+import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -67,6 +69,7 @@ public class ProductServiceImple implements ProductService {
     private final QnaRepository qnaRepository;
     private final ReviewImageRepository reviewImageRepository;
     private final WishListRepository wishListRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -353,7 +356,10 @@ public class ProductServiceImple implements ProductService {
         Long duplicate;
         Long wishId = null;
 
+        User user;
+
         if (userid != -1) {
+            user = userRepository.findById(userid).get();
             duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
             if (duplicate == null) {
                 wishId = null;
@@ -361,6 +367,7 @@ public class ProductServiceImple implements ProductService {
                 wishId = duplicate;
             }
         } else {
+            user = null;
             wishId = null;
         }
 
@@ -387,6 +394,8 @@ public class ProductServiceImple implements ProductService {
                             .orderDetailId(review.getOrderDetailId())
                             .reviewContent(review.getReviewContent())
                             .outputReviewImgDtos(outputReviewImgDtos)
+                            .reviewScore(review.getReviewScore())
+                            .userLoginId(user.getUserId())
                             .build());
         });
 

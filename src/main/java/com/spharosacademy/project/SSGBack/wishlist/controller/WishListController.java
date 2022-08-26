@@ -1,11 +1,11 @@
-package com.spharosacademy.project.SSGBack.util.wishlist.controller;
+package com.spharosacademy.project.SSGBack.wishlist.controller;
 
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
-import com.spharosacademy.project.SSGBack.util.wishlist.service.WishListService;
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.input.RequestWishListDto;
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.output.ResponseWishListDto;
-import com.spharosacademy.project.SSGBack.util.wishlist.dto.output.ResponseWishListIdDto;
-import com.spharosacademy.project.SSGBack.util.wishlist.repository.WishListRepository;
+import com.spharosacademy.project.SSGBack.wishlist.service.WishListService;
+import com.spharosacademy.project.SSGBack.wishlist.dto.input.RequestWishListDto;
+import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListDto;
+import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListIdDto;
+import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class WishListController {
     private final WishListRepository wishListRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/add")
+    @PostMapping("/user/add")
     public ResponseEntity<ResponseWishListIdDto> addWishList(@RequestBody RequestWishListDto requestWishListDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));

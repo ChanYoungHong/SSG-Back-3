@@ -19,7 +19,7 @@ public class ResponseProductReviewDto {
     private String userLoginId;
     private Long orderDetailId;
     private LocalDateTime regDate;
-    private ReviewTotalDto reviewTotalDto;
+    private double reviewScore;
     private String color;
     private String size;
     private LocalDateTime updateDate;
