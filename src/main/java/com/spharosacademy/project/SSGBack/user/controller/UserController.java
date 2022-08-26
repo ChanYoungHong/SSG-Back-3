@@ -67,8 +67,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void modifyUserInfo(HttpServletRequest request,
                                @RequestBody UserInputDto userInputDto) {
-        String token = jwtTokenProvider.resolveToken(request);
 
+        String token = jwtTokenProvider.resolveToken(request);
         Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
         userService.modifyUserInfo(id, userInputDto);
     }

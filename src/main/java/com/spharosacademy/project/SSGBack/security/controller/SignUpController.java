@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +28,7 @@ public class SignUpController {
     public ResponseEntity<?> addUser(@RequestBody UserInputDto userInputDto) {
         User registerUser = signUpService.registerUser(userInputDto);
 
-        return null;
+        return ResponseEntity.ok("회원가입 되었습니다.");
     }
 
 }

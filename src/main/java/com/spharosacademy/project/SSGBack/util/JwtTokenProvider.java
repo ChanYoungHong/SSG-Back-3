@@ -38,10 +38,11 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(Long userId, String role) {
+    // id -> User의 pk 의미
+    public String createToken(Long id, String role) {
 
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
-        Claims claims = Jwts.claims().setSubject(userId.toString());
+        Claims claims = Jwts.claims().setSubject(id.toString());
         claims.put("role", role);
         Date now = new Date();
 

@@ -15,23 +15,23 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor                        // repository와 비슷함, 아이디주면 사용자 정보 가져오는 역할
 public class CustomUseDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    // UserDetails -> username, password, authority
     // UserDetails를 가져오기 위한 DAO다
-    @Override
+    @Override                             // String id - 여기서 가져 올 것은 sub의 id값, 원래는 String username이라 명시되어 있음.
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
         Optional<User> result = userRepository.findById(Long.valueOf(id));
+        User user = result.get();
 
         // 책에는 !가 없음, 근데 로직상 !가 있어야 할 것 같음.
         if(result.isEmpty()){
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
-
-        User user = result.get();
 
         return user;
     }
