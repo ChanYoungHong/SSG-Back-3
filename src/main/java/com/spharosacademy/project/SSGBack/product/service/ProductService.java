@@ -1,12 +1,12 @@
 package com.spharosacademy.project.SSGBack.product.service;
 
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.OutputSearchProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,4 +28,7 @@ public interface ProductService {
 
     Page<OutputSearchProductDto> searchProductByWord(String query, Long userid, Pageable pageable);
 
+    List<ColorOutputDto> getProductColor(Long id);
+
+    List<SizeOutputDto>  getProductSize(Long productId, Long colorId);
 }

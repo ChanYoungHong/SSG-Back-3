@@ -1,11 +1,11 @@
 package com.spharosacademy.project.SSGBack.product.controller;
 
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.OutputSearchProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
-import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
+import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import org.springframework.data.domain.Pageable;
@@ -69,6 +69,17 @@ public class ProductController {
         Long userId = -1L;
         return productService.getByProductId(id, userId);
     }
+
+    @GetMapping("/color/{id}")
+    public List<ColorOutputDto> getProductColor(@PathVariable Long id){
+        return productService.getProductColor(id);
+    }
+
+    @GetMapping("/size/{productId}/{colorId}")
+    public List<SizeOutputDto>  getSizeAndStock(@PathVariable Long productId, @PathVariable Long colorId){
+        return productService.getProductSize(productId, colorId);
+    }
+
 
     //특정 상품 수정 
     @PutMapping("/update")

@@ -181,7 +181,7 @@ public class ProductServiceImple implements ProductService {
             Long duplicate;
             Long wishId = null;
             if (userid != -1) {
-                    duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
+                duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
                 if (duplicate == null) {
                     wishId = null;
                 } else {
@@ -223,6 +223,26 @@ public class ProductServiceImple implements ProductService {
 //                    wishId = null;
 //                }
 
+    }
+
+    @Override
+    public List<ColorOutputDto> getProductColor(Long id) {
+//        List<ColorOutputDto> productColorDtoList = new ArrayList<>();
+//        List<OptionList> colorList = optionRepository.findByProductId(id);
+//        colorList.forEach(optionList -> {
+//            productColorDtoList.add(ColorOutputDto.builder()
+//                    .id(optionList.getColors().getId())
+//                    .name(optionList.getColors().getName())
+//                    .build());
+//        });
+        List<ColorOutputDto> colorList = optionRepository.getColorId(id);
+        return colorList;
+    }
+
+    @Override
+    public List<SizeOutputDto> getProductSize(Long productId, Long colorId) {
+        List<SizeOutputDto> sizeAndStock = optionRepository.getSizeId(productId, colorId);
+        return sizeAndStock;
     }
 
     @Override
@@ -319,7 +339,6 @@ public class ProductServiceImple implements ProductService {
                     .pofCategorySSList(categorySSList)
                     .outputDetailImgDtos(detailDtoList)
                     .outputTitleImgDtos(titleDtoList)
-                    .optionOutputDtos(optionOutputDtoList)
                     .regDate(product.getCreateDate())
                     .build());
         });
@@ -441,9 +460,6 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
-        List<ColorOutputDto> colorOutputDtoList = optionRepository.getColorId(id);
-        List<SizeOutputDto> sizeOutputDtoList = optionRepository.getSizeId(id);
-
         List<OptionOutputDto> optionOutputDtoList = new ArrayList<>();
         List<OptionList> optionList = optionRepository.findAllByProduct(product);
 
@@ -527,9 +543,6 @@ public class ProductServiceImple implements ProductService {
                 .pofCategorySSList(categorySSList)
                 .outputDetailImgDtos(detailDtoList)
                 .outputTitleImgDtos(titleDtoList)
-                .sizeOutputDtos(sizeOutputDtoList)
-                .colorOutputDtos(colorOutputDtoList)
-                .optionOutputDtos(optionOutputDtoList)
                 .regDate(product.getCreateDate())
                 .wishId(wishId)
                 .build();

@@ -51,9 +51,6 @@ public class ResponseProductDto {
     List<PofCategoryL> pofCategoryLList;
     List<OutputDetailImgDto> outputDetailImgDtos;
     List<OutputTitleImgDto> outputTitleImgDtos;
-    List<ColorOutputDto> colorOutputDtos;
-    List<SizeOutputDto> sizeOutputDtos;
-    List<OptionOutputDto> optionOutputDtos;
     //리뷰 사진 중 일부분
     List<ResponseProductReviewImageDto> responseProductReviewImageDtos;
 
