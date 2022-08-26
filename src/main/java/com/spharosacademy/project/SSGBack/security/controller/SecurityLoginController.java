@@ -29,7 +29,7 @@ public class SecurityLoginController {
             @RequestBody UserLoginDto userLoginDto) {
 
         User result = userRepository.findByUserId(userLoginDto.getUserId())
-            .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Email입니다."));
+            .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userId입니다."));
 
         if (passwordEncoder.matches(userLoginDto.getUserPwd(), result.getUserPwd())) {
             return LoginSuccessOutputDto.builder()

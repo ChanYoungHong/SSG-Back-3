@@ -28,8 +28,6 @@ public class OAuthAttributes {
         return new User(userName, userEmail, picture);
     }
 
-    public OAuthAttributes() {
-    }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if (registrationId.equals("kakao")) {

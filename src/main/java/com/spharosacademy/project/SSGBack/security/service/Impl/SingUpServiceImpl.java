@@ -4,9 +4,12 @@ import com.spharosacademy.project.SSGBack.security.service.SignUpService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.entity.UserRole;
+import com.spharosacademy.project.SSGBack.user.exception.DuplicateSignupCheck;
+import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +27,7 @@ public class SingUpServiceImpl implements SignUpService {
     @Override
     public User registerUser(UserInputDto userInputDto) {
 
-       return userRepository.save(
+        return userRepository.save(
                 User.builder()
                         .userId(userInputDto.getUserId())
                         .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))

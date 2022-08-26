@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
                         .userDropCheck(result.get().getUserDropCheck())
                         .userEmail(userEditInputDto.getUserEmail())
                         .memberType(result.get().getMemberType())
-//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                         .build()
                 );
 
@@ -113,7 +112,6 @@ public class UserServiceImpl implements UserService {
                     .userDropCheck(user.get().getUserDropCheck())
                     .userEmail(user.get().getUserEmail())
                     .memberType(user.get().getMemberType())
-//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                     .build()
 
             );
