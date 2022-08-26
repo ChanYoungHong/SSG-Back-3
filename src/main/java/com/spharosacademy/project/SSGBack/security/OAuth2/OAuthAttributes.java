@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.security.service;
+package com.spharosacademy.project.SSGBack.security.OAuth2;
 
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import java.util.Map;
