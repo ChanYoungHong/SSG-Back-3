@@ -44,8 +44,11 @@ import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.*;
 
@@ -166,52 +169,60 @@ public class ProductServiceImple implements ProductService {
     }
 
     @Override
-    public List<OutputSearchProductDto> searchProductByWord(String keyword, Long userid) {
+    public Page<OutputSearchProductDto> searchProductByWord(String query, Long userid, Pageable pageable) {
+        Page<Product> productPage = productRepository.searchBysearchWord(query, pageable);
 
-
-        List<Product> productList = productRepository.findAllBysearchWord(keyword);
-        List<OutputSearchProductDto> outputSearchProductDtos = new ArrayList<>();
-        if (productList.isEmpty()) {
+        if (productPage.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
-        } else {
-            for (Product product : productList) {
-                log.info("df");
-                ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
-
-                Long duplicate;
-                Long wishId = null;
-
-                if (userid != -1) {
-                    duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
-                    if (duplicate == null) {
-                        wishId = null;
-                    } else {
-                        wishId = duplicate;
-                    }
-                } else {
-                    wishId = null;
-                }
-
-                outputSearchProductDtos.add(OutputSearchProductDto.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .brand(product.getBrand())
-                        .mallTxt(product.getMallText())
-                        .oldPrice(product.getOldPrice())
-                        .newPrice(product.getNewPrice())
-                        .discountRate(product.getDiscountRate())
-                        .reviewTotalDto(reviewTotalDto)
-                        .thumbnailImgUrl(product.getThumbnailUrl())
-                        .priceTxt(product.getPriceText())
-                        .regDate(product.getCreateDate())
-                        .wishId(wishId)
-                        .build());
-
-
-            }
         }
 
-        return outputSearchProductDtos;
+        return productPage.map(product -> {
+            ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
+            Long duplicate;
+            Long wishId = null;
+            if (userid != -1) {
+                    duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
+                if (duplicate == null) {
+                    wishId = null;
+                } else {
+                    wishId = duplicate;
+                }
+            } else {
+                wishId = null;
+            }
+            return OutputSearchProductDto.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .brand(product.getBrand())
+                    .mallTxt(product.getMallText())
+                    .oldPrice(product.getOldPrice())
+                    .newPrice(product.getNewPrice())
+                    .discountRate(product.getDiscountRate())
+                    .reviewTotalDto(reviewTotalDto)
+                    .thumbnailImgUrl(product.getThumbnailUrl())
+                    .priceTxt(product.getPriceText())
+                    .regDate(product.getCreateDate())
+                    .wishId(wishId)
+                    .build();
+        });
+//            for (Product product : productPage) {
+//                log.info("df");
+//                ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
+//
+//                Long duplicate;
+//                Long wishId = null;
+//
+//                if (userid != -1) {
+//                    duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
+//                    if (duplicate == null) {
+//                        wishId = null;
+//                    } else {
+//                        wishId = duplicate;
+//                    }
+//                } else {
+//                    wishId = null;
+//                }
+
     }
 
     @Override
@@ -395,7 +406,7 @@ public class ProductServiceImple implements ProductService {
                             .reviewContent(review.getReviewContent())
                             .outputReviewImgDtos(outputReviewImgDtos)
                             .reviewScore(review.getReviewScore())
-                            .userLoginId(user.getUserId())
+                            .userLoginId(userRepository.findById(review.getUser().getId()).get().getUserId())
                             .build());
         });
 

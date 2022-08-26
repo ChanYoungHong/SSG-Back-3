@@ -5,13 +5,11 @@ import com.spharosacademy.project.SSGBack.product.dto.output.OutputSearchProduct
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
-import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
-
-import java.awt.print.Pageable;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,8 +65,8 @@ public class ProductController {
     }
 
     @GetMapping("/nonmember/get/{id}")
-    public ResponseProductDto getProduct(@PathVariable Long id){
-        Long userId = -1L ;
+    public ResponseProductDto getProduct(@PathVariable Long id) {
+        Long userId = -1L;
         return productService.getByProductId(id, userId);
     }
 
@@ -89,23 +87,25 @@ public class ProductController {
     }
 
     @GetMapping("/nonmember/recommend/{id}")
-    public ResponseRecommendProductDto getRecommendProductByNonMember(@PathVariable Long id){
+    public ResponseRecommendProductDto getRecommendProductByNonMember(@PathVariable Long id) {
         Long userid = -1L;
         return productService.getRecommendProductById(id, userid);
     }
 
     //상품 검색 - 회원
     @GetMapping("/user/search")
-    public List<OutputSearchProductDto> SearchProductByWord(@RequestParam String query) {
+    public Page<OutputSearchProductDto> SearchProductByWord(@RequestParam String query,
+                                                            Pageable pageable) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return productService.searchProductByWord(query, userId);
+        return productService.searchProductByWord(query, userId, pageable);
     }
 
     @GetMapping("/nonmember/search")
-    public List<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query) {
+    public Page<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query,
+                                                               Pageable pageable) {
         Long userId = -1L;
-        return productService.searchProductByWord(query, userId);
+        return productService.searchProductByWord(query, userId, pageable);
     }
 
 }

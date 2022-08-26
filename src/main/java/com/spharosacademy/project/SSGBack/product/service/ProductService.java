@@ -7,7 +7,9 @@ import com.spharosacademy.project.SSGBack.product.dto.output.ResponseRecommendPr
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import java.util.List;
 
 public interface ProductService {
@@ -24,6 +26,6 @@ public interface ProductService {
 
     ResponseRecommendProductDto getRecommendProductById(Long id, Long userid);
 
-    List<OutputSearchProductDto> searchProductByWord(String keyword, Long userid);
+    Page<OutputSearchProductDto> searchProductByWord(String query, Long userid, Pageable pageable);
 
 }
