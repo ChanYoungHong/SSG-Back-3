@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.security.config;
 
-import com.spharosacademy.project.SSGBack.security.OAuth2.CustomOAuth2UserService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final CustomOAuth2UserService customOAuth2Service;
+
 
     @Bean
     @Override // 인증처리 interface다

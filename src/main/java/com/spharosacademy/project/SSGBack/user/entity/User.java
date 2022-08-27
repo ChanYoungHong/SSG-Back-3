@@ -68,18 +68,17 @@ public class User extends BaseEntity implements UserDetails {
     private String picture;
 
 
-    public User(String userName, String userEmail, String picture) {
+    public User(String userName, String userEmail) {
 
         this.userName = userName;
         this.userEmail = userEmail;
-        this.picture = picture;
 
     }
 
-    public User update(String userName, String picture) {
+    public User update(String userName, String userEmail) {
 
         this.userName = userName;
-        this.picture = picture;
+        this.userEmail = userEmail;
 
         return this;
     }
