@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class RequestReviewDto {
 
-
     private Long orderDetailId;
     private String reviewContent;
     private float reviewScore;

@@ -7,6 +7,8 @@ import com.spharosacademy.project.SSGBack.cart.dto.input.CartOrderRequestDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartUpdateRequestDto;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
+import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundException;
+import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -74,5 +76,15 @@ public class CartController {
     @ExceptionHandler(OutOfStockException.class)
     public ResponseEntity<String> handleOutofStockException(OutOfStockException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(OptionNotFoundException.class)
+    public ResponseEntity<String> handleOptionNotFoundException(OptionNotFoundException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<String> handleCartNotFoundException(CartNotFoundException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

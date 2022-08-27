@@ -18,4 +18,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     ReviewTotalDto collectByProductId(@Param("productId") Long productId);
 
     List<Review> findFirst5ByProductId(Long productId);
+
 }

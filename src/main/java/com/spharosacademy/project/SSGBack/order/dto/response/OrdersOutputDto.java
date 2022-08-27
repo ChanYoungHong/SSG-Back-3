@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 public class OrdersOutputDto {
 
-    //    private Long orderListId; // 주문 완료 리스트정보
+//    private Long orderListId; 주문 완료 리스트정보
 //    private Long memberId; // 사용자 정보
     private Long orderId;
     private Long orderListId;

@@ -14,6 +14,8 @@ import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
+import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
+import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
@@ -45,7 +47,8 @@ public class OrdersServiceImpl implements OrdersService {
     public void createDirectOrder(OrdersInputDto ordersInputDto, Long userId) {
 
         Optional<User> user = userRepository.findById(userId);
-        Product product = productRepository.findById(ordersInputDto.getProductId()).get();
+        Product product = productRepository.findById(ordersInputDto.getProductId())
+                .orElseThrow(ProductNotFoundException::new);
 
         List<OrdersOptioninputDto> ordersOptioninputDtoList = new ArrayList<>();
         for (OrdersOptioninputDto ordersOptioninputDto : ordersInputDto.getOrdersOptioninputDtoList()) {
@@ -56,26 +59,28 @@ public class OrdersServiceImpl implements OrdersService {
         }
         ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
             if (ordersOptioninputDto.getQty() >
-                    optionRepository.findById(ordersOptioninputDto.getOptionListId()).get()
+                    optionRepository.findById(ordersOptioninputDto.getOptionListId())
+                            .orElseThrow(OptionNotFoundException::new)
                             .getStock()) {
                 throw new OutOfStockException();
             }
         });
         Orders order = ordersRepository.save(
                 Orders.builder()
-                        .user(user.get())
+                        .user(user.orElseThrow(UserNotFoundException::new))
                         .OrderedDate(LocalDateTime.now())
                         .build()
         );
         ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
             OptionList optionList =
-                    optionRepository.findById(ordersOptioninputDto.getOptionListId()).get();
+                    optionRepository.findById(ordersOptioninputDto.getOptionListId())
+                            .orElseThrow(OptionNotFoundException::new);
             OrderList orderList = orderListRepository.save(
                     OrderList.builder()
                             .orderAnOrderer(user.get().getUsername())
-                            .optionId(
-                                    optionRepository.findById(ordersOptioninputDto.getOptionListId()).get()
-                                            .getId())
+                            .optionId(optionRepository.findById(ordersOptioninputDto.getOptionListId())
+                                    .orElseThrow(OptionNotFoundException::new)
+                                    .getId())
                             .orderReceiver(user.get().getUsername())
                             .userAddress(user.get().getUserAddress())
                             .orderDecidedDate(LocalDateTime.now())
@@ -90,9 +95,12 @@ public class OrdersServiceImpl implements OrdersService {
             );
             optionRepository.save(OptionList.builder()
                     .id(optionList.getId())
-                    .colors(optionRepository.findById(orderList.getOptionId()).get().getColors())
-                    .size(optionRepository.findById(orderList.getOptionId()).get().getSize())
-                    .product(optionRepository.findById(orderList.getOptionId()).get().getProduct())
+                    .colors(optionRepository.findById(orderList.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getColors())
+                    .size(optionRepository.findById(orderList.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getSize())
+                    .product(optionRepository.findById(orderList.getOptionId())
+                            .orElseThrow(OptionNotFoundException::new).getProduct())
                     .stock(optionRepository.findById(orderList.getOptionId())
                             .orElseThrow(OptionNotFoundException::new).getStock()
                             - ordersOptioninputDto.getQty())
@@ -109,15 +117,16 @@ public class OrdersServiceImpl implements OrdersService {
         List<OrdersOutputDto> ordersOutputDtoList = new ArrayList<>();
 
         if (user.isPresent()) {
-            List<OrderList> orderList =
-                    orderListRepository.findAllByMemberId(user.get().getId());
+            List<OrderList> orderList = orderListRepository.findAllByMemberId(user.get().getId());
 
             for (OrderList orderlist : orderList) {
                 ordersOutputDtoList.add(OrdersOutputDto.builder()
                         .orderId(orderlist.getOrders().getOrderId())
+                        .orderListId(orderlist.getOrderId())
                         .productId(orderlist.getProduct().getId())
                         .productName(orderlist.getProduct().getName())
                         .userName(user.get().getUsername())
+                        .orderRegDate(orderlist.getCreatedAt())
                         .receiveAddress(user.get().getUserAddress())
                         .productPrice(orderlist.getProduct().getNewPrice())
                         .orderMsg(orderlist.getOrderMsg())
@@ -136,8 +145,9 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public void editMyOrderDetail(OrdersUpdateDto ordersUpdateDto, Long userId) {
 
-        User user = userRepository.findById(userId).get();
-        Product product = productRepository.findById(ordersUpdateDto.getProductId()).get();
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Product product = productRepository.findById(ordersUpdateDto.getProductId())
+                .orElseThrow(ProductNotFoundException::new);
         OrderList orderList = orderListRepository.findById(ordersUpdateDto.getOrderListId()).get();
         Orders orders = ordersRepository.findById(orderList.getOrders().getOrderId()).get();
 

@@ -13,11 +13,12 @@ public class SsgBackApplication {
     public static void main(String[] args) {
         SpringApplication.run(SsgBackApplication.class, args);
     }
+
     @Bean
     public PageableHandlerMethodArgumentResolverCustomizer customize() {
         return p -> {
-            p.setOneIndexedParameters(true);	// 1부터 시작
-            p.setMaxPageSize(20);				// size=10
+            p.setOneIndexedParameters(true);    // 1부터 시작
+            p.setMaxPageSize(20);                // size=10
         };
     }
 

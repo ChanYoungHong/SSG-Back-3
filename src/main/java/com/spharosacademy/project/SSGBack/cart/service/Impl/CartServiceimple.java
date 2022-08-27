@@ -13,6 +13,7 @@ import com.spharosacademy.project.SSGBack.order.repository.OrderRepository;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
@@ -48,8 +49,10 @@ public class CartServiceimple implements CartService {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         Long duplicate;
         for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
@@ -62,6 +65,12 @@ public class CartServiceimple implements CartService {
 
             if (duplicate == null) {
 
+                List<OptionList> productOption = optionRepository.findByProductId(cartInputDto.getProductId());
+                productOption.forEach(optionList -> {
+                   if (optionRepository.existsById(cartOptionDto.getOptionId()) == true) {
+                        throw new OptionNotFoundException();
+                   }
+                });
                 cartRepository.save(Cart.builder()
                         .product(product)
                         .optionId(cartOptionDto.getOptionId())
@@ -74,6 +83,14 @@ public class CartServiceimple implements CartService {
                         .build());
 
             } else {
+
+                List<OptionList> productOption = optionRepository.findByProductId(product.getId());
+                productOption.forEach(optionList -> {
+                    if (optionRepository.existsById(cartOptionDto.getOptionId()) == true) {
+                        throw new OptionNotFoundException();
+                    }
+                });
+
                 cartRepository.save(Cart.builder()
                         .user(user)
                         .product(product)
@@ -94,10 +111,12 @@ public class CartServiceimple implements CartService {
 
     @Override
     public List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto, Long userId) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         List<OrderOptionRequestDto> orderOptionRequestDtos = new ArrayList<>();
+
         for (OrderOptionRequestDto orderOptionRequestDto : cartOrderRequestDto.getOrderOptionRequestDtos()) {
             orderOptionRequestDtos.add(OrderOptionRequestDto.builder()
                     .cartId(orderOptionRequestDto.getCartId())
@@ -105,20 +124,26 @@ public class CartServiceimple implements CartService {
                     .build());
 
         }
+
         orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
-            Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
+            Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).
+                    orElseThrow(CartNotFoundException::new);
             if (orderOptionRequestDto.getQty() > optionRepository.findById(cart.getOptionId()).get().getStock()) {
                 throw new OutOfStockException();
             }
         });
+
         Orders orders = orderRepository.save(Orders.builder()
                 .user(user)
                 .OrderedDate(LocalDateTime.now())
                 .build());
 
         orderOptionRequestDtos.forEach(orderOptionRequestDto -> {
+
             Cart cart = cartRepository.findById(orderOptionRequestDto.getCartId()).get();
+
             Product product = productRepository.findById(cart.getProduct().getId()).get();
+
             OrderList orderList = orderListRepository.save(OrderList.builder()
                     .orders(orders)
                     .optionId(cart.getOptionId())

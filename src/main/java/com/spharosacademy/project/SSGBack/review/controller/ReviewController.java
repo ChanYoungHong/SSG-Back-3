@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.review.controller;
 
+import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDeleteDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDto;
@@ -8,6 +9,8 @@ import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDt
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,5 +67,10 @@ public class ReviewController {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return reviewService.getReviewByUserId(userId);
+    }
+
+    @ExceptionHandler(OrderIdNotFound.class)
+    public ResponseEntity<String> handleOrderIdNotFound(OrderIdNotFound exception){
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 }

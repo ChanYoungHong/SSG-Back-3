@@ -3,20 +3,15 @@ package com.spharosacademy.project.SSGBack.product.controller;
 import com.spharosacademy.project.SSGBack.product.dto.input.UpdateProductDto;
 import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
-import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +27,6 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductRepository productRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/add")
@@ -44,7 +38,7 @@ public class ProductController {
 
     //모든 상품들에 대한 정보 조회
     @GetMapping("/getall")
-    public ResponseEntity<List<ResponseProductDto>> getAll(ProductNotFoundException e) {
+    public ResponseEntity<List<ResponseProductDto>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
                 .body(productService.getAll());
     }

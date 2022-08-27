@@ -17,7 +17,12 @@
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -31,3 +36,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: 'true'
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA4CDIXXFFKCY4FC7K
+      secretKey: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: 'false'

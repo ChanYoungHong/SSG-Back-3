@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.review.sevice.impl;
 
+import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
@@ -49,6 +50,16 @@ public class ReviewServiceImplement implements ReviewService {
                 .orElseThrow(ProductNotFoundException::new);
         User user = userRepository.findById(orderList.getMemberId())
                 .orElseThrow(UserNotFoundException::new);
+
+        List<Long> orderId = orderListRepository.getOrderId(userId);
+
+        List<OrderList> userOrderList = orderListRepository.findAllByMemberId(userId);
+
+        userOrderList.forEach(orderLists -> {
+            if (userOrderList.contains(requestReviewDto.getOrderDetailId()) == false){
+                throw new OrderIdNotFound();
+            }
+        });
 
         Review review = reviewRepository.save(Review.builder()
                 .product(product)
