@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.security.config;
 
-import com.spharosacademy.project.SSGBack.Oauth2.service.CustomOAuth2Service;
+import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
+import com.spharosacademy.project.SSGBack.oauth2.service.UserOAuth2Service;
 import com.spharosacademy.project.SSGBack.util.JwtAuthenticationFilter;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomOAuth2Service customOAuth2Service;
+    private final UserOAuth2Service userOAuth2Service;
 
 
     @Bean
@@ -61,12 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class)
             .oauth2Login() // oauth2
+            .defaultSuccessUrl("/login-success")
             .userInfoEndpoint()
-            .userService(customOAuth2Service); // ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
+            .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
+//            .userService(userOAuth2Service);
 
-
-
-
+        super.configure(http);
     }
 
 }

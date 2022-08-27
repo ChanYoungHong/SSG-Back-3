@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.Oauth2.vo;
+package com.spharosacademy.project.SSGBack.oauth2.vo;
 
 import lombok.Data;
 

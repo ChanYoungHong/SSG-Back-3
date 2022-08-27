@@ -1,8 +1,8 @@
-package com.spharosacademy.project.SSGBack.Oauth2.service;
+package com.spharosacademy.project.SSGBack.oauth2.service;
 
-import com.spharosacademy.project.SSGBack.Oauth2.vo.NaverLoginProfile;
-import com.spharosacademy.project.SSGBack.Oauth2.vo.NaverLoginProfileResponse;
-import com.spharosacademy.project.SSGBack.Oauth2.vo.NaverLoginVo;
+import com.spharosacademy.project.SSGBack.oauth2.vo.NaverLoginProfile;
+import com.spharosacademy.project.SSGBack.oauth2.vo.NaverLoginProfileResponse;
+import com.spharosacademy.project.SSGBack.oauth2.vo.NaverLoginVo;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

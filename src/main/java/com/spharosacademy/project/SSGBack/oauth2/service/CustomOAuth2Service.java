@@ -1,9 +1,12 @@
-package com.spharosacademy.project.SSGBack.Oauth2.service;
+package com.spharosacademy.project.SSGBack.oauth2.service;
 
-import com.spharosacademy.project.SSGBack.Oauth2.domain.OAuthAttributes;
+import com.spharosacademy.project.SSGBack.oauth2.domain.OAuthAttributes;
+import com.spharosacademy.project.SSGBack.oauth2.domain.SessionUser;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import java.util.Collections;
+import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,10 +23,13 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+    private final HttpSession httpSession;
+
 
     @Autowired
-    public CustomOAuth2Service(UserRepository userRepository) {
+    public CustomOAuth2Service(UserRepository userRepository, HttpSession httpSession) {
         this.userRepository = userRepository;
+        this.httpSession = httpSession;
     }
 
     @Override
@@ -32,17 +38,24 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+        String userNameAttributeName =
+            userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
+                .getUserNameAttributeName();
 
         OAuthAttributes
-            attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+            attributes =
+            OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_"+user.getRole())), attributes.getAttributes(), attributes.getNameAttributeKey());
+        httpSession.setAttribute("user", new SessionUser(user));
+        return new DefaultOAuth2User(
+            Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole())),
+            attributes.getAttributes(), attributes.getNameAttributeKey());
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByUserEmail(attributes.getUserEmail()).orElse(attributes.toEntity());
+        User user =
+            userRepository.findByUserEmail(attributes.getUserEmail()).orElse(attributes.toEntity());
         return userRepository.save(user);
     }
 

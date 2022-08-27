@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.Oauth2.config;
+package com.spharosacademy.project.SSGBack.oauth2.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
