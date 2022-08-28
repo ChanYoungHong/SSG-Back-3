@@ -7,10 +7,12 @@
 <body>
 <h1>Kakao Login Test</h1>
 <span th:if="${userId==null}">
-      <a href="https://kauth.kakao.com/oauth/authorize?client_id=f53f58161cdf387271014778af726148&redirect_uri=http://localhost:8080/login&response_type=code">
+
+      <a href="https://kauth.kakao.com/oauth/authorize?client_id=389b73fe882b1f88e4efd7b0372ac800&redirect_uri=http://localhost:8080/login/oauth2/code/kakao&response_type=code">
          <img src = "img/kakao_login_medium_narrow.png">
       </a>
    </span>
+
 <span th:if="${userId!=null}">
       <form name="logout" action="http://localhost:8080/logout">
          <input type="submit" value="로그아웃">
@@ -18,3 +20,4 @@
    </span>
 </body>
 </html>
+

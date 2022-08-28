@@ -21,8 +21,7 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
 
     private final HttpSession httpSession;
 
-//    @Autowired
-//    MemberDao memberDao;
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -35,11 +34,6 @@ public class UserOAuth2Service extends DefaultOAuth2UserService {
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         String nickname = (String) properties.get("nickname");
 
-//        if (memberDao.checkEmail(email) == 0) {
-//            memberDao.createMemberKakao(email, nickname);
-//        } else {
-//            System.out.println("가입한적 있음.");
-//        }
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_MEMBER")), attributes, "id");
     }

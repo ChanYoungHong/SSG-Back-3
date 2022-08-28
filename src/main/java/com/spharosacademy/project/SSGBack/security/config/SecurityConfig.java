@@ -58,12 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/admin/**").hasRole("MANAGER")
             .and()
             .logout()
-            .logoutSuccessUrl("/")
+//            .logoutSuccessUrl("/")
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class)
             .oauth2Login() // oauth2
-            .defaultSuccessUrl("/login-success")
+//            .defaultSuccessUrl("/login-success")/
             .userInfoEndpoint()
             .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
 //            .userService(userOAuth2Service);
