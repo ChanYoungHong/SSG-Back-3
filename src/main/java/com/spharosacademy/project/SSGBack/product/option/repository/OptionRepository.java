@@ -23,4 +23,7 @@ public interface OptionRepository extends JpaRepository<OptionList, Long> {
 
     @Query(value = "select o.id as optionId, o.size.id as id, o.size.type as name, o.stock as stock from OptionList o where o.colors.id =:colorId and o.product.id =:productId")
     List<SizeOutputDto> getSizeId(@Param("productId") Long productId, @Param("colorId") Long colorId);
+
+    @Query(value = "select o.id from OptionList o where o.product.id =:productId")
+    List<Long> getOptionId(@Param("productId") Long productId);
 }

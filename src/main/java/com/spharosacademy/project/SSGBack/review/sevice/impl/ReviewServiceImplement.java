@@ -50,24 +50,17 @@ public class ReviewServiceImplement implements ReviewService {
                 .orElseThrow(ProductNotFoundException::new);
         User user = userRepository.findById(orderList.getMemberId())
                 .orElseThrow(UserNotFoundException::new);
-
-        List<Long> orderId = orderListRepository.getOrderId(userId);
-
-        List<OrderList> userOrderList = orderListRepository.findAllByMemberId(userId);
-
-        userOrderList.forEach(orderLists -> {
-            if (userOrderList.contains(requestReviewDto.getOrderDetailId()) == false){
-                throw new OrderIdNotFound();
-            }
-        });
-
-        Review review = reviewRepository.save(Review.builder()
-                .product(product)
-                .user(user)
-                .orderDetailId(requestReviewDto.getOrderDetailId())
-                .reviewContent(requestReviewDto.getReviewContent())
-                .reviewScore(requestReviewDto.getReviewScore())
-                .build());
+        List<Long> orderLists = orderListRepository.getOrderId(userId);
+        if (orderLists.contains(requestReviewDto.getOrderDetailId()) == false){
+            throw new OrderIdNotFound();
+        }
+            Review review = reviewRepository.save(Review.builder()
+                    .product(product)
+                    .user(user)
+                    .orderDetailId(requestReviewDto.getOrderDetailId())
+                    .reviewContent(requestReviewDto.getReviewContent())
+                    .reviewScore(requestReviewDto.getReviewScore())
+                    .build());
 
         requestReviewDto.getRequestReviewImageDtos().forEach(inputReviewImageDto ->
                 reviewImageRepository.save(ReviewImage.builder()

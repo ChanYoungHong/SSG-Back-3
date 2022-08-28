@@ -64,13 +64,12 @@ public class CartServiceimple implements CartService {
             duplicate = cartRepository.findByUserIdAndOptionId(user.getId(), cartOptionDto.getOptionId());
 
             if (duplicate == null) {
+                List<Long> optionId = optionRepository.getOptionId(cartInputDto.getProductId());
 
-                List<OptionList> productOption = optionRepository.findByProductId(cartInputDto.getProductId());
-                productOption.forEach(optionList -> {
-                   if (optionRepository.existsById(cartOptionDto.getOptionId()) == true) {
-                        throw new OptionNotFoundException();
-                   }
-                });
+                if (optionId.contains(cartOptionDto.getOptionId()) == false) {
+                    throw new OptionNotFoundException();
+                }
+
                 cartRepository.save(Cart.builder()
                         .product(product)
                         .optionId(cartOptionDto.getOptionId())
@@ -84,12 +83,10 @@ public class CartServiceimple implements CartService {
 
             } else {
 
-                List<OptionList> productOption = optionRepository.findByProductId(product.getId());
-                productOption.forEach(optionList -> {
-                    if (optionRepository.existsById(cartOptionDto.getOptionId()) == true) {
-                        throw new OptionNotFoundException();
-                    }
-                });
+                List<Long> optionId = optionRepository.getOptionId(cartInputDto.getProductId());
+                if (optionId.contains(cartOptionDto.getOptionId()) == false) {
+                    throw new OptionNotFoundException();
+                }
 
                 cartRepository.save(Cart.builder()
                         .user(user)

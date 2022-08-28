@@ -45,10 +45,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.*;
 
@@ -147,24 +145,6 @@ public class ProductServiceImple implements ProductService {
                             .build()
             );
         });
-
-        requestProductDto.getInputDetailImgDtoList().forEach
-                (createDetailImgDto -> productDetailImgRepository.save(
-                        ProductDetailImage.builder()
-                                .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
-                                .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
-                                .product(product)
-                                .build()
-                ));
-
-        requestProductDto.getInputTitleImgDtoList().forEach
-                (createTitleImgDto -> productTitleImgRepository.save(
-                        ProductTitleImage.builder()
-                                .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
-                                .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
-                                .product(product)
-                                .build()));
-
         return product;
     }
 
@@ -179,7 +159,7 @@ public class ProductServiceImple implements ProductService {
         return productPage.map(product -> {
             ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
             Long duplicate;
-            Long wishId = null;
+            Long wishId;
             if (userid != -1) {
                 duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
                 if (duplicate == null) {

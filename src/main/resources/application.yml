@@ -1,6 +1,10 @@
 #server:
 #  port: 9000
 #spring:
+#  servlet:
+#    multipart:
+#      max-file-size: 50MB
+#      max-request-size: 500MB
 #  jpa:
 #    hibernate:
 #      ddl-auto: update
@@ -16,13 +20,11 @@
 #    password: ssgnewnew
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
-
-
 spring:
   servlet:
     multipart:
-      max-file-size: 50MB
       max-request-size: 500MB
+      max-file-size: 50MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -36,6 +38,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: 'true'
+
+
 
 cloud:
   aws:
