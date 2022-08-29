@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/CateL")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CategoryLController {
 
     private final CategoryLService categoryLService;

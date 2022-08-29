@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/qna")
 @RequiredArgsConstructor
-
+@CrossOrigin
 public class QnAController {
 
     private final QnaService qnaService;

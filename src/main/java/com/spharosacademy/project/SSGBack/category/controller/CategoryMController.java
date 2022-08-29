@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/CateM")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CategoryMController {
 
     private final CategoryMService categoryMService;
