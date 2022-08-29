@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.security.config;
 
 import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
 import com.spharosacademy.project.SSGBack.oauth2.service.UserOAuth2Service;
+import com.spharosacademy.project.SSGBack.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.spharosacademy.project.SSGBack.util.JwtAuthenticationFilter;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomOAuth2Service customOAuth2Service;
     private final UserOAuth2Service userOAuth2Service;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
 
     @Bean
@@ -42,33 +44,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers("/members/**", "/images/**");
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().mvcMatchers("/members/**", "/images/**");
+//        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.csrf().disable();
-        http.logout();
         http.httpBasic().disable().authorizeRequests()
-            .antMatchers().permitAll()
-            .antMatchers("/user/**").hasRole("USER")
-            .antMatchers("/admin/**").hasRole("MANAGER")
-            .and()
-            .logout()
-//            .logoutSuccessUrl("/")
-            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class)
+                .antMatchers().permitAll()
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("MANAGER")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class)
             .oauth2Login() // oauth2
-//            .defaultSuccessUrl("/login-success")/
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+//            .defaultSuccessUrl("/login-success")
             .userInfoEndpoint()
             .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
 //            .userService(userOAuth2Service);
 
-        super.configure(http);
+//        super.configure(http);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf().disable();
+        http.logout();
     }
 
 }

@@ -16,11 +16,11 @@ public class IndexController {
     public String index(Model model){
 //        model.addAttribute("posts", postsService.findAllDesc());
 
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        SessionUser user = (SessionUser) httpSession.getAttribute("userName");
 
         if(user != null){
             model.addAttribute("userName", user.getUserName());
         }
-        return "index";
+        return "naver2";
     }
 }

@@ -49,7 +49,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_address")
     private String userAddress;
 
-    @Column(name = "user_email")
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
 
     @Column(name = "user_phone")

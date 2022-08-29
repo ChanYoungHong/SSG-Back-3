@@ -23,6 +23,18 @@ public class OAuthAttributes {
     private String mobile;
     private UserRole role;
 
+    private String picture;
+
+    public OAuthAttributes(Map<String, Object> attributes,String picture ,String nameAttributeKey, String userName, String userEmail, String mobile, UserRole role) {
+        this.attributes = attributes;
+        this.nameAttributeKey = nameAttributeKey;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.mobile = mobile;
+        this.role = role;
+        this.picture = picture;
+    }
+
     public static OAuthAttributes of(String registrationId, String userNameAttributeName,
                                      Map<String, Object> attributes) {
         if("naver".equals(registrationId)) {
@@ -34,15 +46,31 @@ public class OAuthAttributes {
         return ofGoogle(userNameAttributeName, attributes);
     }
 
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        log.info("naver response : " + response);
+
+        return OAuthAttributes.builder()
+                .userName(String.valueOf(response.get("name")))
+                .userEmail(String.valueOf(response.get("email")))
+                .mobile(String.valueOf(response.get("mobile")))
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         // kakao는 kakao_account에 유저정보가 있다. (email)
         Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
         // kakao_account안에 또 profile이라는 JSON객체가 있다. (nickname, profile_image)
         Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 
+
         return OAuthAttributes.builder()
             .userName((String) kakaoProfile.get("nickname"))
             .userEmail((String) kakaoAccount.get("email"))
+            .picture((String) kakaoProfile.get("profile_image_url"))
             .attributes(attributes)
             .nameAttributeKey(userNameAttributeName)
             .build();
@@ -60,19 +88,7 @@ public class OAuthAttributes {
 
 
 
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
-        log.info("naver response : " + response);
-
-        return OAuthAttributes.builder()
-            .userName(String.valueOf(response.get("name")))
-            .userEmail(String.valueOf(response.get("email")))
-            .mobile(String.valueOf(response.get("mobile")))
-            .attributes(response)
-            .nameAttributeKey(userNameAttributeName)
-            .build();
-    }
 
     public User toEntity() {
         return User.builder()
