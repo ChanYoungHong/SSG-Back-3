@@ -1,7 +1,6 @@
 package com.spharosacademy.project.SSGBack.s3.controller;
 
 import com.spharosacademy.project.SSGBack.s3.service.S3UploaderService;
-import com.spharosacademy.project.SSGBack.s3.dto.ImageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

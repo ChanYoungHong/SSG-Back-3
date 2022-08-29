@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.review.dto.input.RequestReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
+import com.spharosacademy.project.SSGBack.review.exception.AlreadyExistReviewException;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -69,8 +70,15 @@ public class ReviewController {
         return reviewService.getReviewByUserId(userId);
     }
 
+    //리뷰를 작성하려는 상품이 본인이 구매한 상품이 아닐때
     @ExceptionHandler(OrderIdNotFound.class)
     public ResponseEntity<String> handleOrderIdNotFound(OrderIdNotFound exception){
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+    }
+
+    //같은 주문번호로 이미 리뷰를 작성했을때
+    @ExceptionHandler(AlreadyExistReviewException.class)
+    public ResponseEntity<String> handleAlreadyExistReviewException(AlreadyExistReviewException exception){
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 }

@@ -1,5 +1,8 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
@@ -38,6 +41,7 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
+import com.spharosacademy.project.SSGBack.s3.Entity.Gallery;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
@@ -47,7 +51,10 @@ import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -71,7 +78,6 @@ public class ProductServiceImple implements ProductService {
     private final ReviewImageRepository reviewImageRepository;
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
-
 
     @Override
     public Product addProduct(RequestProductDto requestProductDto) {
@@ -145,7 +151,26 @@ public class ProductServiceImple implements ProductService {
                             .build()
             );
         });
+
+        requestProductDto.getInputDetailImgDtoList().forEach
+                (createDetailImgDto -> productDetailImgRepository.save(
+                        ProductDetailImage.builder()
+                                .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
+                                .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
+                                .product(product)
+                                .build()
+                ));
+
+        requestProductDto.getInputTitleImgDtoList().forEach
+                (createTitleImgDto -> productTitleImgRepository.save(
+                        ProductTitleImage.builder()
+                                .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
+                                .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
+                                .product(product)
+                                .build()));
+
         return product;
+
     }
 
     @Override

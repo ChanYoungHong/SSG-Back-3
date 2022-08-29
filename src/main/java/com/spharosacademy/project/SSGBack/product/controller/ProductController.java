@@ -7,6 +7,7 @@ import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputD
 import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
+import com.spharosacademy.project.SSGBack.product.service.imple.ProductServiceImple;
 import org.springframework.data.domain.Pageable;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,10 +31,10 @@ public class ProductController {
 
     private final ProductService productService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ProductServiceImple productServiceImple;
 
     @PostMapping("/add")
-    public String addProduct(
-            @RequestBody RequestProductDto requestProductDto) {
+    public String addProduct(@RequestBody RequestProductDto requestProductDto) {
         productService.addProduct(requestProductDto);
         return "상품 등록이 완료되었습니다";
     }
@@ -65,12 +68,12 @@ public class ProductController {
     }
 
     @GetMapping("/color/{id}")
-    public List<ColorOutputDto> getProductColor(@PathVariable Long id){
+    public List<ColorOutputDto> getProductColor(@PathVariable Long id) {
         return productService.getProductColor(id);
     }
 
     @GetMapping("/size/{productId}/{colorId}")
-    public List<SizeOutputDto>  getSizeAndStock(@PathVariable Long productId, @PathVariable Long colorId){
+    public List<SizeOutputDto> getSizeAndStock(@PathVariable Long productId, @PathVariable Long colorId) {
         return productService.getProductSize(productId, colorId);
     }
 

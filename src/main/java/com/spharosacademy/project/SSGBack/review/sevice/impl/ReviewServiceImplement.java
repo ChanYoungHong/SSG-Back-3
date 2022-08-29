@@ -17,6 +17,7 @@ import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductRevie
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
+import com.spharosacademy.project.SSGBack.review.exception.AlreadyExistReviewException;
 import com.spharosacademy.project.SSGBack.review.exception.NotOrderProductException;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
@@ -50,9 +51,15 @@ public class ReviewServiceImplement implements ReviewService {
                 .orElseThrow(ProductNotFoundException::new);
         User user = userRepository.findById(orderList.getMemberId())
                 .orElseThrow(UserNotFoundException::new);
+
+        List<Long> userReview = reviewRepository.getOrderId(userId);
+
         List<Long> orderLists = orderListRepository.getOrderId(userId);
         if (orderLists.contains(requestReviewDto.getOrderDetailId()) == false){
             throw new OrderIdNotFound();
+        }
+        if (userReview.contains(requestReviewDto.getOrderDetailId()) == true){
+            throw new AlreadyExistReviewException();
         }
             Review review = reviewRepository.save(Review.builder()
                     .product(product)

@@ -19,4 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findFirst5ByProductId(Long productId);
 
+    @Query(value = "select r.orderDetailId from Review r where r.user.id =:userId")
+    List<Long> getOrderId(Long userId);
+
 }
