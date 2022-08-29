@@ -1,33 +1,22 @@
 package com.spharosacademy.project.SSGBack.security.config;
 
 import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
-import com.spharosacademy.project.SSGBack.oauth2.service.UserOAuth2Service;
-//import com.spharosacademy.project.SSGBack.security.domain.CustomAuthenticationEntryPoint;
-//import com.spharosacademy.project.SSGBack.security.domain.jwtAuthenticationEntryPoint;
-import com.spharosacademy.project.SSGBack.security.domain.jwtAuthenticationEntryPoint;
-import com.spharosacademy.project.SSGBack.security.exception.CustomAuthenticationEntryPoint;
-import com.spharosacademy.project.SSGBack.security.handler.CustomAccessDeniedHandler;
+import com.spharosacademy.project.SSGBack.security.filter.ApiCheckFilter;
+import com.spharosacademy.project.SSGBack.security.filter.ApiLoginFilter;
+import com.spharosacademy.project.SSGBack.security.handler.ApiLoginFailHandler;
 import com.spharosacademy.project.SSGBack.security.handler.OAuth2AuthenticationSuccessHandler;
-import com.spharosacademy.project.SSGBack.util.JwtAuthenticationFilter;
-import com.spharosacademy.project.SSGBack.util.JwtExceptionFilter;
-import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.Filter;
 
 @SuppressWarnings("deprecation")
 @EnableWebSecurity
@@ -36,19 +25,32 @@ import javax.servlet.Filter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final JwtAuthenticationFilter jwtAutenticationEntryPoint;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomOAuth2Service customOAuth2Service;
-    private final UserOAuth2Service userOAuth2Service;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
-    @Override // 인증처리 interface다
+    @Override
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManagerBean();
     }
+
+    @Bean
+    public ApiCheckFilter apiCheckFilter() {
+        return new ApiCheckFilter("/user/**");
+    }
+
+    @Bean
+    public ApiLoginFilter apiLoginFilter() throws Exception {
+
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/");
+        apiLoginFilter.setAuthenticationManager(authenticationManager());
+
+        apiLoginFilter
+            .setAuthenticationFailureHandler(new ApiLoginFailHandler());
+
+        return apiLoginFilter;
+    }
+
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -73,8 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .accessDeniedHandler(new CustomAccessDeniedHandler())
+//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//                .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
                 .oauth2Login() // oauth2
                 .authorizationEndpoint()
@@ -87,8 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .userService(userOAuth2Service);
 
 //        super.configure(http);
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore((Filter) jwtExceptionFilter, JwtAuthenticationFilter.class);
+        http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore((Filter) jwtExceptionFilter, JwtAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
         http.logout();
