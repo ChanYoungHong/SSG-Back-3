@@ -86,10 +86,6 @@ public class OAuthAttributes {
             .build();
     }
 
-
-
-
-
     public User toEntity() {
         return User.builder()
             .userName(userName)

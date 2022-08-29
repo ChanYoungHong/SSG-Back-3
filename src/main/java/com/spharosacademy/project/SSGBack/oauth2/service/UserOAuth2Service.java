@@ -18,13 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Service
 @RequiredArgsConstructor
 public class UserOAuth2Service extends DefaultOAuth2UserService {
-
     private final HttpSession httpSession;
-
-
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+
         OAuth2User oAuth2User = super.loadUser(userRequest);
         Map<String, Object> attributes = oAuth2User.getAttributes();
 

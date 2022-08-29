@@ -20,17 +20,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
     private final HttpSession httpSession;
-
-
-    @Autowired
-    public CustomOAuth2Service(UserRepository userRepository, HttpSession httpSession) {
-        this.userRepository = userRepository;
-        this.httpSession = httpSession;
-    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
