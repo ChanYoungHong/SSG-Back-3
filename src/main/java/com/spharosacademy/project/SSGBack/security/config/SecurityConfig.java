@@ -2,9 +2,16 @@ package com.spharosacademy.project.SSGBack.security.config;
 
 import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
 import com.spharosacademy.project.SSGBack.oauth2.service.UserOAuth2Service;
+//import com.spharosacademy.project.SSGBack.security.domain.CustomAuthenticationEntryPoint;
+//import com.spharosacademy.project.SSGBack.security.domain.jwtAuthenticationEntryPoint;
+import com.spharosacademy.project.SSGBack.security.domain.jwtAuthenticationEntryPoint;
+import com.spharosacademy.project.SSGBack.security.exception.CustomAuthenticationEntryPoint;
+import com.spharosacademy.project.SSGBack.security.handler.CustomAccessDeniedHandler;
 import com.spharosacademy.project.SSGBack.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.spharosacademy.project.SSGBack.util.JwtAuthenticationFilter;
+import com.spharosacademy.project.SSGBack.util.JwtExceptionFilter;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -20,6 +27,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.Filter;
+
 @SuppressWarnings("deprecation")
 @EnableWebSecurity
 @Configuration
@@ -28,10 +37,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationFilter jwtAutenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomOAuth2Service customOAuth2Service;
     private final UserOAuth2Service userOAuth2Service;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     @Override // 인증처리 interface다
@@ -51,6 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+
         http.httpBasic().disable().authorizeRequests()
                 .antMatchers().permitAll()
                 .antMatchers("/user/**").hasRole("USER")
@@ -59,16 +72,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class)
-            .oauth2Login() // oauth2
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and()
+                .oauth2Login() // oauth2
+                .authorizationEndpoint()
+                .baseUri("/oauth2.0/authorize")
+                .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
 //            .defaultSuccessUrl("/login-success")
-            .userInfoEndpoint()
-            .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
+                .userInfoEndpoint()
+                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
 //            .userService(userOAuth2Service);
 
 //        super.configure(http);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore((Filter) jwtExceptionFilter, JwtAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
         http.logout();

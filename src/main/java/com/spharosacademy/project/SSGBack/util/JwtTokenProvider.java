@@ -1,6 +1,9 @@
 package com.spharosacademy.project.SSGBack.util;
 
+//import com.spharosacademy.project.SSGBack.security.exception.ExpiredTokenAcessException;
+import com.spharosacademy.project.SSGBack.security.exception.ExpiredTokenAcessException;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -10,11 +13,14 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -24,7 +30,7 @@ public class JwtTokenProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
-    private long tokenValidTime = 36000000L;
+    private long tokenValidTime = 1000L;
 
     // 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
@@ -77,11 +83,18 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String jwtToken) {
+
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch(Exception e) {
-            return false;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰이 만료되었습니다.").hasBody();
         }
     }
+
+    @ExceptionHandler(ExpiredTokenAcessException.class)
+    public ResponseEntity<String> ExpiredTokenAcessException(ExpiredTokenAcessException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
 }
