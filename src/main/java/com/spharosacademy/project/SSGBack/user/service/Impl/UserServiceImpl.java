@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> changePassword(Long id, UserChangePwdInputDto userChangePwdInputDto) {
 
-        Optional<User> user = userRepository.findByUserId(String.valueOf(id));
+        Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
 

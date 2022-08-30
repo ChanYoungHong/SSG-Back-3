@@ -30,7 +30,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
-    private long tokenValidTime = 10000L;
+    private long tokenValidTime = 1000L;
 
     // 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
@@ -66,6 +66,11 @@ public class JwtTokenProvider implements AuthenticationProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    public Authentication getUser(String id){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(id));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
     // 토큰에서 회원 정보 추출
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
@@ -86,16 +91,12 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
             // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
             // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
-            return !claims.getBody().getExpiration().before(new Date());
-//            if(claims.getBody().getExpiration().before(new Date())){
-//                throw new ExpiredTokenAcessException();
-//            }
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰이 만료되었습니다.").hasBody();
         }
-
     }
 
     @Override
