@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.util;
 
 //import com.spharosacademy.project.SSGBack.security.exception.ExpiredTokenAcessException;
 
+import com.spharosacademy.project.SSGBack.security.exception.ExpiredTokenAcessException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -13,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -23,7 +26,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements AuthenticationProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
@@ -83,10 +86,25 @@ public class JwtTokenProvider {
 
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
+            // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
             return !claims.getBody().getExpiration().before(new Date());
+//            if(claims.getBody().getExpiration().before(new Date())){
+//                throw new ExpiredTokenAcessException();
+//            }
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰이 만료되었습니다.").hasBody();
         }
+
     }
 
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        return null;
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return false;
+    }
 }

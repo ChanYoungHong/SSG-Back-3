@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-    @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+//public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+//    @Override
+//    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 //        ExceptionCode exceptionCode;
 //        exceptionCode = ExceptionCode.PERMISSION_DENIED;
 //        setResponse(response, exceptionCode);
-    }
-
+//    }
+//
 //    public void setResponse(HttpServletResponse response, ExceptionCode exceptionCode) throws IOException {
 //        response.setContentType("application/json;charset=UTF-8");
 //        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -27,4 +27,4 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 //
 //        response.getWriter().print(responseJson);
 //    }
-}
+//}
