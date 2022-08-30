@@ -122,7 +122,7 @@ public class ProductServiceImple implements ProductService {
                 .product(product)
                 .build());
 
-        S3ProductImageDto s3ProductImageDto ;
+        S3ProductImageDto s3ProductImageDto;
         DetailImageS3Dto detailImageS3Dto;
 
         try {
