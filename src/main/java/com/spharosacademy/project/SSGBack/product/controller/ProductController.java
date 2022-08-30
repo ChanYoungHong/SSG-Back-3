@@ -34,8 +34,12 @@ public class ProductController {
     private final ProductServiceImple productServiceImple;
 
     @PostMapping("/add")
-    public String addProduct(@RequestBody RequestProductDto requestProductDto) {
-        productService.addProduct(requestProductDto);
+    public String addProduct(
+            @RequestPart(value = "productRequestDto") RequestProductDto requestProductDto,
+            @RequestPart(value = "thumbnailImg", required = false) MultipartFile multipartFile,
+            @RequestPart(value = "detailImages", required = false) List<MultipartFile> multipartFileList,
+            @RequestPart(value = "titleImages", required = false) List<MultipartFile> titleFileList) throws IOException {
+        productService.addProduct(requestProductDto, multipartFile, multipartFileList, titleFileList);
         return "상품 등록이 완료되었습니다";
     }
 

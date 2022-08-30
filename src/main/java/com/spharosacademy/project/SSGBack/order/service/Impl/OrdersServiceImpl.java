@@ -57,6 +57,7 @@ public class OrdersServiceImpl implements OrdersService {
                     .qty(ordersOptioninputDto.getQty())
                     .build());
         }
+
         ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
             if (ordersOptioninputDto.getQty() >
                     optionRepository.findById(ordersOptioninputDto.getOptionListId())
@@ -65,12 +66,14 @@ public class OrdersServiceImpl implements OrdersService {
                 throw new OutOfStockException();
             }
         });
+
         Orders order = ordersRepository.save(
                 Orders.builder()
                         .user(user.orElseThrow(UserNotFoundException::new))
                         .OrderedDate(LocalDateTime.now())
                         .build()
         );
+
         ordersOptioninputDtoList.forEach(ordersOptioninputDto -> {
             OptionList optionList =
                     optionRepository.findById(ordersOptioninputDto.getOptionListId())

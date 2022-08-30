@@ -3,6 +3,7 @@ package com.spharosacademy.project.SSGBack.review.sevice.impl;
 import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
+import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
@@ -23,11 +24,15 @@ import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
+import com.spharosacademy.project.SSGBack.s3.dto.ReviewImageS3Dto;
+import com.spharosacademy.project.SSGBack.s3.service.S3UploaderService;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +46,10 @@ public class ReviewServiceImplement implements ReviewService {
     private final ReviewImageRepository reviewImageRepository;
     private final OrderListRepository orderListRepository;
     private final OptionRepository optionRepository;
+    private final S3UploaderService s3UploaderService;
 
     @Override
-    public void addReview(RequestReviewDto requestReviewDto, Long userId) {
+    public void addReview(RequestReviewDto requestReviewDto, List<MultipartFile> multipartFileList, Long userId) {
 
         OrderList orderList = orderListRepository.findById(requestReviewDto.getOrderDetailId())
                 .orElseThrow(NotOrderProductException::new);
@@ -55,27 +61,38 @@ public class ReviewServiceImplement implements ReviewService {
         List<Long> userReview = reviewRepository.getOrderId(userId);
 
         List<Long> orderLists = orderListRepository.getOrderId(userId);
-        if (orderLists.contains(requestReviewDto.getOrderDetailId()) == false){
+        if (orderLists.contains(requestReviewDto.getOrderDetailId()) == false) {
             throw new OrderIdNotFound();
         }
-        if (userReview.contains(requestReviewDto.getOrderDetailId()) == true){
+        if (userReview.contains(requestReviewDto.getOrderDetailId()) == true) {
             throw new AlreadyExistReviewException();
         }
-            Review review = reviewRepository.save(Review.builder()
-                    .product(product)
-                    .user(user)
-                    .orderDetailId(requestReviewDto.getOrderDetailId())
-                    .reviewContent(requestReviewDto.getReviewContent())
-                    .reviewScore(requestReviewDto.getReviewScore())
-                    .build());
 
-        requestReviewDto.getRequestReviewImageDtos().forEach(inputReviewImageDto ->
+        Review review = reviewRepository.save(Review.builder()
+                .product(product)
+                .user(user)
+                .orderDetailId(requestReviewDto.getOrderDetailId())
+                .reviewContent(requestReviewDto.getReviewContent())
+                .reviewScore(requestReviewDto.getReviewScore())
+                .build());
+
+        ReviewImageS3Dto reviewImageS3Dto;
+        for (MultipartFile multipartFiles : multipartFileList) {
+            try {
+                reviewImageS3Dto = s3UploaderService.uploadReviewImage(multipartFiles, "myspharosbucket", "myDir");
+
                 reviewImageRepository.save(ReviewImage.builder()
-                        .reviewImgTxt(inputReviewImageDto.getReviewImgTxt())
-                        .reviewImgUrl(inputReviewImageDto.getReviewImgUrl())
                         .review(review)
+                        .reviewImgUrl(reviewImageS3Dto.getImageUrl())
+                        .reviewImgTxt(reviewImageS3Dto.getSaveFileName())
                         .productId(product.getId())
-                        .build()));
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override

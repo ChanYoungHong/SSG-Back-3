@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,11 +27,12 @@ public class ReviewController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/user/add")
-    public String addReview(@RequestBody RequestReviewDto requestReviewDto)
+    public String addReview(@RequestPart(value = "reviewDto") RequestReviewDto requestReviewDto,
+                            @RequestPart(value = "reviewImages", required = false) List<MultipartFile> multipartFileList)
             throws Exception {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        reviewService.addReview(requestReviewDto, userId);
+        reviewService.addReview(requestReviewDto, multipartFileList, userId);
         return "글 작성이 완료 되었습니다";
     }
 
@@ -57,7 +59,7 @@ public class ReviewController {
             throws Exception {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        reviewService.editReviewById(requestUpdateReviewDto,userId);
+        reviewService.editReviewById(requestUpdateReviewDto, userId);
         return "리뷰가 정상적으로 수정되었습니다";
     }
 
@@ -73,13 +75,13 @@ public class ReviewController {
 
     //리뷰를 작성하려는 상품이 본인이 구매한 상품이 아닐때
     @ExceptionHandler(OrderIdNotFound.class)
-    public ResponseEntity<String> handleOrderIdNotFound(OrderIdNotFound exception){
+    public ResponseEntity<String> handleOrderIdNotFound(OrderIdNotFound exception) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 
     //같은 주문번호로 이미 리뷰를 작성했을때
     @ExceptionHandler(AlreadyExistReviewException.class)
-    public ResponseEntity<String> handleAlreadyExistReviewException(AlreadyExistReviewException exception){
+    public ResponseEntity<String> handleAlreadyExistReviewException(AlreadyExistReviewException exception) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 }

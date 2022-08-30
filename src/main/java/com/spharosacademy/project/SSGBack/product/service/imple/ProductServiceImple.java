@@ -41,7 +41,9 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
-import com.spharosacademy.project.SSGBack.s3.Entity.Gallery;
+import com.spharosacademy.project.SSGBack.s3.dto.DetailImageS3Dto;
+import com.spharosacademy.project.SSGBack.s3.dto.S3ProductImageDto;
+import com.spharosacademy.project.SSGBack.s3.service.S3UploaderService;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
@@ -78,9 +80,11 @@ public class ProductServiceImple implements ProductService {
     private final ReviewImageRepository reviewImageRepository;
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
-
+    private final S3UploaderService s3UploaderService;
+    private final AmazonS3Client amazonS3Client;
     @Override
-    public Product addProduct(RequestProductDto requestProductDto) {
+    public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile, List<MultipartFile> detailFileList, List<MultipartFile> titleFileList){
+
         Product product = productRepository.save(
                 Product.builder()
                         .name(requestProductDto.getName())
@@ -93,7 +97,6 @@ public class ProductServiceImple implements ProductService {
                         .brand(requestProductDto.getBrand())
                         .sellAmt(requestProductDto.getSellAmount())
                         .explanation(requestProductDto.getExplanation())
-                        .thumbnailUrl(requestProductDto.getThumbnailUrl())
                         .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
                                 .orElseThrow(CategoryNotFoundException::new))
                         .build()
@@ -118,6 +121,50 @@ public class ProductServiceImple implements ProductService {
                         .orElseThrow(CategoryNotFoundException::new).getName())
                 .product(product)
                 .build());
+
+        S3ProductImageDto s3ProductImageDto ;
+        DetailImageS3Dto detailImageS3Dto;
+
+        try {
+            s3ProductImageDto = s3UploaderService.upload(multipartFile, "myspharosbucket", "myDir");
+            product.setThumbnailUrl(s3ProductImageDto.getImageUrl());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (MultipartFile titleFiles : titleFileList) {
+            try {
+                detailImageS3Dto = s3UploaderService.uploadDetails(titleFiles, "myspharosbucket", "myDir");
+
+                productTitleImgRepository.save(ProductTitleImage.builder()
+                        .product(product)
+                        .productTitleImgUrl(detailImageS3Dto.getImageUrl())
+                        .productTitleImgTxt(detailImageS3Dto.getSaveFileName())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        log.info("df");
+
+        for (MultipartFile multipartFiles : detailFileList) {
+            try {
+                detailImageS3Dto = s3UploaderService.uploadDetails(multipartFiles, "myspharosbucket", "myDir");
+
+                productDetailImgRepository.save(ProductDetailImage.builder()
+                        .product(product)
+                        .productDetailImgUrl(detailImageS3Dto.getImageUrl())
+                        .productDetailImgTxt(detailImageS3Dto.getSaveFileName())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
 
         List<OptionInputDto> optionInputDtos = new ArrayList<>();

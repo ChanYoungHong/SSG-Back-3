@@ -6,12 +6,13 @@ import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDt
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ReviewService {
 
-    void addReview(RequestReviewDto requestReviewDto, Long userId);
+    void addReview(RequestReviewDto requestReviewDto, List<MultipartFile> multipartFileList, Long userId);
 
     void deleteReviewById(RequestReviewDeleteDto requestReviewDeleteDto, Long userId);
 
