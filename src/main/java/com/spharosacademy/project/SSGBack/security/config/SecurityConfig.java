@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+<<<<<<< HEAD
         http.csrf().disable();
         http.logout().disable();
         http.httpBasic().disable();
@@ -82,6 +83,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .userInfoEndpoint()
 //                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
 ////            .userService(userOAuth2Service);
+=======
+        http.httpBasic().disable().authorizeRequests()
+            .antMatchers().permitAll()
+            .antMatchers("/user/**").hasRole("USER")
+            .antMatchers("/admin/**").hasRole("MANAGER")
+            .and()
+            .logout()
+            .logoutSuccessUrl("/")
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class)
+            .oauth2Login() // oauth
+            .authorizationEndpoint()
+            .baseUri("/oauth2.0/authorize")
+            .and()
+            .successHandler(oAuth2AuthenticationSuccessHandler)
+//            .defaultSuccessUrl("/login-success")
+            .userInfoEndpoint()
+            .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
+//            .userService(userOAuth2Service);
+>>>>>>> f053093 (소셜 로그인 설정 및 수정)
 
 //        super.configure(http);
         http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);

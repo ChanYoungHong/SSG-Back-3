@@ -11,13 +11,23 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+<<<<<<< HEAD
 import java.io.IOException;
+=======
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.GenericFilterBean;
+>>>>>>> f053093 (소셜 로그인 설정 및 수정)
 
+@Slf4j
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
@@ -34,6 +44,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // SecurityContext에 Authentication 객체를 저장한다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
+        log.info();
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
