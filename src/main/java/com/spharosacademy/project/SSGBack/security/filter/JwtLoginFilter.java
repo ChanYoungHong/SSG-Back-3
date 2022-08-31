@@ -64,7 +64,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                 LoginSuccessOutputDto.builder()
                         .message("토큰이 생성 되었습니다.")
                         .isSuccess("성공")
-                        .result("Bearer "+jwtTokenProvider.createToken(user.getId(), user.getAuthorities().toString()))
+                        .result(jwtTokenProvider.createToken(user.getId(), user.getAuthorities().toString()))
                         .build());
 
     }

@@ -2,7 +2,6 @@ package com.spharosacademy.project.SSGBack.util;
 
 //import com.spharosacademy.project.SSGBack.security.exception.ExpiredTokenAcessException;
 
-import com.spharosacademy.project.SSGBack.security.exception.ExpiredTokenAcessException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -12,8 +11,6 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -61,14 +58,16 @@ public class JwtTokenProvider implements AuthenticationProvider {
     }
 
     // JWT 토큰에서 인증 정보 조회
-    public Authentication getAuthenication(String token){
+    public Authentication getAuthenication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "",
+            userDetails.getAuthorities());
     }
 
-    public Authentication getUser(String id){
+    public Authentication getUser(String id) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(id));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "",
+            userDetails.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출
@@ -89,18 +88,15 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
     public boolean validateToken(String jwtToken) {
 
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-            // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
-            // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("토큰이 만료되었습니다.").hasBody();
-        }
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        return !claims.getBody().getExpiration().before(new Date());
+        // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
+        // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
         return null;
     }
 

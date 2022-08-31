@@ -1,30 +1,19 @@
 package com.spharosacademy.project.SSGBack.util;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-<<<<<<< HEAD
-import java.io.IOException;
-=======
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.GenericFilterBean;
->>>>>>> f053093 (소셜 로그인 설정 및 수정)
 
 @Slf4j
 @RequiredArgsConstructor
-@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private JwtTokenProvider jwtTokenProvider;
@@ -45,7 +34,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-        log.info();
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
