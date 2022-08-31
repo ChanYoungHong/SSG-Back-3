@@ -13,6 +13,7 @@ import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +82,6 @@ public class ProductController {
         return productService.getProductSize(productId, colorId);
     }
 
-
     //특정 상품 수정 
     @PutMapping("/update")
     public String editProduct
@@ -114,8 +114,7 @@ public class ProductController {
     }
 
     @GetMapping("/nonmember/search")
-    public Page<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query,
-                                                               Pageable pageable) {
+    public Page<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query,Pageable pageable) {
         Long userId = -1L;
         return productService.searchProductByWord(query, userId, pageable);
     }

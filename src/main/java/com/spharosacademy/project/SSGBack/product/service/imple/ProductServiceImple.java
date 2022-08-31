@@ -81,9 +81,10 @@ public class ProductServiceImple implements ProductService {
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
     private final S3UploaderService s3UploaderService;
-    private final AmazonS3Client amazonS3Client;
+
     @Override
-    public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile, List<MultipartFile> detailFileList, List<MultipartFile> titleFileList){
+    public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile,
+                              List<MultipartFile> detailFileList, List<MultipartFile> titleFileList) {
 
         Product product = productRepository.save(
                 Product.builder()
@@ -164,7 +165,6 @@ public class ProductServiceImple implements ProductService {
                 e.printStackTrace();
             }
         }
-
 
 
         List<OptionInputDto> optionInputDtos = new ArrayList<>();
@@ -257,23 +257,6 @@ public class ProductServiceImple implements ProductService {
                     .wishId(wishId)
                     .build();
         });
-//            for (Product product : productPage) {
-//                log.info("df");
-//                ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
-//
-//                Long duplicate;
-//                Long wishId = null;
-//
-//                if (userid != -1) {
-//                    duplicate = wishListRepository.findByUserIdAndProductId(userid, product.getId());
-//                    if (duplicate == null) {
-//                        wishId = null;
-//                    } else {
-//                        wishId = duplicate;
-//                    }
-//                } else {
-//                    wishId = null;
-//                }
 
     }
 
