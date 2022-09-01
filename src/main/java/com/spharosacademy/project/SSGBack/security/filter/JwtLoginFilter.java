@@ -59,8 +59,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         String role = String.valueOf(authResult.getAuthorities());
 
 
-
-
         objectMapper.writeValue(response.getWriter(),
                 LoginSuccessOutputDto.builder()
                         .message("토큰이 생성 되었습니다.")

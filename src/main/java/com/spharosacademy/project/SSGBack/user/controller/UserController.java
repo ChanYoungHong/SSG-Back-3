@@ -74,6 +74,7 @@ public class UserController {
 
         String token = jwtTokenProvider.resolveToken(request);
         Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
+
         userService.modifyUserInfo(id, userInputDto);
     }
 
