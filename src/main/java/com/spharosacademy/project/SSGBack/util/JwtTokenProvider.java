@@ -1,6 +1,5 @@
 package com.spharosacademy.project.SSGBack.util;
 
-import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -51,7 +48,8 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public String createToken(String userId, String role) {
 
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
-        Claims claims = Jwts.claims().setSubject(userRepository.findByUserId(userId).get().getUserId());
+        Claims claims = Jwts.claims().setSubject(
+            String.valueOf(userRepository.findByUserId(userId).get().getId()));
         claims.put("role", role);
         Date now = new Date();
 
@@ -66,7 +64,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthenication(String token) {
         log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserId(token));
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
     }
@@ -77,6 +75,11 @@ public class JwtTokenProvider implements AuthenticationProvider {
         System.out.println(userDetailsService.loadUserByUsername(id));
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
+    }
+
+    public String getUserId(String token) {
+
+        return userRepository.findById(Long.valueOf(getUserPk(token))).get().getUserId();
     }
 
     // 토큰에서 회원 정보 추출

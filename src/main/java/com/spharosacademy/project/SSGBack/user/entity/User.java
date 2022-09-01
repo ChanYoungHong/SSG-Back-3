@@ -73,14 +73,6 @@ public class User extends BaseEntity implements UserDetails {
 
     }
 
-    public User update(String userName, String userEmail) {
-
-        this.userName = userName;
-        this.userEmail = userEmail;
-
-        return this;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -103,9 +95,6 @@ public class User extends BaseEntity implements UserDetails {
         return userId;
     }
 
-    public long getPkId(){
-        return id;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

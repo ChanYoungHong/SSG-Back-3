@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
             userEditInputDtoList.add(userEditInputDto.builder()
                 .userPhoneNumber(userEditInputDto.getUserPhoneNumber())
                 .userEmail(userEditInputDto.getUserEmail())
+                .userAddress(userEditInputDto.getUserAddress())
                 .build());
         }
 
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
                         .id(id)
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
-                        .userAddress(result.get().getUserAddress())
+                        .userAddress(userEditInputDto.getUserAddress())
                         .userPhone(userEditInputDto.getUserPhoneNumber())
                         .userName(result.get().getUsername())
                         .role(result.get().getRole())
@@ -94,11 +95,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> changePassword(Long id, UserChangePwdInputDto userChangePwdInputDto) {
+    public Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userRepository.findByUserId(userId);
 
         if (user.isPresent()) {
+
+//            log.info(userChangePwdInputDto.getUserPwd());
 
             userRepository.save(
                 User.builder()
