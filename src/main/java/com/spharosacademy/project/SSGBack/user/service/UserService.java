@@ -11,7 +11,7 @@ public interface UserService {
 
     boolean duplicateUserId(String userId);
 
-    Optional<User> findByUserId(Long id);
+    Optional<User> findByUserId(String userId);
 
     void modifyUserInfo(Long id, UserInputDto userInputDto);
 

@@ -29,11 +29,13 @@ public class CustomUseDetailsService implements UserDetailsService {
     @Override                             // String id - 여기서 가져 올 것은 sub의 id값, 원래는 String username이라 명시되어 있음.
     public UserDetails loadUserByUsername(String id)  {
 
-        Optional<User> result = userRepository.findByUserId(id);
+        Optional<User> result = userRepository.findById(Long.valueOf(id));
 
         // 책에는 !가 없음, 근데 로직상 !가 있어야 할 것 같음.
+
+        log.info(result);
+
         if (result.isEmpty()) {
-//            throw new UserIdNotFound();
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
 

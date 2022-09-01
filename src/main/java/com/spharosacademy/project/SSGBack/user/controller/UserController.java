@@ -62,7 +62,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<User> findByUserId() {
         String token = jwtTokenProvider.customResolveToken();
-        return userService.findByUserId(Long.valueOf(jwtTokenProvider.getUserPk(token)));
+        return userService.findByUserId(jwtTokenProvider.getUserPk(token));
     }
 
 

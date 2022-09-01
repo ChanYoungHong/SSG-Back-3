@@ -1,11 +1,8 @@
 package com.spharosacademy.project.SSGBack.security.config;
 
-import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
 import com.spharosacademy.project.SSGBack.security.exception.CustomAuthenticationEntryPoint;
 import com.spharosacademy.project.SSGBack.security.filter.JwtFilter;
 import com.spharosacademy.project.SSGBack.security.filter.JwtLoginFilter;
-import com.spharosacademy.project.SSGBack.security.filter.JwtRequestFilter;
-import com.spharosacademy.project.SSGBack.security.handler.OAuth2AuthenticationSuccessHandler;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().mvcMatchers("/members/**", "/images/**");
-//        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -65,9 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             .antMatchers("/login").permitAll()
-            .antMatchers("/user/**").authenticated()
+            .antMatchers("/user/**").hasRole("USER")
             .anyRequest().permitAll()
-                .and().exceptionHandling()
+            .and().exceptionHandling()
             .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 //                .antMatchers("/user/**").hasRole("USER")
 //                .and()

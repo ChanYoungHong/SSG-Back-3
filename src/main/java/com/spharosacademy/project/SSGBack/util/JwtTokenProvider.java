@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,11 +24,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class JwtTokenProvider implements AuthenticationProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
-    private long tokenValidTime = 1000L;
+    private long tokenValidTime = 360000000000000L;
 
     // 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
@@ -59,6 +61,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthenication(String token) {
+        log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
             userDetails.getAuthorities());
