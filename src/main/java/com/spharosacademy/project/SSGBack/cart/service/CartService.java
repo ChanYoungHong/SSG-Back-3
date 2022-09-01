@@ -26,4 +26,6 @@ public interface CartService {
     void updateCart(CartUpdateRequestDto cartUpdateRequestDto);
 
     List<OptionList> getOptionByProduct(Long productId);
+
+    void incQty(Long id, Long userId);
 }

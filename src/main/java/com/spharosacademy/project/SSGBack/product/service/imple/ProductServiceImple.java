@@ -53,9 +53,9 @@ import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -83,6 +83,7 @@ public class ProductServiceImple implements ProductService {
     private final S3UploaderService s3UploaderService;
 
     @Override
+    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile,
                               List<MultipartFile> detailFileList, List<MultipartFile> titleFileList) {
 

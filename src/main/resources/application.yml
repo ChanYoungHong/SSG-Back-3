@@ -39,8 +39,6 @@ spring:
       ddl-auto: update
     show-sql: 'true'
 
-
-
 cloud:
   aws:
     credentials:

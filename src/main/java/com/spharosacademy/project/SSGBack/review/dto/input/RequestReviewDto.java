@@ -17,5 +17,4 @@ public class RequestReviewDto {
     private String reviewContent;
     private float reviewScore;
 
-    List<RequestReviewImageDto> requestReviewImageDtos;
 }

@@ -18,7 +18,6 @@ public class SsgBackApplication {
     public PageableHandlerMethodArgumentResolverCustomizer customize() {
         return p -> {
             p.setOneIndexedParameters(true);    // 1부터 시작
-            p.setMaxPageSize(20);                // size=10
         };
     }
 

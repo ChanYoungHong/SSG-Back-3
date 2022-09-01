@@ -30,62 +30,70 @@ public class CartController {
 
     //장바구니 담기 클릭
     @PostMapping("/user/add")
-    public String addCart(@RequestBody CartInputDto cartInputDto){
+    public String addCart(@RequestBody CartInputDto cartInputDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         cartService.addProductToCart(cartInputDto, userId);
         return "선택하신 상품이 장바구니에 담겼습니다";
     }
 
+    @PostMapping("/pQty/{id}")
+    public String increaseQty(@PathVariable Long id) {
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        cartService.incQty(id, userId);
+        return "장바구니에 담으신 상품의 수량이 증가하였습니다";
+    }
+
     @GetMapping("/getAll")
-    public List<CartOutputDto> getAllCart(){
+    public List<CartOutputDto> getAllCart() {
         return cartService.getAllCart();
     }
 
     @GetMapping("/user/getByUserId")
-    public List<CartOutputDto> getCartByUserId(){
+    public List<CartOutputDto> getCartByUserId() {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return cartService.getCartByUserId(userId);
     }
 
     @GetMapping("/user/getOptionList/{productId}")
-    public List<OptionList> getOptionByProduct(@PathVariable Long productId){
+    public List<OptionList> getOptionByProduct(@PathVariable Long productId) {
         return cartService.getOptionByProduct(productId);
     }
 
     @DeleteMapping("/user/delete/{cartId}")
-    public String deleteCart(@PathVariable Long cartId){
+    public String deleteCart(@PathVariable Long cartId) {
         cartService.deleteCart(cartId);
         return "선택하신 상품이 장바구니에서 삭제되었습니다";
     }
 
     @PostMapping("/user/order")
-    public ResponseEntity<String> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto){
+    public ResponseEntity<String> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         cartService.orderCart(cartOrderRequestDto, userId);
-         return ResponseEntity.status(HttpStatus.OK).body("주문이 완료되었습니다");
+        return ResponseEntity.status(HttpStatus.OK).body("주문이 완료되었습니다");
     }
 
     @PutMapping("/update")
-    public String updateCart(@RequestBody CartUpdateRequestDto cartUpdateRequestDto){
+    public String updateCart(@RequestBody CartUpdateRequestDto cartUpdateRequestDto) {
         cartService.updateCart(cartUpdateRequestDto);
         return "장바구니 상품 옵션이 변경되었습니다";
     }
 
     @ExceptionHandler(OutOfStockException.class)
-    public ResponseEntity<String> handleOutofStockException(OutOfStockException exception){
+    public ResponseEntity<String> handleOutofStockException(OutOfStockException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
     @ExceptionHandler(OptionNotFoundException.class)
-    public ResponseEntity<String> handleOptionNotFoundException(OptionNotFoundException e){
+    public ResponseEntity<String> handleOptionNotFoundException(OptionNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler(CartNotFoundException.class)
-    public ResponseEntity<String> handleCartNotFoundException(CartNotFoundException e){
+    public ResponseEntity<String> handleCartNotFoundException(CartNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

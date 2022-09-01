@@ -25,6 +25,7 @@ import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class CartServiceimple implements CartService {
 
 
     @Override
+    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     public Cart addProductToCart(CartInputDto cartInputDto, Long userId) {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
@@ -55,6 +57,7 @@ public class CartServiceimple implements CartService {
 
         List<CartOptionDto> cartOptionDtos = new ArrayList<>();
         Long duplicate;
+
         for (CartOptionDto cartOptionDto : cartInputDto.getCartOptionDtos()) {
             cartOptionDtos.add(CartOptionDto.builder()
                     .optionId(cartOptionDto.getOptionId())
@@ -199,6 +202,22 @@ public class CartServiceimple implements CartService {
     @Override
     public List<OptionList> getOptionByProduct(Long productId) {
         return optionRepository.findByProductId(productId);
+    }
+
+    @Override
+    public void incQty(Long id, Long userId) {
+        List<Cart> cartList = cartRepository.findByUserId(userId);
+
+        Cart cart = cartRepository.findById(id).orElseThrow(CartNotFoundException::new);
+        cartRepository.save(Cart.builder()
+                .id(cart.getId())
+                .product(cart.getProduct())
+                .user(cart.getUser())
+                .colorId(cart.getColorId())
+                .optionId(cart.getOptionId())
+                .sizeId(cart.getSizeId())
+                .qty(cart.getQty() + 1)
+                .build());
     }
 
     @Override

@@ -5,14 +5,12 @@ import com.spharosacademy.project.SSGBack.product.dto.output.*;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
-import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
 import com.spharosacademy.project.SSGBack.product.service.ProductService;
-import com.spharosacademy.project.SSGBack.product.service.imple.ProductServiceImple;
-import org.springframework.data.domain.Pageable;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +30,6 @@ public class ProductController {
 
     private final ProductService productService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final ProductServiceImple productServiceImple;
 
     @PostMapping("/add")
     public String addProduct(
@@ -106,15 +103,16 @@ public class ProductController {
 
     //상품 검색 - 회원
     @GetMapping("/user/search")
-    public Page<OutputSearchProductDto> SearchProductByWord(@RequestParam String query,
-                                                            Pageable pageable) {
+    public Page<OutputSearchProductDto> SearchProductByWord(@RequestParam String query, Pageable pageable) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return productService.searchProductByWord(query, userId, pageable);
     }
 
     @GetMapping("/nonmember/search")
-    public Page<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query,Pageable pageable) {
+    public Page<OutputSearchProductDto> searchProductByKeyword(@RequestParam String query,
+                                                               @PageableDefault(size = 30) Pageable pageable) {
+
         Long userId = -1L;
         return productService.searchProductByWord(query, userId, pageable);
     }
