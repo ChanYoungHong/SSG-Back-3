@@ -20,6 +20,7 @@ public class RecentWatchQuery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String query;
+
     @ManyToOne
     User user;
 }

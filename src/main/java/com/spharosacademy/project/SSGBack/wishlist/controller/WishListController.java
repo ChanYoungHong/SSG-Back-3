@@ -36,7 +36,7 @@ public class WishListController {
 
     }
 
-    @GetMapping("/find")
+    @GetMapping("/user/find")
     public List<ResponseWishListDto> findById() {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));

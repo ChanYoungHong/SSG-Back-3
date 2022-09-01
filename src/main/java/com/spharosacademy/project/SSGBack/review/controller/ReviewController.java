@@ -36,6 +36,13 @@ public class ReviewController {
         return "글 작성이 완료 되었습니다";
     }
 
+    @PostMapping("/images/{id}")
+    public String addImages(@PathVariable Long id,
+                            @RequestPart(value = "reviewImages", required = false) List<MultipartFile> multipartFileList) {
+        reviewService.addImages(id, multipartFileList);
+        return "리뷰 사진 추가";
+    }
+
     //  상품에 대한 모든 리뷰 조회 하기
     @GetMapping("/product/{productId}")
     public List<ResponseProductReviewDto> getAllByProductId(@PathVariable Long productId) {
