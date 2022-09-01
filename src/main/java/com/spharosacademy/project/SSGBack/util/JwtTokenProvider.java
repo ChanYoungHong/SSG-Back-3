@@ -63,13 +63,13 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public Authentication getAuthenication(String token) {
         log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
     }
 
     public Authentication getUser(String id) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(id));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
+        UserDetails userDetails = userDetailsService.loadUserByUsername(id);
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
     }
 

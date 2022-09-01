@@ -98,10 +98,6 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-//        return this.roles.stream()
-//            .map(SimpleGrantedAuthority::new)
-//            .collect(Collectors.toList());
-
         UserRole userRole = getRole();
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -123,6 +119,7 @@ public class User extends BaseEntity implements UserDetails {
     public long getPkId(){
         return id;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
