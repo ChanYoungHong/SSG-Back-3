@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
+
+    // 프론트와 Axios 연결 시, CrossOrigin 뜰 때, filter에 추가하여 사용함.
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -43,22 +43,6 @@ public class JwtRequestFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        HttpServletRequest req = (HttpServletRequest) request;
-//        HttpServletResponse res = (HttpServletResponse) response;
-//
-//        String header = req.getHeader(HEADER_STRING);
-//        String username = null;
-//        String authToken = null;
-//
-//        try {
-//            log.info("dofilter로 들어오나?");
-//            chain.doFilter(request, response);
-//            log.info("dofilter로 들어오나? 222222222222222");
-//        } catch (ExpiredJwtException e) {
-//            log.info("dofilter로 들어오나? 3333333333333333333333333");
-//            request.setAttribute("exception", Code.EXPIRED_TOKEN);
-//        }
-//        chain.doFilter(request, response);
 
         // 토큰을 검증하는 로직
 

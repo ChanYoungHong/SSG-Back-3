@@ -74,6 +74,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     }
 
     // 토큰에서 회원 정보 추출
+    // getSubject 사용함으로 -> 1이 나오게 됨.
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
