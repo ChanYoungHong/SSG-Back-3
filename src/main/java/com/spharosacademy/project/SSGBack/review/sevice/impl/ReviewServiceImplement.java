@@ -201,4 +201,28 @@ public class ReviewServiceImplement implements ReviewService {
         return null;
     }
 
+    @Override
+    public void addImages(Long id, List<MultipartFile> multipartFileList) {
+        Review review = reviewRepository.findById(id).get();
+
+        ReviewImageS3Dto reviewImageS3Dto;
+        for (MultipartFile multipartFiles : multipartFileList) {
+            try {
+                reviewImageS3Dto = s3UploaderService.uploadReviewImage(multipartFiles, "myspharosbucket", "myDir");
+
+                reviewImageRepository.save(ReviewImage.builder()
+                        .review(review)
+                        .reviewImgUrl(reviewImageS3Dto.getImageUrl())
+                        .reviewImgTxt(reviewImageS3Dto.getSaveFileName())
+                        .productId(review.getProduct().getId())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 }

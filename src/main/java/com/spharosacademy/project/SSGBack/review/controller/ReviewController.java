@@ -26,6 +26,14 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final JwtTokenProvider jwtTokenProvider;
 
+
+    @PostMapping("/images/{id}")
+    public String addImages(@PathVariable Long id,
+                            @RequestPart(value = "reviewImages", required = false) List<MultipartFile> multipartFileList) {
+        reviewService.addImages(id, multipartFileList);
+        return "리뷰 사진 추가";
+    }
+
     @PostMapping("/user/add")
     public String addReview(@RequestPart(value = "reviewDto") RequestReviewDto requestReviewDto,
                             @RequestPart(value = "reviewImages", required = false) List<MultipartFile> multipartFileList)

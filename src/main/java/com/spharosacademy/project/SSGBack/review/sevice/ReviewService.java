@@ -21,4 +21,6 @@ public interface ReviewService {
     Review editReviewById(RequestUpdateReviewDto requestUpdateReviewDto, Long userId);
 
     List<ResponseProductReviewDto> getAllByProductId(Long productId);
+
+    void addImages(Long id, List<MultipartFile> multipartFileList);
 }
