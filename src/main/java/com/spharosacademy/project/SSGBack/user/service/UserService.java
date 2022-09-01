@@ -11,12 +11,12 @@ public interface UserService {
 
     boolean duplicateUserId(String userId);
 
-    Optional<User> findByUserId(Long id);
+    Optional<User> findByUserId(String userId);
 
     void modifyUserInfo(Long id, UserInputDto userInputDto);
 
     User removeUserInfo(Long id, UserOutputDto userOutputDto);
 
-    Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
+    Optional<User> changePassword(Long id, UserChangePwdInputDto userChangePwdInputDto);
 
 }

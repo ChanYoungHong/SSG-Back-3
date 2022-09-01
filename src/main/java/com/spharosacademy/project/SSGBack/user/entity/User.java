@@ -15,15 +15,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Transactional
 @Builder
+@Setter
 @Table(name = "user")
 public class User extends BaseEntity implements UserDetails {
 
@@ -35,16 +39,16 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_id")
     private String userId;
 
-    @Column(name = "user_pwd", nullable = false)
+    @Column(name = "user_pwd")
     private String userPwd;
 
-    @Column(name = "user_name", nullable = false, length = 100)
+    @Column(name = "user_name", length = 100)
     private String userName;
 
-    @Column(name = "user_address", nullable = false)
+    @Column(name = "user_address")
     private String userAddress;
 
-    @Column(name = "user_Email")
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
 
     @Column(name = "user_phone")
@@ -59,16 +63,32 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;
 
-    private boolean fromSocial;
+    private String fromSocial;
+
+
+    public User(String userName, String userEmail) {
+
+        this.userName = userName;
+        this.userEmail = userEmail;
+
+    }
+
+    public User update(String userName, String userEmail) {
+
+        this.userName = userName;
+        this.userEmail = userEmail;
+
+        return this;
+    }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        UserRole userRole = getRole();
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
+//        UserRole userRole = getRole();
+//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(authority);
+        authorities.add(new SimpleGrantedAuthority(String.valueOf(this.role)));
 
         return authorities;
     }
@@ -80,7 +100,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return userId;
+    }
+
+    public long getPkId(){
+        return id;
     }
 
     @Override

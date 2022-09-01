@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUserId(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> findByUserId(String userId) {
+        return userRepository.findByUserId(userId);
     }
 
     @Override
@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
                         .userDropCheck(result.get().getUserDropCheck())
                         .userEmail(userEditInputDto.getUserEmail())
                         .memberType(result.get().getMemberType())
-//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                         .build()
                 );
 
@@ -95,9 +94,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
+    public Optional<User> changePassword(Long id, UserChangePwdInputDto userChangePwdInputDto) {
 
-        Optional<User> user = userRepository.findByUserId(userId);
+        Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent()) {
 
@@ -113,7 +112,6 @@ public class UserServiceImpl implements UserService {
                     .userDropCheck(user.get().getUserDropCheck())
                     .userEmail(user.get().getUserEmail())
                     .memberType(user.get().getMemberType())
-//                        .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                     .build()
 
             );

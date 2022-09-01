@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>Board Service</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div id="header" class="d-flex bd-highlight"><a href="/" class="p-2 flex-grow-1 bd-highlight">Board Service</a>
+    <form action="/posts/search" method="GET" class="form-inline p-2 bd-highlight" role="search">
+        <input type="text" name="keyword" class="form-control" id="search" placeholder="검색">
+        <button class="btn btn-success bi bi-search"></button>
+    </form>
+</div>
+<nav id="nav">
+    <div class="text-right"> {{#user}} <span class="mx-3">{{user}}님 안녕하세요!</span>
+        <a href="/logout" class="btn btn-outline-dark">로그아웃</a>
+
+
+<<<<<<< HEAD
+        <a href="http://kauth.kakao.com/oauth/authorize?client_id=d08154b0e02a4f165009308850761e36&redirect_uri=http://localhost:8080/login/oauth2/code/kakao&response_type=code"
+           class="btn btn-warning active" role="button">로그인22222</a>
+=======
+        <a href="https://3.38.97.189:9000/oauth2/authorization/kakao"
+           class="btn btn-warning active" role="button">카카오 로그인</a>
+>>>>>>> f053093 (소셜 로그인 설정 및 수정)
+
+        <a href="https://3.38.97.189:9000/oauth/authorize?client_id=d08154b0e02a4f165009308850761e36&redirect_uri=
+http://localhost:8080/login/oauth2/code/kakao&response_type=code" role="button" class="btn btn-outline-success"><img id="img" src="/img/naver.ico"/>
+            로그인</a>
+
+        <a href="/oauth2/authorization/google" role="button" class="btn btn-outline-danger bi bi-google">
+            로그인</a> <a href="/auth/login" role="button" class="btn btn-outline-dark bi bi-lock-fill"> 로그인</a>
+
+        <a href="/auth/join" role="button" class="btn btn-outline-dark bi bi-person-circle"> 회원가입</a>
+    </div>
+</nav>

@@ -7,15 +7,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.GenericFilterBean;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
@@ -24,6 +25,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 헤더에서 Jwt를 받아온다.
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
 
+
         // 유효한 토큰인지 확인
         if( token != null && jwtTokenProvider.validateToken(token)) {
             // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
@@ -31,6 +33,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // SecurityContext에 Authentication 객체를 저장한다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
+
 }
