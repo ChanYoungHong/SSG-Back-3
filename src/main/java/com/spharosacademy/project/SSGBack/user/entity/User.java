@@ -106,6 +106,7 @@ public class User extends BaseEntity implements UserDetails {
     public long getPkId(){
         return id;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

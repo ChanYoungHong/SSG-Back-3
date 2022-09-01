@@ -68,8 +68,10 @@ public class JwtTokenProvider implements AuthenticationProvider {
             userDetails.getAuthorities());
     }
 
+    // String id 안에 hcy9883 유저 아이디 들어있음.
     public Authentication getUser(String id) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(id));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(id);
+        System.out.println(userDetailsService.loadUserByUsername(id));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
             userDetails.getAuthorities());
     }
