@@ -28,4 +28,6 @@ public interface CartService {
     List<OptionList> getOptionByProduct(Long productId);
 
     void incQty(Long id, Long userId);
+
+    void decQty(Long id, Long userId);
 }

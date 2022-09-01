@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/cart/user")
 @RequiredArgsConstructor
 @CrossOrigin
 public class CartController {
@@ -29,7 +29,7 @@ public class CartController {
     private final JwtTokenProvider jwtTokenProvider;
 
     //장바구니 담기 클릭
-    @PostMapping("/user/add")
+    @PostMapping("/add")
     public String addCart(@RequestBody CartInputDto cartInputDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
@@ -45,30 +45,38 @@ public class CartController {
         return "장바구니에 담으신 상품의 수량이 증가하였습니다";
     }
 
+    @PostMapping("/dQty/{id}")
+    public String decreaseQty(@PathVariable Long id){
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        cartService.decQty(id, userId);
+        return "장바구니에 담으신 상품의 수량이 감소하였습니다";
+    }
+
     @GetMapping("/getAll")
     public List<CartOutputDto> getAllCart() {
         return cartService.getAllCart();
     }
 
-    @GetMapping("/user/getByUserId")
+    @GetMapping("/getByUserId")
     public List<CartOutputDto> getCartByUserId() {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         return cartService.getCartByUserId(userId);
     }
 
-    @GetMapping("/user/getOptionList/{productId}")
+    @GetMapping("/getOptionList/{productId}")
     public List<OptionList> getOptionByProduct(@PathVariable Long productId) {
         return cartService.getOptionByProduct(productId);
     }
 
-    @DeleteMapping("/user/delete/{cartId}")
+    @DeleteMapping("/delete/{cartId}")
     public String deleteCart(@PathVariable Long cartId) {
         cartService.deleteCart(cartId);
         return "선택하신 상품이 장바구니에서 삭제되었습니다";
     }
 
-    @PostMapping("/user/order")
+    @PostMapping("/order")
     public ResponseEntity<String> orderCart(@RequestBody CartOrderRequestDto cartOrderRequestDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));

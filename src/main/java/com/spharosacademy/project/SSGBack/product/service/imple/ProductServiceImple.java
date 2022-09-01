@@ -1,8 +1,5 @@
 package com.spharosacademy.project.SSGBack.product.service.imple;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
@@ -18,6 +15,7 @@ import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.dto.input.RequestProductDto;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
+import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.input.OptionInputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
@@ -33,6 +31,10 @@ import com.spharosacademy.project.SSGBack.product.service.ProductService;
 import com.spharosacademy.project.SSGBack.qna.dto.output.ResponseProductQnaDto;
 import com.spharosacademy.project.SSGBack.qna.entity.QnA;
 import com.spharosacademy.project.SSGBack.qna.repository.QnaRepository;
+import com.spharosacademy.project.SSGBack.recentWatch.entity.RecentWatchProduct;
+import com.spharosacademy.project.SSGBack.recentWatch.entity.RecentWatchQuery;
+import com.spharosacademy.project.SSGBack.recentWatch.repository.RecentWatchProductRepository;
+import com.spharosacademy.project.SSGBack.recentWatch.repository.RecentWatchQueryRepository;
 import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewImageDto;
@@ -80,7 +82,9 @@ public class ProductServiceImple implements ProductService {
     private final ReviewImageRepository reviewImageRepository;
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
+    private final RecentWatchProductRepository recentWatchProductRepository;
     private final S3UploaderService s3UploaderService;
+    private final RecentWatchQueryRepository recentWatchQueryRepository;
 
     @Override
     @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
@@ -224,9 +228,15 @@ public class ProductServiceImple implements ProductService {
     @Override
     public Page<OutputSearchProductDto> searchProductByWord(String query, Long userid, Pageable pageable) {
         Page<Product> productPage = productRepository.searchBysearchWord(query, pageable);
-
         if (productPage.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
+        }
+        Long recentId = recentWatchQueryRepository.existsByUserAndQuery(userid, query);
+        if (recentId == null){
+            recentWatchQueryRepository.save(RecentWatchQuery.builder()
+                    .user(userRepository.findById(userid).get())
+                    .query(query)
+                    .build());
         }
 
         return productPage.map(product -> {
@@ -263,14 +273,6 @@ public class ProductServiceImple implements ProductService {
 
     @Override
     public List<ColorOutputDto> getProductColor(Long id) {
-//        List<ColorOutputDto> productColorDtoList = new ArrayList<>();
-//        List<OptionList> colorList = optionRepository.findByProductId(id);
-//        colorList.forEach(optionList -> {
-//            productColorDtoList.add(ColorOutputDto.builder()
-//                    .id(optionList.getColors().getId())
-//                    .name(optionList.getColors().getName())
-//                    .build());
-//        });
         List<ColorOutputDto> colorList = optionRepository.getColorId(id);
         return colorList;
     }
@@ -319,7 +321,6 @@ public class ProductServiceImple implements ProductService {
                         .stock(option.getStock())
                         .build());
             }
-
 
             List<CategoryProductList> lists = categoryProductListRepository.findAllByProduct(product);
             List<PofCategoryL> categoryLlist = new ArrayList<>();
@@ -422,16 +423,25 @@ public class ProductServiceImple implements ProductService {
         Long duplicate;
         Long wishId = null;
 
-        User user;
-
+        User user = null;
+        //회원이 상품을 조회한 경우
         if (userid != -1) {
-            user = userRepository.findById(userid).get();
+            Long recentProductId = recentWatchProductRepository.findByUserIdAndProductId(userid, id);
+            User users = userRepository.findById(userid).get();
+            if (recentProductId == null) {
+                recentWatchProductRepository.save(RecentWatchProduct.builder()
+                        .user(users)
+                        .product(productRepository.findById(id).get())
+                        .build());
+            }
+            user = userRepository.findById(userid).orElseThrow(UserNotFoundException::new);
             duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
             if (duplicate == null) {
                 wishId = null;
             } else {
                 wishId = duplicate;
             }
+            //비회원이 상품을 조회한 경우
         } else {
             user = null;
             wishId = null;

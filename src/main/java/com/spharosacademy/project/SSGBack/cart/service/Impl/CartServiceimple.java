@@ -221,6 +221,21 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
+    public void decQty(Long id, Long userId) {
+        Cart cart = cartRepository.findById(id).orElseThrow(CartNotFoundException::new);
+        cartRepository.save(Cart.builder()
+                .id(cart.getId())
+                .product(cart.getProduct())
+                .user(cart.getUser())
+                .colorId(cart.getColorId())
+                .optionId(cart.getOptionId())
+                .sizeId(cart.getSizeId())
+                .qty(cart.getQty() - 1)
+                .build());
+    }
+
+
+    @Override
     public List<CartOutputDto> getAllCart() {
         List<Cart> ListCart = cartRepository.findAll();
         List<CartOutputDto> cartOutputDtoList = new ArrayList<>();
