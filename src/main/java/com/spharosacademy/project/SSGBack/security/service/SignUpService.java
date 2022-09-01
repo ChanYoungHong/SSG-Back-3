@@ -6,4 +6,5 @@ import com.spharosacademy.project.SSGBack.user.entity.User;
 
 public interface SignUpService {
     User registerUser(UserInputDto userInputDto);
+
 }

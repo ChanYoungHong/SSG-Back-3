@@ -3,7 +3,10 @@ package com.spharosacademy.project.SSGBack.security.controller;
 import com.spharosacademy.project.SSGBack.security.dto.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
+import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
+import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -29,22 +32,23 @@ public class SecurityLoginController {
             @RequestBody UserLoginDto userLoginDto) {
 
         User result = userRepository.findByUserId(userLoginDto.getUserId())
-            .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Email입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userId입니다."));
 
         if (passwordEncoder.matches(userLoginDto.getUserPwd(), result.getUserPwd())) {
             return LoginSuccessOutputDto.builder()
-                .message("토큰이 생성 되었습니다.")
-                .result(String.valueOf(
-                    jwtTokenProvider.createToken(result.getId(),
-                            String.valueOf(result.getRole()))))
-                .isSuccess("성공")
-                .build();
+                    .message("토큰이 생성 되었습니다.")
+                    .result(String.valueOf(
+                            jwtTokenProvider.createToken(result.getId(),
+                                    String.valueOf(result.getRole()))))
+                    .isSuccess("성공")
+                    .build();
+        } else {
+            throw new LoginFailException();
         }
-        throw new LoginFailException();
     }
 
     @ExceptionHandler(LoginFailException.class)
-    public ResponseEntity<String> handleLoginFailException(LoginFailException exception){
+    public ResponseEntity<String> handleLoginFailException(LoginFailException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }

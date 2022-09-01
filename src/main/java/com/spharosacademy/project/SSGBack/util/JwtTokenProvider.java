@@ -10,10 +10,13 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -22,11 +25,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
 @Component
-public class JwtTokenProvider {
+@Slf4j
+public class JwtTokenProvider implements AuthenticationProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
-    private long tokenValidTime = 36000000L;
+    private long tokenValidTime = 360000000000000L;
 
     // 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
@@ -40,10 +44,11 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(Long userId, String role) {
+    // id -> User의 pk 의미
+    public String createToken(Long id, String role) {
 
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
-        Claims claims = Jwts.claims().setSubject(userId.toString());
+        Claims claims = Jwts.claims().setSubject(id.toString());
         claims.put("role", role);
         Date now = new Date();
 
@@ -56,12 +61,21 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰에서 인증 정보 조회
-    public Authentication getAuthenication(String token){
+    public Authentication getAuthenication(String token) {
+        log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "",
+            userDetails.getAuthorities());
+    }
+
+    public Authentication getUser(String id) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(id));
+        return new UsernamePasswordAuthenticationToken(userDetails, "",
+            userDetails.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출
+    // getSubject 사용함으로 -> 1이 나오게 됨.
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
@@ -78,11 +92,21 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch(Exception e) {
-            return false;
-        }
+
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        return !claims.getBody().getExpiration().before(new Date());
+        // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
+        // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
+        return null;
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return false;
     }
 }
