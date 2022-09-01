@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spharosacademy.project.SSGBack.security.dto.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
-import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -13,17 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Slf4j
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
-    private final CustomUseDetailsService customUseDetailsService;
+    private  CustomUseDetailsService customUseDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
 
     public JwtLoginFilter(String processUrl, CustomUseDetailsService customUseDetailsService, JwtTokenProvider jwtTokenProvider) {
@@ -31,6 +30,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         this.customUseDetailsService = customUseDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
+
 
 
     @Override
@@ -54,13 +54,18 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        User user = (User) ((UserDetails) authResult.getPrincipal());
+//        User user = (User) ((UserDetails) authResult.getPrincipal());
+        String userId = (String) authResult.getPrincipal();
+        String role = String.valueOf(authResult.getAuthorities());
+
+
+
 
         objectMapper.writeValue(response.getWriter(),
                 LoginSuccessOutputDto.builder()
                         .message("토큰이 생성 되었습니다.")
                         .isSuccess("성공")
-                        .result(jwtTokenProvider.createToken(user.getId(), user.getAuthorities().toString()))
+                        .result(jwtTokenProvider.createToken(userId, role))
                         .build());
 
     }

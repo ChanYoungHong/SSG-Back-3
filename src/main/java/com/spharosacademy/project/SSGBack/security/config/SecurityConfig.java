@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.security.filter.JwtFilter;
 import com.spharosacademy.project.SSGBack.security.filter.JwtLoginFilter;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
+import javax.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -86,4 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
 ////            .userService(userOAuth2Service);
     }
+
+
 }

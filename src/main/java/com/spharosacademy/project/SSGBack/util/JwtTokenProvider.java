@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.util;
 
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -27,6 +28,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 @Slf4j
 public class JwtTokenProvider implements AuthenticationProvider {
+        
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
@@ -36,6 +38,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
 
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     // secretKey를 Base64로 인코딩하는 것.
 
@@ -45,10 +48,10 @@ public class JwtTokenProvider implements AuthenticationProvider {
     }
 
     // id -> User의 pk 의미
-    public String createToken(Long id, String role) {
+    public String createToken(String userId, String role) {
 
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
-        Claims claims = Jwts.claims().setSubject(id.toString());
+        Claims claims = Jwts.claims().setSubject(userRepository.findByUserId(userId).get().getUserId());
         claims.put("role", role);
         Date now = new Date();
 
@@ -64,7 +67,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public Authentication getAuthenication(String token) {
         log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
     }
 
@@ -72,7 +75,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public Authentication getUser(String id) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(id);
         System.out.println(userDetailsService.loadUserByUsername(id));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
     }
 

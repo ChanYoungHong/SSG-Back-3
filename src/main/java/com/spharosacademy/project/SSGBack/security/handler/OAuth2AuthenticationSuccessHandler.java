@@ -45,7 +45,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         User user = userRepository.findByUserEmail(email).orElseThrow(UserIdNotFound::new);
 
-        String jwt = jwtTokenProvider.createToken(user.getId(), String.valueOf(UserRole.ROLE_USER));
+        String jwt = jwtTokenProvider.createToken(user.getUserId(), String.valueOf(UserRole.ROLE_USER));
 
         String url = sendToken(jwt);
 

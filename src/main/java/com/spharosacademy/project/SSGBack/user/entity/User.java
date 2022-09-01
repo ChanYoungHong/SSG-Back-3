@@ -85,10 +85,10 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        UserRole userRole = getRole();
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
+//        UserRole userRole = getRole();
+//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(authority);
+        authorities.add(new SimpleGrantedAuthority(String.valueOf(this.role)));
 
         return authorities;
     }

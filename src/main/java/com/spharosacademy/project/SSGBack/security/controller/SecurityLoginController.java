@@ -40,7 +40,7 @@ public class SecurityLoginController {
             return LoginSuccessOutputDto.builder()
                     .message("토큰이 생성 되었습니다.")
                     .result(String.valueOf(
-                            jwtTokenProvider.createToken(result.getId(),
+                            jwtTokenProvider.createToken(result.getUserId(),
                                     String.valueOf(result.getRole()))))
                     .isSuccess("성공")
                     .build();
