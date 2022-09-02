@@ -38,31 +38,30 @@ public class UserController {
     @PutMapping("/user/changePassword")
     public Optional<User> changeNewPassWord(HttpServletRequest request,
                                             @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
-//        @RequestParam(value = "userId") String userId
-        String token = jwtTokenProvider.resolveToken(request);
-        Long id = Long.valueOf(jwtTokenProvider.getUserPk(token)); // User pk를 받아옴
-        return userService.changePassword(id, userChangePwdInputDto);
+
+        String token = jwtTokenProvider.resolveToken(request); // User pk를 받아옴
+        return userService.changePassword(jwtTokenProvider.getUserId(token), userChangePwdInputDto);
     }
 
     // 회원아이디 중복검사
     @GetMapping("/users/duplicate/{userId}")
     public ResponseEntity<?> duplicateUserId(@PathVariable String userId) {
-//        @RequestParam(value = "userId") String userId
 
         if (userService.duplicateUserId(userId) == true) {
-//            return ResponseEntity.badRequest().body("사용 중인 아이디입니다.");
             throw new DuplicatedUserIdCheck();
         } else {
             return ResponseEntity.ok("사용 가능한 아이디 입니다.");
         }
+
     }
 
     // 회원정보 조회, 토큰으로 회원조회, memberId 지움
     @GetMapping("/user/get")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> findByUserId() {
-        String token = jwtTokenProvider.customResolveToken();
-        return userService.findByUserId(jwtTokenProvider.getUserPk(token));
+    public Optional<User> findByUserId(HttpServletRequest request) {
+        String token = jwtTokenProvider.resolveToken(request);
+
+        return userService.findByUserId(jwtTokenProvider.getUserId(token));
     }
 
 
@@ -74,6 +73,7 @@ public class UserController {
 
         String token = jwtTokenProvider.resolveToken(request);
         Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
+
         userService.modifyUserInfo(id, userInputDto);
     }
 

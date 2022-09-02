@@ -25,8 +25,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String BEARER_PREFIX = "Bearer ";
-
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -36,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = getToken(request);
 
         try {
+            log.info("jwtTokenProvider.validateToken(token) " + jwtTokenProvider.validateToken(token));
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
                 Authentication authentication = jwtTokenProvider.getAuthenication(token);
                 System.out.println(authentication);

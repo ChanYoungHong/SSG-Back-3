@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UserDulicateInputDto {
+    // 여기 userId는 로그인 아이디입니다.
     private String userId;
 }

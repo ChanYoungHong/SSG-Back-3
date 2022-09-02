@@ -43,7 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_pwd")
     private String userPwd;
 
-    @Column(name = "user_name",length = 100)
+    @Column(name = "user_name", length = 100)
     private String userName;
 
     @Column(name = "user_address")
@@ -74,34 +74,14 @@ public class User extends BaseEntity implements UserDetails {
 
     }
 
-    public User update(String userName, String userEmail) {
-
-        this.userName = userName;
-        this.userEmail = userEmail;
-
-        return this;
-    }
-
-
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @Builder.Default
-//    private List<String> roles = new ArrayList<>();
-
-//    @ElementCollection(fetch = FetchType.LAZY)
-//    @Builder.Default
-//    private Set<UserRole> roleSet = new HashSet<>();
-//
-//    public void addUserRole(UserRole userRole) {
-//        roleSet.add(userRole);
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        UserRole userRole = getRole();
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
+//        UserRole userRole = getRole();
+//        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(authority);
+        authorities.add(new SimpleGrantedAuthority(String.valueOf(this.role)));
 
         return authorities;
     }
@@ -116,9 +96,6 @@ public class User extends BaseEntity implements UserDetails {
         return userId;
     }
 
-    public long getPkId(){
-        return id;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

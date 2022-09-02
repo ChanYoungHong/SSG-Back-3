@@ -1,10 +1,8 @@
 package com.spharosacademy.project.SSGBack.security.controller;
 
-//import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
-
+import com.spharosacademy.project.SSGBack.security.dto.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
-import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -13,7 +11,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Log4j2
@@ -37,7 +40,7 @@ public class SecurityLoginController {
             return LoginSuccessOutputDto.builder()
                     .message("토큰이 생성 되었습니다.")
                     .result(String.valueOf(
-                            jwtTokenProvider.createToken(result.getId(),
+                            jwtTokenProvider.createToken(result.getUserId(),
                                     String.valueOf(result.getRole()))))
                     .isSuccess("성공")
                     .build();

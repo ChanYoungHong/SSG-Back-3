@@ -28,5 +28,4 @@ public class UserOutputDto {
     private LocalDateTime userBirthDate, createdAt, updatedAt;
     private Boolean userDropCheck;
 
-
 }

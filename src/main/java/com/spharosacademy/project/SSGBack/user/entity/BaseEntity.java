@@ -24,4 +24,5 @@ public abstract class BaseEntity {
     @Column(name = "updated_at")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     public LocalDateTime updatedAt;
+
 }
