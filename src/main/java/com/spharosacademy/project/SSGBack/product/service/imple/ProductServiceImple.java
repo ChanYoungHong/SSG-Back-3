@@ -557,7 +557,7 @@ public class ProductServiceImple implements ProductService {
                         .reviewImgUrl(reviewImage.getReviewImgUrl())
                         .build()));
 
-
+        List<ColorOutputDto> colorId = optionRepository.getColorId(id);
         return ResponseProductDto.builder()
                 .id(product.getId())
                 .productName(product.getName())
@@ -569,6 +569,7 @@ public class ProductServiceImple implements ProductService {
                 .mallTxt(product.getMallText())
                 .thumbnailImgUrl(product.getThumbnailUrl())
                 .sellAmount(product.getSellAmt())
+                .colorOutputDtos(colorId)
                 .reviewStatic(reviewTotalDto)
                 .someOfReview(responseProductReviewDtoList)
                 .someOfQnA(responseProductQnaDtoList)
