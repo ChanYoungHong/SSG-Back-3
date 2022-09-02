@@ -60,7 +60,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         response.setCharacterEncoding("UTF-8");
 
 
-        User user = (User)(UserDetails)(authResult.getPrincipal());
+        User user = (User)(authResult.getPrincipal());
 
 //        String userId = (String) authResult.getPrincipal();
 //        String role = String.valueOf(authResult.getAuthorities());
