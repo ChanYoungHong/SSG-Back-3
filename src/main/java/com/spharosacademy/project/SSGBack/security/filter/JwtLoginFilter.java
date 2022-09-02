@@ -4,12 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spharosacademy.project.SSGBack.security.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
+import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import io.jsonwebtoken.Jwt;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -21,11 +28,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     private  CustomUseDetailsService customUseDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
 
-    public JwtLoginFilter(String processUrl, CustomUseDetailsService customUseDetailsService, JwtTokenProvider jwtTokenProvider) {
+
+    public JwtLoginFilter(String processUrl, CustomUseDetailsService customUseDetailsService, JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
         super(new AntPathRequestMatcher(processUrl, "POST"));
         this.customUseDetailsService = customUseDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepository = userRepository;
     }
 
 
@@ -40,7 +50,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 //        Authentication user = jwtTokenProvider.getUser(userLoginDto.getUserId());
 //        jwtTokenProvider.createToken()
 //        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            log.info(userLoginDto.getUserId());
         return jwtTokenProvider.getUser(userLoginDto.getUserId());
     }
 
@@ -51,9 +60,11 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
+
 //        User user = (User) ((UserDetails) authResult.getPrincipal());
         String userId = (String) authResult.getPrincipal();
         String role = String.valueOf(authResult.getAuthorities());
+        Optional<User> result = userRepository.findByUserId(userId);
 
 
         objectMapper.writeValue(response.getWriter(),
@@ -61,6 +72,11 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                         .message("토큰이 생성 되었습니다.")
                         .isSuccess("성공")
                         .result(jwtTokenProvider.createToken(userId, role))
+                        .userEmail(result.get().getUserEmail())
+                        .userAddress(result.get().getUserAddress())
+                        .userName(result.get().getUsername())
+                        .memberType(result.get().getMemberType())
+                        .userPhoneNumber(result.get().getUserPhone())
                         .build());
 
     }

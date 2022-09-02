@@ -4,8 +4,8 @@ import com.spharosacademy.project.SSGBack.security.exception.CustomAuthenticatio
 import com.spharosacademy.project.SSGBack.security.filter.JwtFilter;
 import com.spharosacademy.project.SSGBack.security.filter.JwtLoginFilter;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
+import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
-import javax.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final CustomUseDetailsService customUseDetailsService;
     private final JwtFilter jwtFilter;
+
+    private final UserRepository userRepository;
 
     @Bean
     @Override
@@ -66,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);
         http.addFilterBefore(
-            new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider),
+            new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository),
             UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(jwtFilter,
             UsernamePasswordAuthenticationFilter.class);

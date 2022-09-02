@@ -43,11 +43,7 @@ public class SecurityLoginController {
                     jwtTokenProvider.createToken(result.getUserId(),
                         String.valueOf(result.getRole()))))
                 .isSuccess("성공")
-                .userEmail(result.getUserEmail())
-                .userAddress(result.getUserAddress())
-                .userName(result.getUsername())
-                .memberType(result.getMemberType())
-                .userPhoneNumber(result.getUserPhone())
+
                 .build();
         } else {
             throw new LoginFailException();
