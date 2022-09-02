@@ -58,8 +58,6 @@ public class ReviewController {
         return "글 삭제가 완료 되었습니다";
     }
 
-    //
-//
     // 특정 리뷰 수정
     @PutMapping("/edit")
     public String editReviewById(@RequestBody RequestUpdateReviewDto requestUpdateReviewDto)
@@ -70,8 +68,6 @@ public class ReviewController {
         return "리뷰가 정상적으로 수정되었습니다";
     }
 
-    //
-//
     //사용자가 작성한 모든 리뷰 조회하는 화면
     @GetMapping("/user/getByUserId")
     public List<ResponseUserReviewDto> getReviewByUserId() {

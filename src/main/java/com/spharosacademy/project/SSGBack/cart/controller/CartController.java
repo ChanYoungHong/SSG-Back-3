@@ -1,15 +1,15 @@
 package com.spharosacademy.project.SSGBack.cart.controller;
 
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
-import com.spharosacademy.project.SSGBack.cart.dto.Output.OrderStockOutputDto;
+import com.spharosacademy.project.SSGBack.cart.dto.Output.ChangedQtyDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartOrderRequestDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartUpdateRequestDto;
+import com.spharosacademy.project.SSGBack.cart.repository.CartRepository;
 import com.spharosacademy.project.SSGBack.cart.service.CartService;
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
-import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,7 @@ public class CartController {
 
     private final CartService cartService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CartRepository cartRepository;
 
     //장바구니 담기 클릭
     @PostMapping("/add")
@@ -38,19 +40,23 @@ public class CartController {
     }
 
     @PostMapping("/pQty/{id}")
-    public String increaseQty(@PathVariable Long id) {
+    public ResponseEntity<ChangedQtyDto> increaseQty(@PathVariable Long id) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         cartService.incQty(id, userId);
-        return "장바구니에 담으신 상품의 수량이 증가하였습니다";
+        return ResponseEntity.status(HttpStatus.OK).body(ChangedQtyDto.builder()
+                .qty(cartRepository.findById(id).get().getQty() + 1)
+                .build());
     }
 
     @PostMapping("/dQty/{id}")
-    public String decreaseQty(@PathVariable Long id){
+    public ResponseEntity<ChangedQtyDto> decreaseQty(@PathVariable Long id) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         cartService.decQty(id, userId);
-        return "장바구니에 담으신 상품의 수량이 감소하였습니다";
+        return ResponseEntity.status(HttpStatus.OK).body(ChangedQtyDto.builder()
+                .qty(cartRepository.findById(id).get().getQty() - 1)
+                .build());
     }
 
     @GetMapping("/getAll")
@@ -71,9 +77,12 @@ public class CartController {
     }
 
     @DeleteMapping("/delete/{cartId}")
-    public String deleteCart(@PathVariable Long cartId) {
-        cartService.deleteCart(cartId);
-        return "선택하신 상품이 장바구니에서 삭제되었습니다";
+    public ResponseEntity<String> deleteCart(@PathVariable Long cartId) {
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        cartService.deleteCart(cartId, userId);
+        List<CartOutputDto> cartOutputDtoList = new ArrayList<>();
+        return ResponseEntity.status(HttpStatus.OK).body("장바구니에 담으신 상품이 삭제되었습니다!");
     }
 
     @PostMapping("/order")

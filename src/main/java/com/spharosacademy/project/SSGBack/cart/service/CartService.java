@@ -19,7 +19,7 @@ public interface CartService {
 
     List<CartOutputDto> getCartByUserId(Long userId);
 
-    void deleteCart(Long cartId);
+    List<CartOutputDto> deleteCart(Long cartId, Long userId);
 
     List<OrderStockOutputDto> orderCart(CartOrderRequestDto cartOrderRequestDto, Long userId);
 

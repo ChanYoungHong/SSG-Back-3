@@ -26,11 +26,12 @@ public class OrdersController {
     // 주문 등록
     @PostMapping("/user/add")
     @ResponseStatus(HttpStatus.OK)
-    public void createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
+    public ResponseEntity<String> createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
 
         ordersService.createDirectOrder(ordersInputDto, userId);
+        return ResponseEntity.status(HttpStatus.OK).body("주문이 완로되었습니다!");
     }
 
     // 회원번호로 주문목록 조회, 회원 아이디 아님

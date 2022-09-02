@@ -46,7 +46,7 @@ public class CartServiceimple implements CartService {
 
 
     @Override
-    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
+
     public Cart addProductToCart(CartInputDto cartInputDto, Long userId) {
         //상품의 존재 여부를 판단한다
         Product product = productRepository.findById(cartInputDto.getProductId())
@@ -69,7 +69,7 @@ public class CartServiceimple implements CartService {
             if (duplicate == null) {
                 List<Long> optionId = optionRepository.getOptionId(cartInputDto.getProductId());
 
-                if (optionId.contains(cartOptionDto.getOptionId()) == false) {
+                if (!optionId.contains(cartOptionDto.getOptionId())) {
                     throw new OptionNotFoundException();
                 }
 
@@ -87,7 +87,7 @@ public class CartServiceimple implements CartService {
             } else {
 
                 List<Long> optionId = optionRepository.getOptionId(cartInputDto.getProductId());
-                if (optionId.contains(cartOptionDto.getOptionId()) == false) {
+                if (!optionId.contains(cartOptionDto.getOptionId())) {
                     throw new OptionNotFoundException();
                 }
 
@@ -288,8 +288,32 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
-    public void deleteCart(Long cartId) {
+    public List<CartOutputDto> deleteCart(Long cartId, Long userId) {
         cartRepository.deleteById(cartId);
+        List<Cart> cartList = cartRepository.findByUserId(userId);
+        List<CartOutputDto> cartOutputDtoList = new ArrayList<>();
+        cartList.forEach(cart -> {
+            cartOutputDtoList.add(CartOutputDto.builder()
+                    .id(cart.getId())
+                    .productid(cart.getProduct().getId())
+                    .productName(cart.getProduct().getName())
+                    .titleImgUrl(cart.getProduct().getThumbnailUrl())
+                    .useraddress(cart.getUser().getUserAddress())
+                    .username(cart.getUser().getUsername())
+                    .productBrand(cart.getProduct().getBrand())
+                    .price(cart.getProduct().getNewPrice())
+                    .qty(cart.getQty())
+                    .optionCartOutputDto(OptionCartOutputDto.builder()
+                            .color(optionRepository.findById(cart.getOptionId())
+                                    .orElseThrow(OptionNotFoundException::new).getColors().getName())
+                            .size(optionRepository.findById(cart.getOptionId())
+                                    .orElseThrow(OptionNotFoundException::new).getSize().getType())
+                            .build())
+                    .count(cartRepository.countByUserId(userId))
+                    .build());
+        });
+
+        return cartOutputDtoList;
     }
 
 }
