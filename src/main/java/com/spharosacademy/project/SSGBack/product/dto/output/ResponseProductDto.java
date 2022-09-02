@@ -36,6 +36,7 @@ public class ResponseProductDto {
     private float newPrice;
     private float discountRate;
     private String priceText;
+    private List<ColorOutputDto> colorOutputDtos;
     ReviewTotalDto reviewStatic;
     private Long wishId;
     //전체리뷰 중 5개만
