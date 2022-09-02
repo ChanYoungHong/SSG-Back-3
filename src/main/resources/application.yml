@@ -1,6 +1,11 @@
 #server:
 #  port: 9000
 #spring:
+#data:
+#  web:
+#    pageable:
+#      max-page-size: 2000
+#      default-page-size: 20
 #  servlet:
 #    multipart:
 #      max-file-size: 50MB
@@ -63,7 +68,7 @@ spring:
     web:
       pageable:
         max-page-size: 2000
-        default-page-size: 30
+        default-page-size: 20
   servlet:
     multipart:
       max-request-size: 500MB

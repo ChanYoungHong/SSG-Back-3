@@ -89,14 +89,46 @@ public class ProductServiceImple implements ProductService {
 
     @Override
 
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(rollbackFor = {Exception.class, OptionNotFoundException.class})
     public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile,
                               List<MultipartFile> detailFileList, List<MultipartFile> titleFileList) {
 
-            Product product = null;
+        Product product = null;
 
-        try {
-             product = productRepository.save(
+        List<OptionInputDto> optionInputDtos = new ArrayList<>();
+        for (OptionInputDto optionInputDto : requestProductDto.getOptionInputDtoList()) {
+            optionInputDtos.add(OptionInputDto.builder()
+                    .colorId(optionInputDto.getColorId())
+                    .sizeId(optionInputDto.getSizeId())
+                    .stock(optionInputDto.getStock())
+                    .build());
+        }
+
+        Product finalProduct = product;
+        optionInputDtos.forEach(optionInputDto -> {
+            if (!colorRepository.existsById(optionInputDto.getColorId()) || !sizeRepository.existsById(optionInputDto.getSizeId())) {
+                throw new OptionNotFoundException();
+            }
+            Colors colors = null;
+            if (optionInputDto.getColorId() != null) {
+                colors = colorRepository.findById(optionInputDto.getColorId()).orElseThrow(OptionNotFoundException::new);
+            }
+
+            Size size = null;
+            if (optionInputDto.getSizeId() != null) {
+                size = sizeRepository.findById(optionInputDto.getSizeId()).orElseThrow(OptionNotFoundException::new);
+            }
+
+            optionRepository.save(
+                    OptionList.builder()
+                            .stock(optionInputDto.getStock())
+                            .colors(colors)
+                            .size(size)
+                            .product(finalProduct)
+                            .build()
+            );
+
+            productRepository.save(
                     Product.builder()
                             .name(requestProductDto.getName())
                             .priceText(requestProductDto.getPriceText())
@@ -131,11 +163,7 @@ public class ProductServiceImple implements ProductService {
                             .orElseThrow(CategoryNotFoundException::new).getName())
                     .product(product)
                     .build());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-
+        });
 
         S3ProductImageDto s3ProductImageDto;
         DetailImageS3Dto detailImageS3Dto;
@@ -180,63 +208,6 @@ public class ProductServiceImple implements ProductService {
             }
         }
 
-
-        List<OptionInputDto> optionInputDtos = new ArrayList<>();
-        for (OptionInputDto optionInputDto : requestProductDto.getOptionInputDtoList()) {
-            optionInputDtos.add(OptionInputDto.builder()
-                    .colorId(optionInputDto.getColorId())
-                    .sizeId(optionInputDto.getSizeId())
-                    .stock(optionInputDto.getStock())
-                    .build());
-        }
-
-        Product finalProduct1 = product;
-        try {
-            optionInputDtos.forEach(optionInputDto -> {
-                Colors colors = null;
-                if (optionInputDto.getColorId() != null) {
-                    colors = colorRepository.findById(optionInputDto.getColorId()).orElseThrow(OptionNotFoundException::new);
-                }
-
-                Size size = null;
-                if (optionInputDto.getSizeId() != null) {
-                    size = sizeRepository.findById(optionInputDto.getSizeId()).orElseThrow(OptionNotFoundException::new);
-                }
-
-                optionRepository.save(
-                        OptionList.builder()
-                                .stock(optionInputDto.getStock())
-                                .colors(colors)
-                                .size(size)
-                                .product(finalProduct1)
-                                .build()
-                );
-
-
-            });
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        Product finalProduct = product;
-        requestProductDto.getInputDetailImgDtoList().forEach
-                (createDetailImgDto -> productDetailImgRepository.save(
-                        ProductDetailImage.builder()
-                                .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
-                                .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
-                                .product(finalProduct)
-                                .build()
-                ));
-
-
-        requestProductDto.getInputTitleImgDtoList().forEach
-                (createTitleImgDto -> productTitleImgRepository.save(
-                        ProductTitleImage.builder()
-                                .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
-                                .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
-                                .product(finalProduct)
-                                .build()));
 
         return product;
 

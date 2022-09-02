@@ -6,7 +6,9 @@ import com.spharosacademy.project.SSGBack.cart.entity.Cart;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartOrderRequestDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.OptionOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 
 import java.util.List;
@@ -25,7 +27,9 @@ public interface CartService {
 
     void updateCart(CartUpdateRequestDto cartUpdateRequestDto);
 
-    List<OptionList> getOptionByProduct(Long productId);
+    List<ColorOutputDto> getColorByCart(Long cartId);
+
+    List<SizeOutputDto> getSizeByCart(Long cartId, Long colorId);
 
     void incQty(Long id, Long userId);
 

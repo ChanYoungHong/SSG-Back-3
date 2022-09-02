@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class CartUpdateRequestDto {
 
     private Long cartId;
-    private Long colorId;
-    private Long sizeId;
+    private Long optionId;
 }
