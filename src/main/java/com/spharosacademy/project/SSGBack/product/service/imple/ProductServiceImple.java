@@ -84,8 +84,8 @@ public class ProductServiceImple implements ProductService {
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
     private final RecentWatchProductRepository recentWatchProductRepository;
-    private final S3UploaderService s3UploaderService;
     private final RecentWatchQueryRepository recentWatchQueryRepository;
+    private final S3UploaderService s3UploaderService;
 
     @Override
 
@@ -209,6 +209,33 @@ public class ProductServiceImple implements ProductService {
         }
 
 
+        Product finalProduct1 = product;
+        try {
+            optionInputDtos.forEach(optionInputDto -> {
+                Colors colors = null;
+                if (optionInputDto.getColorId() != null) {
+                    colors = colorRepository.findById(optionInputDto.getColorId()).orElseThrow(OptionNotFoundException::new);
+                }
+
+                Size size = null;
+                if (optionInputDto.getSizeId() != null) {
+                    size = sizeRepository.findById(optionInputDto.getSizeId()).orElseThrow(OptionNotFoundException::new);
+                }
+
+                optionRepository.save(
+                        OptionList.builder()
+                                .stock(optionInputDto.getStock())
+                                .colors(colors)
+                                .size(size)
+                                .product(finalProduct1)
+                                .build()
+                );
+
+
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return product;
 
     }
