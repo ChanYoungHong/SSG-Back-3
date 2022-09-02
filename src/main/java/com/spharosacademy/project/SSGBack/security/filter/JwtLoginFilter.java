@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spharosacademy.project.SSGBack.security.dto.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
-import com.spharosacademy.project.SSGBack.user.dto.response.LoginSuccessOutputDto;
-import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
