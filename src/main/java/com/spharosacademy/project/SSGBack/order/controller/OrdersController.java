@@ -28,9 +28,8 @@ public class OrdersController {
     @ResponseStatus(HttpStatus.OK)
     public void createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
         String token = jwtTokenProvider.customResolveToken();
-        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
 
-        ordersService.createDirectOrder(ordersInputDto, userId);
+        ordersService.createDirectOrder(ordersInputDto, Long.valueOf(jwtTokenProvider.getUserPk(token)));
     }
 
     // 회원번호로 주문목록 조회, 회원 아이디 아님
