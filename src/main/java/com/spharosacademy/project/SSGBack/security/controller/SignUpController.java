@@ -21,7 +21,7 @@ public class SignUpController {
     private final SignUpService signUpService;
     private final UserService userService;
 
-    // 사용자 회원 로그인
+    // 사용자 회원가입
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> addUser(@RequestBody UserInputDto userInputDto) {

@@ -30,8 +30,6 @@ public class RequestProductDto {
     private int categoryMId;
     private int categoryLId;
 
-    List<InputDetailImgDto> inputDetailImgDtoList;
-    List<InputTitleImgDto> inputTitleImgDtoList;
     List<OptionInputDto> optionInputDtoList;
 
 }

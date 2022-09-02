@@ -34,7 +34,7 @@ public class UserInputDto {
 
     @NotBlank(message = "이름을 입력해주세요.")
     @Pattern(regexp = "^[가-힣]+", message = "이름을 정확히 입력하여주십시오.")
-    private String userName;
+    private String name;
 
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     @NotBlank(message = "이메일을 입력해주세요.")

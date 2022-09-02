@@ -18,17 +18,17 @@ public class OAuthAttributes {
 
     private Map<String, Object> attributes; // OAuth2 반환하는 유저 정보 Map
     private String nameAttributeKey;
-    private String userName;
+    private String name;
     private String userEmail;
     private String mobile;
     private UserRole role;
 
     private String picture;
 
-    public OAuthAttributes(Map<String, Object> attributes,String picture ,String nameAttributeKey, String userName, String userEmail, String mobile, UserRole role) {
+    public OAuthAttributes(Map<String, Object> attributes,String picture ,String nameAttributeKey, String name, String userEmail, String mobile, UserRole role) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
-        this.userName = userName;
+        this.name = name;
         this.userEmail = userEmail;
         this.mobile = mobile;
         this.role = role;
@@ -52,7 +52,7 @@ public class OAuthAttributes {
         log.info("naver response : " + response);
 
         return OAuthAttributes.builder()
-                .userName(String.valueOf(response.get("name")))
+                .name(String.valueOf(response.get("name")))
                 .userEmail(String.valueOf(response.get("email")))
                 .mobile(String.valueOf(response.get("mobile")))
                 .attributes(response)
@@ -68,7 +68,7 @@ public class OAuthAttributes {
 
 
         return OAuthAttributes.builder()
-            .userName((String) kakaoProfile.get("nickname"))
+            .name((String) kakaoProfile.get("nickname"))
             .userEmail((String) kakaoAccount.get("email"))
             .picture((String) kakaoProfile.get("profile_image_url"))
             .attributes(attributes)
@@ -78,7 +78,7 @@ public class OAuthAttributes {
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-            .userName(String.valueOf(attributes.get("name")))
+            .name(String.valueOf(attributes.get("name")))
             .userEmail(String.valueOf(attributes.get("email")))
             .mobile(String.valueOf(attributes.get("mobile")))
             .attributes(attributes)
@@ -88,7 +88,7 @@ public class OAuthAttributes {
 
     public User toEntity() {
         return User.builder()
-            .userName(userName)
+            .name(getName())
             .userEmail(userEmail)
             .userPhone(mobile)
             .role(UserRole.ROLE_SOCIAL)

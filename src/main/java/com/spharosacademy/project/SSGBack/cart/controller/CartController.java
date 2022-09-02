@@ -12,6 +12,8 @@ import com.spharosacademy.project.SSGBack.cart.service.CartService;
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -111,9 +113,15 @@ public class CartController {
         return cartService.getCartByUserId(userId);
     }
 
-    @GetMapping("/getOptionList/{productId}")
-    public List<OptionList> getOptionByProduct(@PathVariable Long productId) {
-        return cartService.getOptionByProduct(productId);
+    //옵션 변경하기 선택했을 때 색상을 먼저
+    @GetMapping("/color/{cartId}")
+    public List<ColorOutputDto> getColorByCart(@PathVariable Long cartId) {
+        return cartService.getColorByCart(cartId);
+    }
+
+    @GetMapping("/size/{cartId}/{colorId}")
+    public List<SizeOutputDto> getSizeByCart(@PathVariable Long cartId, @PathVariable Long colorId) {
+        return cartService.getSizeByCart(cartId, colorId);
     }
 
     @DeleteMapping("/delete/{cartId}")
@@ -157,9 +165,34 @@ public class CartController {
     }
 
     @PutMapping("/update")
-    public String updateCart(@RequestBody CartUpdateRequestDto cartUpdateRequestDto) {
+    public ResponseEntity<CartOutputDto> updateCart(@RequestBody CartUpdateRequestDto cartUpdateRequestDto) {
+        String token = jwtTokenProvider.customResolveToken();
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
         cartService.updateCart(cartUpdateRequestDto);
-        return "장바구니 상품 옵션이 변경되었습니다";
+        Cart cart = cartRepository.findById(cartUpdateRequestDto.getCartId()).get();
+
+        return ResponseEntity.status(HttpStatus.OK).body(CartOutputDto.builder()
+                .id(cart.getId())
+                .productid(cart.getProduct().getId())
+                .productName(cart.getProduct().getName())
+                .titleImgUrl(cart.getProduct().getThumbnailUrl())
+                .useraddress(cart.getUser().getUserAddress())
+                .username(cart.getUser().getUsername())
+                .productBrand(cart.getProduct().getBrand())
+                .newprice(cart.getProduct().getNewPrice())
+                .oldprice(cart.getProduct().getOldPrice())
+                .stock(optionRepository.findById(cart.getOptionId()).get().getStock())
+                .qty(cart.getQty())
+                .optionCartOutputDto(OptionCartOutputDto.builder()
+                        .color(optionRepository.findById(cart.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getColors().getName())
+                        .size(optionRepository.findById(cart.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getSize().getType())
+                        .optionId(optionRepository.findById(cart.getOptionId())
+                                .orElseThrow(OptionNotFoundException::new).getId())
+                        .build())
+                .count(cartRepository.countByUserId(userId))
+                .build());
     }
 
     @ExceptionHandler(OutOfStockException.class)

@@ -32,7 +32,7 @@ public class SingUpServiceImpl implements SignUpService {
                         .userId(userInputDto.getUserId())
                         .userPwd(passwordEncoder.encode(userInputDto.getUserPwd()))
                         .userAddress(userInputDto.getUserAddress())
-                        .userName(userInputDto.getUserName())
+                        .name(userInputDto.getName())
                         .userEmail(userInputDto.getUserEmail())
                         .role(UserRole.ROLE_USER)
                         .userPhone(userInputDto.getUserPhoneNumber())

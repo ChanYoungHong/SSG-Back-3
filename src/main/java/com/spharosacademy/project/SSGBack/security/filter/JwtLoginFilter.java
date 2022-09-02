@@ -1,7 +1,7 @@
 package com.spharosacademy.project.SSGBack.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spharosacademy.project.SSGBack.security.dto.LoginSuccessOutputDto;
+import com.spharosacademy.project.SSGBack.security.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -10,9 +10,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

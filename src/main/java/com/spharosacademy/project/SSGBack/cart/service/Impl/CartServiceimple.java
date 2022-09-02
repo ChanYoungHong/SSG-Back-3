@@ -17,6 +17,8 @@ import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundExceptio
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
+import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
@@ -186,13 +188,12 @@ public class CartServiceimple implements CartService {
     public void updateCart(CartUpdateRequestDto cartUpdateRequestDto) {
         Cart cart = cartRepository.findById(cartUpdateRequestDto.getCartId())
                 .orElseThrow(ProductNotFoundException::new);
-
+        OptionList optionList = optionRepository.findById(cartUpdateRequestDto.getOptionId()).get();
         cartRepository.save(Cart.builder()
                 .id(cartUpdateRequestDto.getCartId())
-                .colorId(cartUpdateRequestDto.getColorId())
-                .sizeId(cartUpdateRequestDto.getSizeId())
-                .optionId(optionRepository.findByColors_IdAndSize_Id(cartUpdateRequestDto.getColorId(),
-                        cartUpdateRequestDto.getSizeId()).getId())
+                .colorId(optionList.getColors().getId())
+                .sizeId(optionList.getSize().getId())
+                .optionId(optionList.getId())
                 .user(cart.getUser())
                 .product(cart.getProduct())
                 .qty(cart.getQty())
@@ -200,8 +201,15 @@ public class CartServiceimple implements CartService {
     }
 
     @Override
-    public List<OptionList> getOptionByProduct(Long productId) {
-        return optionRepository.findByProductId(productId);
+    public List<ColorOutputDto> getColorByCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).get();
+        return optionRepository.getColorId(cart.getProduct().getId());
+    }
+
+    @Override
+    public List<SizeOutputDto> getSizeByCart(Long cartId, Long colorId) {
+        Cart cart = cartRepository.findById(cartId).get();
+        return optionRepository.getSizeId(cart.getProduct().getId(), colorId);
     }
 
     @Override

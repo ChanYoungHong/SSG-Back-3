@@ -13,4 +13,5 @@ public class OptionCartOutputDto {
 
     private String color;
     private String size;
+    private Long optionId;
 }

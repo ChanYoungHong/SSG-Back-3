@@ -13,7 +13,7 @@ public interface UserService {
 
     Optional<User> findByUserId(String userId);
 
-    void modifyUserInfo(Long id, UserInputDto userInputDto);
+    void modifyUserInfo(String userId, UserInputDto userInputDto);
 
     User removeUserInfo(Long id, UserOutputDto userOutputDto);
 

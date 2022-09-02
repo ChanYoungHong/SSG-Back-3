@@ -172,26 +172,27 @@ public class ProductServiceImple implements ProductService {
 
 
         Product finalProduct = product;
-        requestProductDto.getInputDetailImgDtoList().forEach
-                (createDetailImgDto -> productDetailImgRepository.save(
-                        ProductDetailImage.builder()
-                                .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
-                                .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
-                                .product(finalProduct)
-                                .build()
-                ));
-
-
-        requestProductDto.getInputTitleImgDtoList().forEach
-                (createTitleImgDto -> productTitleImgRepository.save(
-                        ProductTitleImage.builder()
-                                .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
-                                .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
-                                .product(finalProduct)
-                                .build()));
+//        requestProductDto.getInputDetailImgDtoList().forEach
+//                (createDetailImgDto -> productDetailImgRepository.save(
+//                        ProductDetailImage.builder()
+//                                .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
+//                                .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
+//                                .product(finalProduct)
+//                                .build()
+//                ));
+//
+//
+//        requestProductDto.getInputTitleImgDtoList().forEach
+//                (createTitleImgDto -> productTitleImgRepository.save(
+//                        ProductTitleImage.builder()
+//                                .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
+//                                .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
+//                                .product(finalProduct)
+//                                .build()));
+//
+//        return product;
 
         return product;
-
     }
 
     @Override

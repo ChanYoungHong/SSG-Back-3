@@ -38,11 +38,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyUserInfo(Long id, UserInputDto userInputDto) {
+    public void modifyUserInfo(String userId, UserInputDto userInputDto) {
 
         Optional<User> result = Optional.ofNullable(
-            userRepository.findById(id)
+            userRepository.findByUserId(userId)
                 .orElseThrow(MemberIdNotfound::new));
+
+        Optional<User> user = userRepository.findById(result.get().getId());
 
         List<UserEditInputDto> userEditInputDtoList = new ArrayList<>();
 
@@ -59,12 +61,12 @@ public class UserServiceImpl implements UserService {
             userEditInputDtoList.forEach(userEditInputDto -> {
                 userRepository.save(
                     User.builder()
-                        .id(id)
+                        .id(user.get().getId())
                         .userId(result.get().getUserId())
                         .userPwd(result.get().getUserPwd())
                         .userAddress(userEditInputDto.getUserAddress())
                         .userPhone(userEditInputDto.getUserPhoneNumber())
-                        .userName(result.get().getUsername())
+                        .name(result.get().getName())
                         .role(result.get().getRole())
                         .userDropCheck(result.get().getUserDropCheck())
                         .userEmail(userEditInputDto.getUserEmail())
@@ -110,7 +112,7 @@ public class UserServiceImpl implements UserService {
                     .userPwd(passwordEncoder.encode(userChangePwdInputDto.getUserPwd()))
                     .userAddress(user.get().getUserAddress())
                     .userPhone(user.get().getUserPhone())
-                    .userName(user.get().getUsername())
+                    .name(user.get().getName())
                     .role(user.get().getRole())
                     .userDropCheck(user.get().getUserDropCheck())
                     .userEmail(user.get().getUserEmail())

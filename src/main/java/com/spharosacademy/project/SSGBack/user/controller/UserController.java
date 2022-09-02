@@ -12,6 +12,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("")
@@ -72,9 +74,8 @@ public class UserController {
                                @RequestBody UserInputDto userInputDto) {
 
         String token = jwtTokenProvider.resolveToken(request);
-        Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
 
-        userService.modifyUserInfo(id, userInputDto);
+        userService.modifyUserInfo(jwtTokenProvider.getUserId(token), userInputDto);
     }
 
     // 회원 탈퇴, 삭제 + 토큰으로 삭제하기 memberId 지움

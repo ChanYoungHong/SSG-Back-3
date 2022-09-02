@@ -43,8 +43,8 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_pwd")
     private String userPwd;
 
-    @Column(name = "user_name", length = 100)
-    private String userName;
+    @Column(name = "name", length = 100)
+    private String name;
 
     @Column(name = "user_address")
     private String userAddress;
@@ -67,9 +67,9 @@ public class User extends BaseEntity implements UserDetails {
     private String fromSocial;
 
 
-    public User(String userName, String userEmail) {
+    public User(String name, String userEmail) {
 
-        this.userName = userName;
+        this.name = name;
         this.userEmail = userEmail;
 
     }

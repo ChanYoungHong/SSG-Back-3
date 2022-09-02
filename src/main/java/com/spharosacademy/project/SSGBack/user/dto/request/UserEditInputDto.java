@@ -14,4 +14,6 @@ public class UserEditInputDto {
     private String userPhoneNumber;
     private String userEmail;
     private String userAddress;
+    private String userName;
+
 }

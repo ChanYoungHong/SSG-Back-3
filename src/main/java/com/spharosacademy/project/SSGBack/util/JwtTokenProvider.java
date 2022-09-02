@@ -78,7 +78,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
     public String getUserId(String token) {
 
-        return userRepository.findById(Long.valueOf(getUserPk(token))).get().getUserId();
+        return userRepository.findById(Long.valueOf(getUserPk(token))).get().getUsername();
     }
 
     // 토큰에서 회원 정보 추출
