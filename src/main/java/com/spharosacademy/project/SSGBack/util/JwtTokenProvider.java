@@ -48,8 +48,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public String createToken(String userId, String role) {
 
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
-        Claims claims = Jwts.claims().setSubject(
-            String.valueOf(userRepository.findByUserId(userId).get().getId()));
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userRepository.findByUserId(userId).get().getId()));
         claims.put("role", role);
         Date now = new Date();
 
@@ -101,10 +100,11 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
     public boolean validateToken(String jwtToken) {
 
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-        return !claims.getBody().getExpiration().before(new Date());
         // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
         // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        return !claims.getBody().getExpiration().before(new Date());
+
     }
 
     @Override
