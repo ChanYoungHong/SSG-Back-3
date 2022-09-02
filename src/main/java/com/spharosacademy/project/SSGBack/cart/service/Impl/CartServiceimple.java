@@ -206,7 +206,6 @@ public class CartServiceimple implements CartService {
 
     @Override
     public void incQty(Long id, Long userId) {
-        List<Cart> cartList = cartRepository.findByUserId(userId);
 
         Cart cart = cartRepository.findById(id).orElseThrow(CartNotFoundException::new);
         cartRepository.save(Cart.builder()
@@ -247,7 +246,8 @@ public class CartServiceimple implements CartService {
                 .useraddress(cart.getUser().getUserAddress())
                 .username(cart.getUser().getUsername())
                 .productBrand(cart.getProduct().getBrand())
-                .price(cart.getProduct().getNewPrice())
+                .newprice(cart.getProduct().getNewPrice())
+                .oldprice(cart.getProduct().getOldPrice())
                 .optionCartOutputDto(OptionCartOutputDto.builder()
                         .color(optionRepository.findById(cart.getOptionId())
                                 .orElseThrow(OptionNotFoundException::new).getColors().getName())
@@ -273,7 +273,9 @@ public class CartServiceimple implements CartService {
                     .useraddress(cart.getUser().getUserAddress())
                     .username(cart.getUser().getUsername())
                     .productBrand(cart.getProduct().getBrand())
-                    .price(cart.getProduct().getNewPrice())
+                    .newprice(cart.getProduct().getNewPrice())
+                    .oldprice(cart.getProduct().getOldPrice())
+                    .stock(optionRepository.findById(cart.getOptionId()).get().getStock())
                     .qty(cart.getQty())
                     .optionCartOutputDto(OptionCartOutputDto.builder()
                             .color(optionRepository.findById(cart.getOptionId())
@@ -301,7 +303,8 @@ public class CartServiceimple implements CartService {
                     .useraddress(cart.getUser().getUserAddress())
                     .username(cart.getUser().getUsername())
                     .productBrand(cart.getProduct().getBrand())
-                    .price(cart.getProduct().getNewPrice())
+                    .newprice(cart.getProduct().getNewPrice())
+                    .oldprice(cart.getProduct().getOldPrice())
                     .qty(cart.getQty())
                     .optionCartOutputDto(OptionCartOutputDto.builder()
                             .color(optionRepository.findById(cart.getOptionId())

@@ -59,6 +59,11 @@
 #    includes: oauth
 
 spring:
+  data:
+    web:
+      pageable:
+        max-page-size: 2000
+        default-page-size: 30
   servlet:
     multipart:
       max-request-size: 500MB

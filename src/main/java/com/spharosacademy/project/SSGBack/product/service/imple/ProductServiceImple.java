@@ -245,16 +245,23 @@ public class ProductServiceImple implements ProductService {
     @Override
     public Page<OutputSearchProductDto> searchProductByWord(String query, Long userid, Pageable pageable) {
         Page<Product> productPage = productRepository.searchBysearchWord(query, pageable);
+        User user = null;
         if (productPage.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
         }
         Long recentId = recentWatchQueryRepository.existsByUserAndQuery(userid, query);
-        if (recentId == null) {
-            recentWatchQueryRepository.save(RecentWatchQuery.builder()
-                    .user(userRepository.findById(userid).orElseThrow(UserNotFoundException::new))
-                    .query(query)
-                    .build());
+        if (userid != -1) {
+            if (recentId == null) {
+                recentWatchQueryRepository.save(RecentWatchQuery.builder()
+                        .user(userRepository.findById(userid).orElseThrow(UserNotFoundException::new))
+                        .query(query)
+                        .build());
+            }
+        } else {
+            user = null;
+
         }
+
 
         return productPage.map(product -> {
             ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());

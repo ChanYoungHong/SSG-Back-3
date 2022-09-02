@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
 import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
+
 import java.util.List;
 
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -29,7 +30,6 @@ public class OrdersController {
     public ResponseEntity<String> createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
         String token = jwtTokenProvider.customResolveToken();
         Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
-
         ordersService.createDirectOrder(ordersInputDto, userId);
         return ResponseEntity.status(HttpStatus.OK).body("주문이 완로되었습니다!");
     }
@@ -61,7 +61,7 @@ public class OrdersController {
     }
 
     @ExceptionHandler(OutOfStockException.class)
-    public ResponseEntity<String> handleOufOfStockException(OutOfStockException exception){
+    public ResponseEntity<String> handleOufOfStockException(OutOfStockException exception) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 }
