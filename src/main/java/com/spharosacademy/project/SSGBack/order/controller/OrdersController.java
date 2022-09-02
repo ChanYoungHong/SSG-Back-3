@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.order.dto.response.OrdersOutputDto;
 import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.order.exception.OutOfStockException;
 import com.spharosacademy.project.SSGBack.order.service.OrdersService;
+
 import java.util.List;
 
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -26,10 +27,11 @@ public class OrdersController {
     // 주문 등록
     @PostMapping("/user/add")
     @ResponseStatus(HttpStatus.OK)
-    public void createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
+    public ResponseEntity<String> createDirectOrder(@RequestBody OrdersInputDto ordersInputDto) {
         String token = jwtTokenProvider.customResolveToken();
-
-        ordersService.createDirectOrder(ordersInputDto, Long.valueOf(jwtTokenProvider.getUserPk(token)));
+        Long userId = Long.valueOf(jwtTokenProvider.getUserPk(token));
+        ordersService.createDirectOrder(ordersInputDto, userId);
+        return ResponseEntity.status(HttpStatus.OK).body("주문이 완로되었습니다!");
     }
 
     // 회원번호로 주문목록 조회, 회원 아이디 아님
@@ -59,7 +61,7 @@ public class OrdersController {
     }
 
     @ExceptionHandler(OutOfStockException.class)
-    public ResponseEntity<String> handleOufOfStockException(OutOfStockException exception){
+    public ResponseEntity<String> handleOufOfStockException(OutOfStockException exception) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
 }

@@ -3,6 +3,7 @@ package com.spharosacademy.project.SSGBack.product.service.imple;
 import com.spharosacademy.project.SSGBack.category.entity.*;
 import com.spharosacademy.project.SSGBack.category.exception.CategoryNotFoundException;
 import com.spharosacademy.project.SSGBack.category.repository.*;
+import com.spharosacademy.project.SSGBack.order.exception.OrderedProductNotFound;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputDetailImgDto;
 import com.spharosacademy.project.SSGBack.product.Image.dto.output.OutputTitleImgDto;
 import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
@@ -87,46 +88,54 @@ public class ProductServiceImple implements ProductService {
     private final RecentWatchQueryRepository recentWatchQueryRepository;
 
     @Override
-    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
+
+    @Transactional(rollbackFor = {Exception.class})
     public Product addProduct(RequestProductDto requestProductDto, MultipartFile multipartFile,
                               List<MultipartFile> detailFileList, List<MultipartFile> titleFileList) {
 
-        Product product = productRepository.save(
-                Product.builder()
-                        .name(requestProductDto.getName())
-                        .sellAmt(requestProductDto.getSellAmount())
-                        .priceText(requestProductDto.getPriceText())
-                        .mallText(requestProductDto.getMallTxt())
-                        .oldPrice(requestProductDto.getOldPrice())
-                        .discountRate(requestProductDto.getDiscountRate())
-                        .newPrice(requestProductDto.getOldPrice() * (1 - requestProductDto.getDiscountRate()))
-                        .brand(requestProductDto.getBrand())
-                        .sellAmt(requestProductDto.getSellAmount())
-                        .explanation(requestProductDto.getExplanation())
-                        .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
-                                .orElseThrow(CategoryNotFoundException::new))
-                        .build()
-        );
+            Product product = null;
 
-        categoryProductListRepository.save(CategoryProductList.builder()
-                .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
-                        .orElseThrow(ProductNotFoundException::new))
-                .categoryS(categorySRepository.findById(requestProductDto.getCategorySId())
-                        .orElseThrow(CategoryNotFoundException::new))
-                .categoryM(categoryMRepository.findById(requestProductDto.getCategoryMId())
-                        .orElseThrow(CategoryNotFoundException::new))
-                .categoryL(categoryLRepository.findById(requestProductDto.getCategoryLId())
-                        .orElseThrow(CategoryNotFoundException::new))
-                .Lname(categoryLRepository.findById(requestProductDto.getCategoryLId())
-                        .orElseThrow(CategoryNotFoundException::new).getName())
-                .Mname(categoryMRepository.findById(requestProductDto.getCategoryMId())
-                        .orElseThrow(CategoryNotFoundException::new).getName())
-                .Sname(categorySRepository.findById(requestProductDto.getCategorySId())
-                        .orElseThrow(CategoryNotFoundException::new).getName())
-                .SSname(categorySSRepository.findById(requestProductDto.getCategorySSId())
-                        .orElseThrow(CategoryNotFoundException::new).getName())
-                .product(product)
-                .build());
+        try {
+             product = productRepository.save(
+                    Product.builder()
+                            .name(requestProductDto.getName())
+                            .priceText(requestProductDto.getPriceText())
+                            .mallText(requestProductDto.getMallTxt())
+                            .oldPrice(requestProductDto.getOldPrice())
+                            .discountRate(requestProductDto.getDiscountRate())
+                            .newPrice(requestProductDto.getOldPrice() * (1 - requestProductDto.getDiscountRate()))
+                            .brand(requestProductDto.getBrand())
+                            .sellAmt(requestProductDto.getSellAmount())
+                            .explanation(requestProductDto.getExplanation())
+                            .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
+                                    .orElseThrow(CategoryNotFoundException::new))
+                            .build()
+            );
+
+            categoryProductListRepository.save(CategoryProductList.builder()
+                    .categorySS(categorySSRepository.findById(requestProductDto.getCategorySSId())
+                            .orElseThrow(ProductNotFoundException::new))
+                    .categoryS(categorySRepository.findById(requestProductDto.getCategorySId())
+                            .orElseThrow(CategoryNotFoundException::new))
+                    .categoryM(categoryMRepository.findById(requestProductDto.getCategoryMId())
+                            .orElseThrow(CategoryNotFoundException::new))
+                    .categoryL(categoryLRepository.findById(requestProductDto.getCategoryLId())
+                            .orElseThrow(CategoryNotFoundException::new))
+                    .Lname(categoryLRepository.findById(requestProductDto.getCategoryLId())
+                            .orElseThrow(CategoryNotFoundException::new).getName())
+                    .Mname(categoryMRepository.findById(requestProductDto.getCategoryMId())
+                            .orElseThrow(CategoryNotFoundException::new).getName())
+                    .Sname(categorySRepository.findById(requestProductDto.getCategorySId())
+                            .orElseThrow(CategoryNotFoundException::new).getName())
+                    .SSname(categorySSRepository.findById(requestProductDto.getCategorySSId())
+                            .orElseThrow(CategoryNotFoundException::new).getName())
+                    .product(product)
+                    .build());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
 
         S3ProductImageDto s3ProductImageDto;
         DetailImageS3Dto detailImageS3Dto;
@@ -181,44 +190,52 @@ public class ProductServiceImple implements ProductService {
                     .build());
         }
 
-        optionInputDtos.forEach(optionInputDto -> {
-            Colors colors = null;
-            if (optionInputDto.getColorId() != null) {
-                colors = colorRepository.findById(optionInputDto.getColorId())
-                        .orElseThrow(OptionNotFoundException::new);
-            }
+        Product finalProduct1 = product;
+        try {
+            optionInputDtos.forEach(optionInputDto -> {
+                Colors colors = null;
+                if (optionInputDto.getColorId() != null) {
+                    colors = colorRepository.findById(optionInputDto.getColorId()).orElseThrow(OptionNotFoundException::new);
+                }
 
-            Size size = null;
-            if (optionInputDto.getSizeId() != null) {
-                size = sizeRepository.findById(optionInputDto.getSizeId())
-                        .orElseThrow(OptionNotFoundException::new);
-            }
+                Size size = null;
+                if (optionInputDto.getSizeId() != null) {
+                    size = sizeRepository.findById(optionInputDto.getSizeId()).orElseThrow(OptionNotFoundException::new);
+                }
 
-            optionRepository.save(
-                    OptionList.builder()
-                            .stock(optionInputDto.getStock())
-                            .colors(colors)
-                            .size(size)
-                            .product(product)
-                            .build()
-            );
-        });
+                optionRepository.save(
+                        OptionList.builder()
+                                .stock(optionInputDto.getStock())
+                                .colors(colors)
+                                .size(size)
+                                .product(finalProduct1)
+                                .build()
+                );
 
+
+            });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        Product finalProduct = product;
         requestProductDto.getInputDetailImgDtoList().forEach
                 (createDetailImgDto -> productDetailImgRepository.save(
                         ProductDetailImage.builder()
                                 .productDetailImgUrl(createDetailImgDto.getDetailImgUrl())
                                 .productDetailImgTxt(createDetailImgDto.getDetailImgTxt())
-                                .product(product)
+                                .product(finalProduct)
                                 .build()
                 ));
+
 
         requestProductDto.getInputTitleImgDtoList().forEach
                 (createTitleImgDto -> productTitleImgRepository.save(
                         ProductTitleImage.builder()
                                 .productTitleImgUrl(createTitleImgDto.getTitleImgUrl())
                                 .productTitleImgTxt(createTitleImgDto.getTitleImgTxt())
-                                .product(product)
+                                .product(finalProduct)
                                 .build()));
 
         return product;
@@ -228,16 +245,23 @@ public class ProductServiceImple implements ProductService {
     @Override
     public Page<OutputSearchProductDto> searchProductByWord(String query, Long userid, Pageable pageable) {
         Page<Product> productPage = productRepository.searchBysearchWord(query, pageable);
+        User user = null;
         if (productPage.isEmpty()) {
             System.out.println("검색 결과가 없습니다");
         }
         Long recentId = recentWatchQueryRepository.existsByUserAndQuery(userid, query);
-        if (recentId == null){
-            recentWatchQueryRepository.save(RecentWatchQuery.builder()
-                    .user(userRepository.findById(userid).get())
-                    .query(query)
-                    .build());
+        if (userid != -1) {
+            if (recentId == null) {
+                recentWatchQueryRepository.save(RecentWatchQuery.builder()
+                        .user(userRepository.findById(userid).orElseThrow(UserNotFoundException::new))
+                        .query(query)
+                        .build());
+            }
+        } else {
+            user = null;
+
         }
+
 
         return productPage.map(product -> {
             ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(product.getId());
@@ -273,14 +297,12 @@ public class ProductServiceImple implements ProductService {
 
     @Override
     public List<ColorOutputDto> getProductColor(Long id) {
-        List<ColorOutputDto> colorList = optionRepository.getColorId(id);
-        return colorList;
+        return optionRepository.getColorId(id);
     }
 
     @Override
     public List<SizeOutputDto> getProductSize(Long productId, Long colorId) {
-        List<SizeOutputDto> sizeAndStock = optionRepository.getSizeId(productId, colorId);
-        return sizeAndStock;
+        return optionRepository.getSizeId(productId, colorId);
     }
 
     @Override
@@ -388,7 +410,7 @@ public class ProductServiceImple implements ProductService {
         ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(id);
 
         Long duplicate;
-        Long wishId = null;
+        Long wishId;
 
         if (userid != -1) {
             duplicate = wishListRepository.findByUserIdAndProductId(userid, id);
@@ -421,17 +443,17 @@ public class ProductServiceImple implements ProductService {
     @Override
     public ResponseProductDto getByProductId(Long id, Long userid) {
         Long duplicate;
-        Long wishId = null;
+        Long wishId;
 
         User user = null;
         //회원이 상품을 조회한 경우
         if (userid != -1) {
             Long recentProductId = recentWatchProductRepository.findByUserIdAndProductId(userid, id);
-            User users = userRepository.findById(userid).get();
+            User users = userRepository.findById(userid).orElseThrow(UserNotFoundException::new);
             if (recentProductId == null) {
                 recentWatchProductRepository.save(RecentWatchProduct.builder()
                         .user(users)
-                        .product(productRepository.findById(id).get())
+                        .product(productRepository.findById(id).orElseThrow(ProductNotFoundException::new))
                         .build());
             }
             user = userRepository.findById(userid).orElseThrow(UserNotFoundException::new);
@@ -559,11 +581,10 @@ public class ProductServiceImple implements ProductService {
 
         List<ReviewImage> reviewImageList = reviewImageRepository.findFirst8ByProductId(id);
         List<ResponseProductReviewImageDto> responseProductReviewImageDtos = new ArrayList<>();
-        reviewImageList.forEach(reviewImage -> {
-            responseProductReviewImageDtos.add(ResponseProductReviewImageDto.builder()
-                    .reviewImgUrl(reviewImage.getReviewImgUrl())
-                    .build());
-        });
+        reviewImageList.forEach(reviewImage ->
+                responseProductReviewImageDtos.add(ResponseProductReviewImageDto.builder()
+                        .reviewImgUrl(reviewImage.getReviewImgUrl())
+                        .build()));
 
 
         return ResponseProductDto.builder()

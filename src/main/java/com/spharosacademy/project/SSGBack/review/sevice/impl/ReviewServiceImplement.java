@@ -3,8 +3,8 @@ package com.spharosacademy.project.SSGBack.review.sevice.impl;
 import com.spharosacademy.project.SSGBack.order.exception.OrderIdNotFound;
 import com.spharosacademy.project.SSGBack.orderlist.entity.OrderList;
 import com.spharosacademy.project.SSGBack.orderlist.repo.OrderListRepository;
-import com.spharosacademy.project.SSGBack.product.Image.entity.ProductDetailImage;
 import com.spharosacademy.project.SSGBack.product.entity.Product;
+import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.ProductNotFoundException;
 import com.spharosacademy.project.SSGBack.product.exception.UserNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
@@ -16,7 +16,6 @@ import com.spharosacademy.project.SSGBack.review.dto.input.RequestUpdateReviewDt
 import com.spharosacademy.project.SSGBack.review.dto.output.OutputReviewImgDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseProductReviewDto;
 import com.spharosacademy.project.SSGBack.review.dto.output.ResponseUserReviewDto;
-import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
 import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.exception.AlreadyExistReviewException;
 import com.spharosacademy.project.SSGBack.review.exception.NotOrderProductException;
@@ -30,6 +29,7 @@ import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -49,6 +49,7 @@ public class ReviewServiceImplement implements ReviewService {
     private final S3UploaderService s3UploaderService;
 
     @Override
+    @Transactional(rollbackFor = {NullPointerException.class, IllegalArgumentException.class})
     public void addReview(RequestReviewDto requestReviewDto, List<MultipartFile> multipartFileList, Long userId) {
 
         OrderList orderList = orderListRepository.findById(requestReviewDto.getOrderDetailId())
@@ -61,10 +62,10 @@ public class ReviewServiceImplement implements ReviewService {
         List<Long> userReview = reviewRepository.getOrderId(userId);
 
         List<Long> orderLists = orderListRepository.getOrderId(userId);
-        if (orderLists.contains(requestReviewDto.getOrderDetailId()) == false) {
+        if (!orderLists.contains(requestReviewDto.getOrderDetailId())) {
             throw new OrderIdNotFound();
         }
-        if (userReview.contains(requestReviewDto.getOrderDetailId()) == true) {
+        if (userReview.contains(requestReviewDto.getOrderDetailId())) {
             throw new AlreadyExistReviewException();
         }
 
@@ -114,9 +115,9 @@ public class ReviewServiceImplement implements ReviewService {
                         .reviewImgTxt(reviewImage.getReviewImgTxt())
                         .build());
             }
-            ReviewTotalDto reviewTotalDto = reviewRepository.collectByProductId(productId);
-            OrderList detail = orderListRepository.findById(review.getOrderDetailId()).get();
-            OptionList optionList = optionRepository.findById(detail.getOptionId()).get();
+
+            OrderList detail = orderListRepository.findById(review.getOrderDetailId()).orElseThrow(OrderIdNotFound::new);
+            OptionList optionList = optionRepository.findById(detail.getOptionId()).orElseThrow(OptionNotFoundException::new);
             responseProductReviewDtos.add(ResponseProductReviewDto.builder()
                     .reviewId(review.getId())
                     .orderDetailId(review.getOrderDetailId())
