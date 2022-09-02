@@ -74,7 +74,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                         .result(jwtTokenProvider.createToken(userId, role))
                         .userEmail(result.get().getUserEmail())
                         .userAddress(result.get().getUserAddress())
-                        .userName(result.get().getUsername())
+                        .name(result.get().getName())
                         .memberType(result.get().getMemberType())
                         .userPhoneNumber(result.get().getUserPhone())
                         .build());

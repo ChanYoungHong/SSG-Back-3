@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
+import com.spharosacademy.project.SSGBack.user.exception.NotVerifyPassword;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 
@@ -15,17 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -36,8 +27,21 @@ public class UserController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //비밀번호 검증
+    @PostMapping("/user/verify/password/{userId}")
+    public ResponseEntity<?> verifyPassword(@PathVariable String userId,
+                               @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
+
+
+        if(userService.verifyPassword(userId, userChangePwdInputDto) == true){
+            return ResponseEntity.ok("비밀번호 검증이 완료되었습니다.");
+        } else {
+            throw new NotVerifyPassword();
+        }
+    }
+
     // 비밀번호 변경
-    @PutMapping("/user/changePassword")
+    @PutMapping("/user/change/password")
     public Optional<User> changeNewPassWord(HttpServletRequest request,
                                             @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
 
