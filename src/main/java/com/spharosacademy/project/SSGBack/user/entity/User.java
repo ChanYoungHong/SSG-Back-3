@@ -1,6 +1,7 @@
 package com.spharosacademy.project.SSGBack.user.entity;
 
 
+import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,7 +85,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return userPwd;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.spharosacademy.project.SSGBack.security.dto.response.LoginUnSuccessfu
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.exception.NotMatchPassword;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import java.io.IOException;
@@ -15,9 +16,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -27,15 +30,20 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     private CustomUseDetailsService customUseDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public JwtLoginFilter(String processUrl, CustomUseDetailsService customUseDetailsService,
-                          JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+    public JwtLoginFilter(@Lazy String processUrl,
+                          @Lazy CustomUseDetailsService customUseDetailsService,
+                          @Lazy JwtTokenProvider jwtTokenProvider,
+                          @Lazy UserRepository userRepository,
+                          @Lazy PasswordEncoder passwordEncoder) {
 
         super(new AntPathRequestMatcher(processUrl, "POST"));
         this.customUseDetailsService = customUseDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -43,7 +51,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response)
         throws AuthenticationException, IOException, ServletException {
-        System.out.println("JwtLoginFilter의 attemptAuthentication 들어옴");
         ObjectMapper objectMapper = new ObjectMapper();
         UserLoginDto userLoginDto = objectMapper.readValue(request.getReader(), UserLoginDto.class);
 
@@ -60,26 +67,44 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                                             Authentication authResult)
         throws IOException, ServletException {
 
+
+//        JsonFactory jsonFactory = new JsonFactory();
+//        jsonFactory.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+////        jsonFactory.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+//        ObjectMapper mapper = new ObjectMapper(jsonFactory);
+//        UserLoginDto userLoginDto = mapper.readValue(request.getReader(), UserLoginDto.class); //
+
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
         String userId = (String) authResult.getPrincipal();
         String role = String.valueOf(authResult.getAuthorities());
-        Optional<User> result = userRepository.findByUserId(userId);
+//        String token = request.getHeader("Authorization"); // 토큰
+//
 
+        Optional<User> user = userRepository.findByUserId(userId);
+        String rawPwd = (String) authResult.getCredentials();
+        log.info("rawPwd @@@@@@@@@@@@@@@@@@@@@@@" + rawPwd);
+        System.out.println(rawPwd);
 
-        objectMapper.writeValue(response.getWriter(),
-            LoginSuccessOutputDto.builder()
-                .message("토큰이 생성 되었습니다.")
-                .isSuccess("성공")
-                .result(jwtTokenProvider.createToken(userId, role))
-                .userEmail(result.get().getUserEmail())
-                .userAddress(result.get().getUserAddress())
-                .name(result.get().getName())
-                .memberType(result.get().getMemberType())
-                .userPhoneNumber(result.get().getUserPhone())
-                .build());
+        if (passwordEncoder.matches(rawPwd, user.get().getPassword())) {
+
+            objectMapper.writeValue(response.getWriter(),
+                LoginSuccessOutputDto.builder()
+                    .message("토큰이 생성 되었습니다.")
+                    .isSuccess("성공")
+                    .result(jwtTokenProvider.createToken(userId, role))
+                    .userEmail(user.get().getUserEmail())
+                    .userAddress(user.get().getUserAddress())
+                    .name(user.get().getName())
+                    .memberType(user.get().getMemberType())
+                    .userPhoneNumber(user.get().getUserPhone())
+                    .build());
+
+        } else {
+            throw new NotMatchPassword();
+        }
 
     }
 

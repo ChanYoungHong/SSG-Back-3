@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,14 +27,28 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @Configuration
 @Log4j2
-@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider,
+                          CorsFilter corsFilter,
+                          @Lazy CustomUseDetailsService customUseDetailsService,
+                          @Lazy JwtFilter jwtFilter,
+                          @Lazy UserRepository userRepository,
+                          @Lazy PasswordEncoder passwordEncoder) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.corsFilter = corsFilter;
+        this.customUseDetailsService = customUseDetailsService;
+        this.jwtFilter = jwtFilter;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     private final JwtTokenProvider jwtTokenProvider;
     private final CorsFilter corsFilter;
     private final CustomUseDetailsService customUseDetailsService;
     private final JwtFilter jwtFilter;
-
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     @Override
@@ -68,7 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);
         http.addFilterBefore(
-            new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository),
+            new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository,
+                passwordEncoder),
             UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(jwtFilter,
             UsernamePasswordAuthenticationFilter.class);

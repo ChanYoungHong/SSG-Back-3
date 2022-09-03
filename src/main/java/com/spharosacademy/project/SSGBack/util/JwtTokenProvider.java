@@ -1,6 +1,9 @@
 package com.spharosacademy.project.SSGBack.util;
 
+import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
+import com.spharosacademy.project.SSGBack.user.exception.NotMatchPassword;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
+import com.spharosacademy.project.SSGBack.user.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -9,19 +12,20 @@ import java.util.Base64;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-@RequiredArgsConstructor
 @Component
 @Slf4j
 public class JwtTokenProvider implements AuthenticationProvider {
@@ -31,11 +35,43 @@ public class JwtTokenProvider implements AuthenticationProvider {
     // 유효시간 1시간
     private long tokenValidTime = 360000000000000L;
 
-    // 유효시간 30일
+    private CustomUseDetailsService customUseDetailsService;
+    private PasswordEncoder passwordEncoder;
+    private  UserDetailsService userDetailsService;
+    private  UserRepository userRepository;
+    private  UserService userService;
+
+    @Autowired
+    public JwtTokenProvider(
+        CustomUseDetailsService customUseDetailsService,
+        PasswordEncoder passwordEncoder,
+        UserDetailsService userDetailsService,
+        UserRepository userRepository,
+        UserService userService) {
+
+        this.customUseDetailsService = customUseDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
+        this.userService = userService;
+    }
+
+    public JwtTokenProvider(UserDetails userDetails) {
+
+    }
+// 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
 
-    private final UserDetailsService userDetailsService;
-    private final UserRepository userRepository;
+
+//    public JwtTokenProvider(
+//        @Lazy  UserDetailsService userDetailsService,
+//        @Lazy  UserRepository userRepository,
+//        @Lazy UserService userService) {
+//
+//        this.userDetailsService = userDetailsService;
+//        this.userRepository = userRepository;
+//        this.userService = userService;
+//    }
 
     // secretKey를 Base64로 인코딩하는 것.
 
@@ -48,7 +84,8 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public String createToken(String userId, String role) {
 
         // JWT payload에 저장되는 정보단위, 여기서 user를 식별하는 값을 넣는다.
-        Claims claims = Jwts.claims().setSubject(String.valueOf(userRepository.findByUserId(userId).get().getId()));
+        Claims claims = Jwts.claims()
+            .setSubject(String.valueOf(userRepository.findByUserId(userId).get().getId()));
         claims.put("role", role);
         Date now = new Date();
 
@@ -62,7 +99,6 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthenication(String token) {
-        log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserId(token));
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
@@ -71,13 +107,11 @@ public class JwtTokenProvider implements AuthenticationProvider {
     // String id 안에 hcy9883 유저 아이디 들어있음.
     public Authentication getUser(String id) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(id);
-        System.out.println(userDetailsService.loadUserByUsername(id));
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
     }
 
     public String getUserId(String token) {
-
         return userRepository.findById(Long.valueOf(getUserPk(token))).get().getUsername();
     }
 
@@ -110,7 +144,19 @@ public class JwtTokenProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication)
         throws AuthenticationException {
-        return null;
+
+//        String userId = (String) authentication.getPrincipal();
+//        String rawPwd = (String) authentication.getCredentials();
+//
+//        UserDetails userDetails = customUseDetailsService.loadUserByUsername(userId);
+//
+//
+//        if(!passwordEncoder.matches(rawPwd, userDetails.getPassword())){
+//            throw new NotMatchPassword();
+//        }
+//
+//        return (Authentication) new JwtTokenProvider(userDetails);
+        return authentication;
     }
 
     @Override

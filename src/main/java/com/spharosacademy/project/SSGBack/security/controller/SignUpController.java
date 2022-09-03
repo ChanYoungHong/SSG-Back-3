@@ -25,7 +25,6 @@ public class SignUpController {
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> addUser(@RequestBody UserInputDto userInputDto) {
-
         User registerUser = signUpService.registerUser(userInputDto);
         return ResponseEntity.ok().body("회원가입 되었습니다.");
     }
