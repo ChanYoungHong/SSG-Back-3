@@ -96,4 +96,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
+    @ExceptionHandler(NotVerifyPassword.class)
+    public ResponseEntity<String> NotVerifyPasswordException(NotVerifyPassword exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
 }

@@ -2,9 +2,12 @@ package com.spharosacademy.project.SSGBack.security.controller;
 
 import com.spharosacademy.project.SSGBack.security.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
+import com.spharosacademy.project.SSGBack.user.service.UserService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,26 +31,31 @@ public class SecurityLoginController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @PostMapping("/login")
     public LoginSuccessOutputDto loginUser(
         @RequestBody UserLoginDto userLoginDto) {
 
-        User result = userRepository.findByUserId(userLoginDto.getUserId())
-            .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userId입니다."));
+        UserChangePwdInputDto userChangePwdInputDto = new UserChangePwdInputDto();
 
-        if (passwordEncoder.matches(userLoginDto.getUserPwd(), result.getUserPwd())) {
-            return LoginSuccessOutputDto.builder()
-                .message("토큰이 생성 되었습니다.")
-                .result(String.valueOf(
-                    jwtTokenProvider.createToken(result.getUserId(),
-                        String.valueOf(result.getRole()))))
-                .isSuccess("성공")
+        User user = userRepository.findByUserId(userLoginDto.getUserId()).orElseThrow(
+            UserIdNotFound::new);
 
-                .build();
-        } else {
-            throw new LoginFailException();
-        }
+        boolean userPwd = userService.verifyPassword(userLoginDto.getUserId(), userChangePwdInputDto);
+
+//        if (passwordEncoder.matches(userLoginDto.getUserPwd(), user.getUserPwd())) {
+//            return LoginSuccessOutputDto.builder()
+//                .message("토큰이 생성 되었습니다.")
+//                .result(String.valueOf(
+//                    jwtTokenProvider.createToken(user.getUserId(),
+//                        String.valueOf(user.getRole()))))
+//                .isSuccess("성공")
+//                .build();
+//        } else {
+//            throw new LoginFailException();
+//        }
+        return null;
     }
 
     @ExceptionHandler(LoginFailException.class)
