@@ -44,6 +44,9 @@ import com.spharosacademy.project.SSGBack.review.entity.Review;
 import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
+//import com.spharosacademy.project.SSGBack.s3.dto.DetailImageS3Dto;
+//import com.spharosacademy.project.SSGBack.s3.dto.S3ProductImageDto;
+//import com.spharosacademy.project.SSGBack.s3.service.S3UploaderService;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.wishlist.repository.WishListRepository;
@@ -81,6 +84,7 @@ public class ProductServiceImple implements ProductService {
     private final WishListRepository wishListRepository;
     private final UserRepository userRepository;
     private final RecentWatchProductRepository recentWatchProductRepository;
+//    private final S3UploaderService s3UploaderService;
     private final RecentWatchQueryRepository recentWatchQueryRepository;
 
     @Override
@@ -193,6 +197,7 @@ public class ProductServiceImple implements ProductService {
 //        return product;
 
         return product;
+
     }
 
     @Override
