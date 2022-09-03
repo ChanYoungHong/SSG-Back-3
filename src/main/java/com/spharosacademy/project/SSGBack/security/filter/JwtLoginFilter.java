@@ -23,6 +23,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Slf4j
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
+
     private CustomUseDetailsService customUseDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
@@ -30,6 +31,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     public JwtLoginFilter(String processUrl, CustomUseDetailsService customUseDetailsService,
                           JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+
         super(new AntPathRequestMatcher(processUrl, "POST"));
         this.customUseDetailsService = customUseDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -57,13 +59,11 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                                             HttpServletResponse response, FilterChain chain,
                                             Authentication authResult)
         throws IOException, ServletException {
-        System.out.println("JwtLoginFilter의 successfulAuthentication 들어옴");
+
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-
-//        User user = (User) ((UserDetails) authResult.getPrincipal());
         String userId = (String) authResult.getPrincipal();
         String role = String.valueOf(authResult.getAuthorities());
         Optional<User> result = userRepository.findByUserId(userId);
@@ -88,7 +88,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                                               HttpServletResponse response,
                                               AuthenticationException failed)
         throws IOException, ServletException {
-        System.out.println("JwtLoginFilter의 unsuccessfulAuthentication 들어옴");
+
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

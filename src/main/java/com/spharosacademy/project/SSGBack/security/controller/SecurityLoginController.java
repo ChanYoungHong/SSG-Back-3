@@ -28,38 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SecurityLoginController {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
-
     @PostMapping("/login")
-    public LoginSuccessOutputDto loginUser(
-        @RequestBody UserLoginDto userLoginDto) {
-
-        UserChangePwdInputDto userChangePwdInputDto = new UserChangePwdInputDto();
-
-        User user = userRepository.findByUserId(userLoginDto.getUserId()).orElseThrow(
-            UserIdNotFound::new);
-
-        boolean userPwd = userService.verifyPassword(userLoginDto.getUserId(), userChangePwdInputDto);
-
-//        if (passwordEncoder.matches(userLoginDto.getUserPwd(), user.getUserPwd())) {
-//            return LoginSuccessOutputDto.builder()
-//                .message("토큰이 생성 되었습니다.")
-//                .result(String.valueOf(
-//                    jwtTokenProvider.createToken(user.getUserId(),
-//                        String.valueOf(user.getRole()))))
-//                .isSuccess("성공")
-//                .build();
-//        } else {
-//            throw new LoginFailException();
-//        }
-        return null;
+    public void loginUser() {
     }
 
-    @ExceptionHandler(LoginFailException.class)
-    public ResponseEntity<String> handleLoginFailException(LoginFailException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-    }
 }

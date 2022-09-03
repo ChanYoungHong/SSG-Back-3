@@ -28,11 +28,7 @@ public class CustomUseDetailsService implements UserDetailsService {
     // UserDetails를 가져오기 위한 DAO다
     @Override                             // String id - 여기서 가져 올 것은 sub의 id값, 원래는 String username이라 명시되어 있음.
     public UserDetails loadUserByUsername(String id)  {
-
         Optional<User> result = userRepository.findByUserId(id);
-//        Optional<User> result2 = userRepository.findById(Long.valueOf(id));
-
-        System.out.println(result);
 
         if (result.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
