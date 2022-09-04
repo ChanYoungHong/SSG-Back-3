@@ -12,6 +12,8 @@ import java.util.Base64;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -145,18 +147,17 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication)
         throws AuthenticationException {
 
-//        String userId = (String) authentication.getPrincipal();
-//        String rawPwd = (String) authentication.getCredentials();
-//
-//        UserDetails userDetails = customUseDetailsService.loadUserByUsername(userId);
-//
-//
-//        if(!passwordEncoder.matches(rawPwd, userDetails.getPassword())){
-//            throw new NotMatchPassword();
-//        }
-//
-//        return (Authentication) new JwtTokenProvider(userDetails);
-        return authentication;
+        String userId = (String) authentication.getPrincipal();
+        String rawPwd = (String) authentication.getCredentials();
+
+        UserDetails userDetails = customUseDetailsService.loadUserByUsername(userId);
+        log.info(rawPwd+ "@@@@@@@@@@@@@@@@@@@");
+        System.out.println(rawPwd+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        if(!passwordEncoder.matches(rawPwd, userDetails.getPassword())){
+            throw new NotMatchPassword();
+        }
+
+        return (Authentication) new JwtTokenProvider(userDetails);
     }
 
     @Override

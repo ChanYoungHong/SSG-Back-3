@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.security.exception.LoginFailException;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
+import com.spharosacademy.project.SSGBack.user.exception.NotVerifyPassword;
 import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @Log4j2
 @CrossOrigin
@@ -31,5 +34,4 @@ public class SecurityLoginController {
     @PostMapping("/login")
     public void loginUser() {
     }
-
 }
