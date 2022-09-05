@@ -9,4 +9,8 @@ public interface RecentWatchService {
     List<ResponseRecentProductDto> getAllRecentProduct(Long userId);
 
     List<ResponseRecentQueryDto> getAllRecentQuery(Long userId);
+
+    void deleteProduct(Long id, Long userId);
+
+    void deleteQuery(Long id, Long userId);
 }

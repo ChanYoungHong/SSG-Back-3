@@ -14,4 +14,5 @@ public interface RecentWatchQueryRepository extends JpaRepository<RecentWatchQue
 
     @Query(value = "select r.id from RecentWatchQuery r where r.user.id =:userId and r.query =:query")
     Long existsByUserAndQuery(Long userId, String query);
+
 }

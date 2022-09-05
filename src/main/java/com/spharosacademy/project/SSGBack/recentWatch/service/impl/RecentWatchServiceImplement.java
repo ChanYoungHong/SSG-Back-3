@@ -34,22 +34,22 @@ public class RecentWatchServiceImplement implements RecentWatchService {
                 if (wishListRepository.findByUserIdAndProductId(userId, product.getId()) == null) {
                     Long wId = null;
                     responseRecentProductDtos.add(ResponseRecentProductDto.builder()
-                            .brand(product.getBrand())
-                            .mall(product.getMallText())
-                            .price(product.getNewPrice())
-                            .productId(product.getId())
+                            .productBrand(product.getBrand())
+                            .mallTxt(product.getMallText())
+                            .newPrice(product.getNewPrice())
+                            .id(product.getId())
                             .productName(product.getName())
-                            .productThumbnailImgUrl(product.getThumbnailUrl())
+                            .thumbnailImgUrl(product.getThumbnailUrl())
                             .wishId(wId)
                             .build());
                 } else {
                     responseRecentProductDtos.add(ResponseRecentProductDto.builder()
-                            .brand(product.getBrand())
-                            .mall(product.getMallText())
-                            .price(product.getNewPrice())
-                            .productId(product.getId())
+                            .productBrand(product.getBrand())
+                            .mallTxt(product.getMallText())
+                            .newPrice(product.getNewPrice())
+                            .id(product.getId())
                             .productName(product.getName())
-                            .productThumbnailImgUrl(product.getThumbnailUrl())
+                            .thumbnailImgUrl(product.getThumbnailUrl())
                             .wishId(wishListRepository.findByUserIdAndProductId(userId, product.getId()))
                             .build());
                 }
@@ -59,12 +59,12 @@ public class RecentWatchServiceImplement implements RecentWatchService {
             watchProductList.forEach(recentWatchProduct -> {
                 Product product = productRepository.findById(recentWatchProduct.getProduct().getId()).get();
                 responseRecentProductDtos.add(ResponseRecentProductDto.builder()
-                        .brand(product.getBrand())
-                        .mall(product.getMallText())
-                        .price(product.getNewPrice())
-                        .productId(product.getId())
+                        .productBrand(product.getBrand())
+                        .mallTxt(product.getMallText())
+                        .newPrice(product.getNewPrice())
+                        .id(product.getId())
                         .productName(product.getName())
-                        .productThumbnailImgUrl(product.getThumbnailUrl())
+                        .thumbnailImgUrl(product.getThumbnailUrl())
                         .wishId(wishId)
                         .build());
             });
@@ -76,5 +76,15 @@ public class RecentWatchServiceImplement implements RecentWatchService {
     public List<ResponseRecentQueryDto> getAllRecentQuery(Long userId) {
         List<ResponseRecentQueryDto> recentQueryDtoList = recentWatchQueryRepository.getByUserId(userId);
         return recentQueryDtoList;
+    }
+
+    @Override
+    public void deleteProduct(Long id, Long userId) {
+        recentWatchProductRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteQuery(Long id, Long userId) {
+        recentWatchQueryRepository.deleteById(id);
     }
 }

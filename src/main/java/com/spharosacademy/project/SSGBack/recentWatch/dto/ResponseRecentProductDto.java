@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseRecentProductDto {
 
-    private Long productId;
+    private Long id;
     private String productName;
-    private String productThumbnailImgUrl;
-    private float price;
-    private String mall;
-    private String brand;
+    private String thumbnailImgUrl;
+    private float newPrice;
+    private String mallTxt;
+    private String productBrand;
     private Long wishId;
 }

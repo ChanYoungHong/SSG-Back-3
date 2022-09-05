@@ -2,6 +2,8 @@ package com.spharosacademy.project.SSGBack.wishlist.service.impl;
 
 import com.spharosacademy.project.SSGBack.product.entity.Product;
 import com.spharosacademy.project.SSGBack.product.repo.ProductRepository;
+import com.spharosacademy.project.SSGBack.review.dto.output.ReviewTotalDto;
+import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.wishlist.dto.output.ResponseWishListDto;
@@ -23,6 +25,7 @@ public class WishListServiceImplement implements WishListService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final WishListRepository wishListRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public void addProduct(RequestWishListDto requestWishListDto, Long userId) {
@@ -30,10 +33,13 @@ public class WishListServiceImplement implements WishListService {
         Optional<User> user = userRepository.findById(userId);
 
         if (product.isPresent() && user.isPresent()) {
-            wishListRepository.save(WishList.builder()
-                    .product(product.get())
-                    .user(user.get())
-                    .build());
+            if (wishListRepository.findByUserIdAndProductId(userId, requestWishListDto.getProductId()) == null) {
+                wishListRepository.save(WishList.builder()
+                        .product(product.get())
+                        .user(user.get())
+                        .build());
+            }
+
         }
     }
 
@@ -46,7 +52,10 @@ public class WishListServiceImplement implements WishListService {
             responseWishListDtos.add(ResponseWishListDto.builder()
                     .productId(wishList.getProduct().getId())
                     .productName(wishList.getProduct().getName())
-                    .price(wishList.getProduct().getNewPrice())
+                    .newPrice(wishList.getProduct().getNewPrice())
+                    .oldPrice(wishList.getProduct().getOldPrice())
+                    .wishId(wishList.getId())
+                    .reviewTotalDto(reviewRepository.collectByProductId(wishList.getProduct().getId()))
                     .brand(wishList.getProduct().getBrand())
                     .mallTxt(wishList.getProduct().getMallText())
                     .priceTxt(wishList.getProduct().getPriceText())
