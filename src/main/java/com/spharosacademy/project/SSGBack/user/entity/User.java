@@ -44,7 +44,7 @@ public class User extends BaseEntity implements UserDetails {
     private String userPwd;
 
     @Column(name = "user_name", length = 100)
-    private String userName;
+    private String name;
 
     @Column(name = "user_address")
     private String userAddress;
@@ -69,7 +69,7 @@ public class User extends BaseEntity implements UserDetails {
 
     public User(String userName, String userEmail) {
 
-        this.userName = userName;
+        this.name = userName;
         this.userEmail = userEmail;
 
     }

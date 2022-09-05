@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
                         .userPwd(result.get().getUserPwd())
                         .userAddress(userEditInputDto.getUserAddress())
                         .userPhone(userEditInputDto.getUserPhoneNumber())
-                        .userName(result.get().getUsername())
+                        .name(result.get().getName())
                         .role(result.get().getRole())
                         .userDropCheck(result.get().getUserDropCheck())
                         .userEmail(userEditInputDto.getUserEmail())
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
                     .userPwd(passwordEncoder.encode(userChangePwdInputDto.getUserPwd()))
                     .userAddress(user.get().getUserAddress())
                     .userPhone(user.get().getUserPhone())
-                    .userName(user.get().getUsername())
+                    .name(user.get().getName())
                     .role(user.get().getRole())
                     .userDropCheck(user.get().getUserDropCheck())
                     .userEmail(user.get().getUserEmail())
@@ -120,5 +120,32 @@ public class UserServiceImpl implements UserService {
             );
         }
         return user;
+    }
+
+    @Override
+    public boolean verifyPassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
+        Optional<User> user = userRepository.findByUserId(userId);
+
+        if (user.isPresent() &&
+                passwordEncoder.matches(userChangePwdInputDto.getUserPwd(), user.get().getUserPwd())) {
+
+            User.builder()
+                    .id(user.get().getId())
+                    .userId(user.get().getUserId())
+                    .userPwd(passwordEncoder.encode(userChangePwdInputDto.getUserPwd()))
+                    .userAddress(user.get().getUserAddress())
+                    .userPhone(user.get().getUserPhone())
+                    .name(user.get().getName())
+                    .role(user.get().getRole())
+                    .userDropCheck(user.get().getUserDropCheck())
+                    .userEmail(user.get().getUserEmail())
+                    .memberType(user.get().getMemberType())
+                    .build();
+
+            return true;
+        } else {
+
+            return false;
+        }
     }
 }

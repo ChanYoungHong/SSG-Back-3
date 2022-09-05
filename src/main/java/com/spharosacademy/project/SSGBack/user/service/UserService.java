@@ -19,4 +19,6 @@ public interface UserService {
 
     Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
 
+    boolean verifyPassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
+
 }

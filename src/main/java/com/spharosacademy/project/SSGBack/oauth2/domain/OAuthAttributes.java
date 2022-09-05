@@ -88,7 +88,7 @@ public class OAuthAttributes {
 
     public User toEntity() {
         return User.builder()
-            .userName(userName)
+            .name(userName)
             .userEmail(userEmail)
             .userPhone(mobile)
             .role(UserRole.ROLE_SOCIAL)

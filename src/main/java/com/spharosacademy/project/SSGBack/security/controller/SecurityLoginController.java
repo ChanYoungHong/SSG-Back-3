@@ -25,32 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SecurityLoginController {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @PostMapping("/login")
-    public LoginSuccessOutputDto loginUser(
-            @RequestBody UserLoginDto userLoginDto) {
+    public void loginUser(){
 
-        User result = userRepository.findByUserId(userLoginDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 userId입니다."));
-
-        if (passwordEncoder.matches(userLoginDto.getUserPwd(), result.getUserPwd())) {
-            return LoginSuccessOutputDto.builder()
-                    .message("토큰이 생성 되었습니다.")
-                    .result(String.valueOf(
-                            jwtTokenProvider.createToken(result.getUserId(),
-                                    String.valueOf(result.getRole()))))
-                    .isSuccess("성공")
-                    .build();
-        } else {
-            throw new LoginFailException();
-        }
     }
 
-    @ExceptionHandler(LoginFailException.class)
-    public ResponseEntity<String> handleLoginFailException(LoginFailException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
-    }
 }
