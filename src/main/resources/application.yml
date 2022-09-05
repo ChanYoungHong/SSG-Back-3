@@ -1,5 +1,5 @@
-#server:
-#  port: 9000
+server:
+  port: 8080
 #spring:
 #  servlet:
 #    multipart:
@@ -49,6 +49,7 @@ api:
   naver:
     client_id: yMLNmzMmwJfV81HW82NF
     client_secret: HDdhF9HBBG
+
   kakao:
     client_id: 389b73fe882b1f88e4efd7b0372ac800
 
@@ -93,3 +94,12 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: 'false'
+
+sms:
+  senderPhone: 01036699883
+  serviceId: ncp:sms:kr:291731081252:ssg
+  accessKey: crj2Y2dosCMKfs7kNIMC
+  secretKey: 5AjZPRf8vjalFhoDFieM6HZctTC7tAIqp3mfMkc6
+
+
+

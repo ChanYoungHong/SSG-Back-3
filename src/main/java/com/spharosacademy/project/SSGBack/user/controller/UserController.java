@@ -53,7 +53,7 @@ public class UserController {
     @GetMapping("/users/duplicate/{userId}")
     public ResponseEntity<?> duplicateUserId(@PathVariable String userId) {
 
-        if (userService.duplicateUserId(userId) == true) {
+        if (userService.duplicateUserId(userId)) {
             throw new DuplicatedUserIdCheck();
         } else {
             return ResponseEntity.ok("사용 가능한 아이디 입니다.");

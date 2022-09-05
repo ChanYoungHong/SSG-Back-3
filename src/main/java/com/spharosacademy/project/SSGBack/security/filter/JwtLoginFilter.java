@@ -25,8 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -37,20 +41,26 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
     private CustomUseDetailsService customUseDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper mapper;
 
 
     public JwtLoginFilter(@Lazy String processUrl,
                           @Lazy CustomUseDetailsService customUseDetailsService,
                           @Lazy JwtTokenProvider jwtTokenProvider,
                           @Lazy UserRepository userRepository,
-                          @Lazy PasswordEncoder passwordEncoder) {
+                          @Lazy PasswordEncoder passwordEncoder,
+                          ObjectMapper mapper,
+                          UserDetailsService userDetailsService) {
 
         super(new AntPathRequestMatcher(processUrl, "POST"));
         this.customUseDetailsService = customUseDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mapper = mapper;
+        this.userDetailsService = userDetailsService;
     }
 
 
@@ -58,17 +68,33 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        UserLoginDto userLoginDto = objectMapper.readValue(request.getReader(), UserLoginDto.class);
+
+        UserLoginDto userLoginDto = mapper.readValue(request.getReader(), UserLoginDto.class);
+
+//        String userId = userLoginDto.getUserId();
+
+//        Optional<User> user = userRepository.findByUserId(userId);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userLoginDto.getUserId());
+
+        if (!passwordEncoder.matches(userLoginDto.getUserPwd(), userDetails.getPassword())) {
+            throw new BadCredentialsException("비밀번호가 일치하지않습니다.");
+        }
+
+        return new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities());
+
 
 //        UserDetails userDetails = customUseDetailsService.loadUserByUsername(userLoginDto.getUserId());
 //        Authentication user = jwtTokenProvider.getUser(userLoginDto.getUserId());
 //        jwtTokenProvider.createToken()
 //        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        return jwtTokenProvider.getUser(userLoginDto.getUserId());
+
+//        return jwtTokenProvider.getUser(userLoginDto.getUserId());
     }
 
-    @Override
+
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response, FilterChain chain,
                                             Authentication authResult)
@@ -79,7 +105,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
 ////        jsonFactory.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
 //        ObjectMapper mapper = new ObjectMapper(jsonFactory);
 
-        ObjectMapper mapper = new ObjectMapper();
 //        mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
 //        mapper.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
 //        mapper.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
@@ -89,34 +114,28 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
 
 //        UserLoginDto userLoginDto = mapper.readValue(request.getReader(), UserLoginDto.class);
 
+        UserDetails userDetails = (UserDetails) authResult.getPrincipal();
+        User user = (User) userDetails;
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                jwtTokenProvider.createToken(userDetails.getUsername(), String.valueOf(userDetails.getAuthorities())),
+                null,
+                userDetails.getAuthorities());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-
-        String userId = (String) authResult.getPrincipal();
-        String role = String.valueOf(authResult.getAuthorities());
-
-        Optional<User> user = userRepository.findByUserId(userId);
-
-//        if (passwordEncoder.matches(userLoginDto.getUserId(), user.get().getPassword())) {
-
-            mapper.writeValue(response.getWriter(),
-                    LoginSuccessOutputDto.builder()
-                            .message("토큰이 생성 되었습니다.")
-                            .isSuccess("성공")
-                            .result(jwtTokenProvider.createToken(userId, role))
-                            .userEmail(user.get().getUserEmail())
-                            .userAddress(user.get().getUserAddress())
-                            .name(user.get().getName())
-                            .memberType(user.get().getMemberType())
-                            .userPhoneNumber(user.get().getUserPhone())
-                            .build());
-
-//        } else {
-//            throw new NotMatchPassword();
-//        }
-
+        mapper.writeValue(response.getWriter(),
+                LoginSuccessOutputDto.builder()
+                        .message("토큰이 생성 되었습니다.")
+                        .isSuccess("성공")
+                        .result((String) authenticationToken.getPrincipal())
+                        .userEmail(user.getUserEmail())
+                        .userAddress(user.getUserAddress())
+                        .name(user.getName())
+                        .memberType(user.getMemberType())
+                        .userPhoneNumber(user.getUserPhone())
+                        .build());
     }
 
     @Override
@@ -125,12 +144,11 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
                                               AuthenticationException failed)
             throws IOException, ServletException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(400);
 
-        objectMapper.writeValue(response.getWriter(),
+        mapper.writeValue(response.getWriter(),
                 LoginUnSuccessfulOutputDto.builder()
                         .isSuccess("로그인을 실패했습니다.")
                         .message("아이디 혹은 비밀번호를 다시 확인해주세요.")
