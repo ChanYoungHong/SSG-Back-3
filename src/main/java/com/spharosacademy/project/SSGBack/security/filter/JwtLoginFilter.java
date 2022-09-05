@@ -90,7 +90,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
 //        Authentication user = jwtTokenProvider.getUser(userLoginDto.getUserId());
 //        jwtTokenProvider.createToken()
 //        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
 //        return jwtTokenProvider.getUser(userLoginDto.getUserId());
     }
 
@@ -148,7 +147,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
         response.setCharacterEncoding("UTF-8");
         response.setStatus(400);
 
-        mapper.writeValue(response.getWriter(),
+        objectMapper.writeValue(response.getWriter(),
                 LoginUnSuccessfulOutputDto.builder()
                         .isSuccess("로그인을 실패했습니다.")
                         .message("아이디 혹은 비밀번호를 다시 확인해주세요.")
