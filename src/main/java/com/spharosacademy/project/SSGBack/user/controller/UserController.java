@@ -5,6 +5,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
+import com.spharosacademy.project.SSGBack.user.exception.NotMatchPassword;
 import com.spharosacademy.project.SSGBack.user.exception.NotVerifyPassword;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
@@ -30,7 +31,6 @@ public class UserController {
     public ResponseEntity<?> verifyPassword(@PathVariable String userId,
                                             @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
 
-
         if(userService.verifyPassword(userId, userChangePwdInputDto) == true){
             return ResponseEntity.ok("비밀번호 검증이 완료되었습니다.");
         } else {
@@ -41,11 +41,16 @@ public class UserController {
 
     // 비밀번호 변경
     @PutMapping("/user/change/password")
-    public Optional<User> changeNewPassWord(HttpServletRequest request,
+    public ResponseEntity<?> changeNewPassWord(HttpServletRequest request,
                                             @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
 
         String token = jwtTokenProvider.resolveToken(request); // User pk를 받아옴
-        return userService.changePassword(jwtTokenProvider.getUserId(token), userChangePwdInputDto);
+        if (userService.changePassword(jwtTokenProvider.getUserId(token), userChangePwdInputDto) == true) {
+            return ResponseEntity.ok("비밀번호 수정이 완료되었습니다.");
+        } else {
+            throw new NotMatchPassword();
+        }
+
     }
 
     // 회원아이디 중복검사

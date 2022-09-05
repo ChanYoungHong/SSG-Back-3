@@ -17,7 +17,7 @@ public interface UserService {
 
     User removeUserInfo(Long id, UserOutputDto userOutputDto);
 
-    Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
+    boolean changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
 
     boolean verifyPassword(String userId, UserChangePwdInputDto userChangePwdInputDto);
 

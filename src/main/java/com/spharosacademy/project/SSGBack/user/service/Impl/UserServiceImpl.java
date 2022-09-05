@@ -95,14 +95,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
+    public boolean changePassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
 
         Optional<User> user = userRepository.findByUserId(userId);
 
         if (user.isPresent()) {
-
-//            log.info(userChangePwdInputDto.getUserPwd());
-
             userRepository.save(
                 User.builder()
                     .id(user.get().getId())
@@ -119,7 +116,7 @@ public class UserServiceImpl implements UserService {
 
             );
         }
-        return user;
+        return true;
     }
 
     @Override
