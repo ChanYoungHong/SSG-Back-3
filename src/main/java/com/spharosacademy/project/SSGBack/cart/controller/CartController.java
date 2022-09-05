@@ -1,7 +1,6 @@
 package com.spharosacademy.project.SSGBack.cart.controller;
 
 import com.spharosacademy.project.SSGBack.cart.dto.Output.CartOutputDto;
-import com.spharosacademy.project.SSGBack.cart.dto.Output.ChangedQtyDto;
 import com.spharosacademy.project.SSGBack.cart.dto.Output.OptionCartOutputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartInputDto;
 import com.spharosacademy.project.SSGBack.cart.dto.input.CartOrderRequestDto;
@@ -14,7 +13,6 @@ import com.spharosacademy.project.SSGBack.product.exception.CartNotFoundExceptio
 import com.spharosacademy.project.SSGBack.product.exception.OptionNotFoundException;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.ColorOutputDto;
 import com.spharosacademy.project.SSGBack.product.option.dto.output.SizeOutputDto;
-import com.spharosacademy.project.SSGBack.product.option.entity.OptionList;
 import com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
