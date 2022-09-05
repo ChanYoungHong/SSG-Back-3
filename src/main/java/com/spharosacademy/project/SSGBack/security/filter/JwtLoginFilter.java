@@ -93,7 +93,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
 //        return jwtTokenProvider.getUser(userLoginDto.getUserId());
     }
 
-
+    @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response, FilterChain chain,
                                             Authentication authResult)
@@ -143,6 +143,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
                                               AuthenticationException failed)
             throws IOException, ServletException {
 
+        ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(400);
