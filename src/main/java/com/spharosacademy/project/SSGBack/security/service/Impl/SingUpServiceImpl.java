@@ -37,7 +37,8 @@ public class SingUpServiceImpl implements SignUpService {
                         .role(UserRole.ROLE_USER)
                         .userPhone(userInputDto.getUserPhoneNumber())
                         .userDropCheck(userInputDto.getUserDropCheck())
-                        .memberType(userInputDto.getMemberType())
+                        .memberType("Friend")
+                        .fromSocial("True")
                         .build()
         );
     }

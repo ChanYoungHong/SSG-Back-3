@@ -1,13 +1,13 @@
 package com.spharosacademy.project.SSGBack.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
 import com.spharosacademy.project.SSGBack.security.exception.CustomAuthenticationEntryPoint;
 import com.spharosacademy.project.SSGBack.security.filter.JwtFilter;
 import com.spharosacademy.project.SSGBack.security.filter.JwtLoginFilter;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,12 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider,
                           CorsFilter corsFilter,
                           @Lazy CustomUseDetailsService customUseDetailsService,
-                          @Lazy JwtFilter jwtFilter,
+                          CustomOAuth2Service customOAuth2Service, @Lazy JwtFilter jwtFilter,
                           @Lazy UserRepository userRepository,
                           @Lazy PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.corsFilter = corsFilter;
         this.customUseDetailsService = customUseDetailsService;
+        this.customOAuth2Service = customOAuth2Service;
         this.jwtFilter = jwtFilter;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final CorsFilter corsFilter;
     private final CustomUseDetailsService customUseDetailsService;
+    private final CustomOAuth2Service customOAuth2Service;
     private final JwtFilter jwtFilter;
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
@@ -85,6 +87,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+//                .and()
+//                .oauth2Login() // oauth2
+//                .authorizationEndpoint()
+//                .baseUri("/oauth/authorize")
+//                .and()
+//                .userInfoEndpoint()
+//                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리
 
         http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);
         http.addFilterBefore(
@@ -101,14 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ////                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 ////                .accessDeniedHandler(new CustomAccessDeniedHandler())
 //                .and()
-//                .oauth2Login() // oauth2
-//                .authorizationEndpoint()
-//                .baseUri("/oauth/authorize")
-//                .and()
-//                .successHandler(oAuth2AuthenticationSuccessHandler)
-//                .userInfoEndpoint()
-//                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
-////            .userService(userOAuth2Service);
+//
     }
 
 
