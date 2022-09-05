@@ -1,6 +1,6 @@
-package com.spharosacademy.project.SSGBack.sns.dto.request;
+package com.spharosacademy.project.SSGBack.sms.dto.request;
 
-import com.spharosacademy.project.SSGBack.sns.dto.MessagesDto;
+import com.spharosacademy.project.SSGBack.sms.dto.MessagesDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

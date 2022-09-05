@@ -1,10 +1,10 @@
-package com.spharosacademy.project.SSGBack.sns.service;
+package com.spharosacademy.project.SSGBack.sms.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spharosacademy.project.SSGBack.sns.dto.MessagesDto;
-import com.spharosacademy.project.SSGBack.sns.dto.request.SmsRequest;
-import com.spharosacademy.project.SSGBack.sns.dto.response.SmsResponse;
+import com.spharosacademy.project.SSGBack.sms.dto.MessagesDto;
+import com.spharosacademy.project.SSGBack.sms.dto.request.SmsRequest;
+import com.spharosacademy.project.SSGBack.sms.dto.response.SmsResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -37,12 +37,15 @@ public class SmsService {
     @Value("${sms.secretKey}")
     private String secretKey;
 
+    @Value("${sms.senderPhone}")
+    private String senderPhone;
+
     public SmsResponse sendSms(String recipientPhoneNumber, String content) throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
         Long time = System.currentTimeMillis();
         List<MessagesDto> messages = new ArrayList<>();
         messages.add(new MessagesDto(recipientPhoneNumber, content));
 
-        SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", "발신자 전화번호", "내용", messages);
+        SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", this.senderPhone, "내용", messages);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody = objectMapper.writeValueAsString(smsRequest);
 

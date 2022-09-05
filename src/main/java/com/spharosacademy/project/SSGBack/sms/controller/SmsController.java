@@ -1,9 +1,9 @@
-package com.spharosacademy.project.SSGBack.sns.controller;
+package com.spharosacademy.project.SSGBack.sms.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.spharosacademy.project.SSGBack.sns.dto.request.Request;
-import com.spharosacademy.project.SSGBack.sns.dto.response.SmsResponse;
-import com.spharosacademy.project.SSGBack.sns.service.SmsService;
+import com.spharosacademy.project.SSGBack.sms.dto.request.Request;
+import com.spharosacademy.project.SSGBack.sms.dto.response.SmsResponse;
+import com.spharosacademy.project.SSGBack.sms.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

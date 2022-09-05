@@ -61,6 +61,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     public JwtTokenProvider(UserDetails userDetails) {
 
     }
+
 // 유효시간 30일
 //    private long RefreshtokenValidTime = 30 * 60 * 1000L;
 
