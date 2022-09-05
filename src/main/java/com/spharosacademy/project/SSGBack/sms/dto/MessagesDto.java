@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.sns.dto;
+package com.spharosacademy.project.SSGBack.sms.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

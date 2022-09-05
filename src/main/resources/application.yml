@@ -129,3 +129,11 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: 'false'
+
+sms:
+  senderPhone: 01036699883
+  serviceId: ncp:sms:kr:291731081252:ssg
+  accessKey: crj2Y2dosCMKfs7kNIMC
+  secretKey: 5AjZPRf8vjalFhoDFieM6HZctTC7tAIqp3mfMkc6
+
+

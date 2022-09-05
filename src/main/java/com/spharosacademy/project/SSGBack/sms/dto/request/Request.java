@@ -1,4 +1,4 @@
-package com.spharosacademy.project.SSGBack.sns.dto.request;
+package com.spharosacademy.project.SSGBack.sms.dto.request;
 
 
 import lombok.AllArgsConstructor;
