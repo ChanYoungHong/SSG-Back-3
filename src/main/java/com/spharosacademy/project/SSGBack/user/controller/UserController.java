@@ -28,10 +28,11 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
 
     //비밀번호 검증
-    @PostMapping("/user/verify/password/{userId}")
-    public ResponseEntity<?> verifyPassword(@PathVariable String userId,
+    @PostMapping("/user/verify/password")
+    public ResponseEntity<?> verifyPassword(HttpServletRequest request,
                                @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
-
+        String token = jwtTokenProvider.resolveToken(request);
+        String userId = jwtTokenProvider.getUserId(token);
 
         if(userService.verifyPassword(userId, userChangePwdInputDto) == true){
             return ResponseEntity.ok("비밀번호 검증이 완료되었습니다.");

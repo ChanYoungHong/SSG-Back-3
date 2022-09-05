@@ -129,8 +129,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyPassword(String userId, UserChangePwdInputDto userChangePwdInputDto) {
-        Optional<User> user = userRepository.findByUserId(userId);
+    public boolean verifyPassword(String token, UserChangePwdInputDto userChangePwdInputDto) {
+        Optional<User> user = userRepository.findByUserId(token);
 
         if (user.isPresent() &&
             passwordEncoder.matches(userChangePwdInputDto.getUserPwd(), user.get().getUserPwd())) {
