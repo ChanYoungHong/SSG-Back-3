@@ -1,5 +1,6 @@
 package com.spharosacademy.project.SSGBack.user.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
