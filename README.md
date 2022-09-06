@@ -1,6 +1,4 @@
-# SSG-Back
-
-## SSG-Back Project
+# SSG 클론코딩(Backend)
 
 # 팀원
 
