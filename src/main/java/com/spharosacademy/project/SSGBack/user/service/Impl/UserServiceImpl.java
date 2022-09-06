@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
                     MemberIdNotfound::new));
 
         if (check.isPresent()) {
-            if (userRemoveDto.equals(true)) {
+            if (userRemoveDto.getUserDropCheck().equals(true)) {
                 userRepository.deleteById(id);
             }
         } else {
