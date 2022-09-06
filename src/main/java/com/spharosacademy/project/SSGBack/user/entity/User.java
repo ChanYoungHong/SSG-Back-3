@@ -43,7 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_pwd")
     private String userPwd;
 
-    @Column(name = "user_name", length = 100)
+    @Column(name = "name", length = 100)
     private String name;
 
     @Column(name = "user_address")
@@ -64,7 +64,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_drop_check") // 회원 탈퇴 여부 확인하기.
     private Boolean userDropCheck;
 
-    private String fromSocial;
 
 
     public User(String userName, String userEmail) {

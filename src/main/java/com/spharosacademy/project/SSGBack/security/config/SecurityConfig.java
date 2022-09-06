@@ -1,13 +1,14 @@
 package com.spharosacademy.project.SSGBack.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spharosacademy.project.SSGBack.oauth2.service.CustomOAuth2Service;
+import com.spharosacademy.project.SSGBack.oauth2.service.UserOAuth2Service;
 import com.spharosacademy.project.SSGBack.security.exception.CustomAuthenticationEntryPoint;
 import com.spharosacademy.project.SSGBack.security.filter.JwtFilter;
 import com.spharosacademy.project.SSGBack.security.filter.JwtLoginFilter;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,14 +36,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                           @Lazy CustomUseDetailsService customUseDetailsService,
                           @Lazy JwtFilter jwtFilter,
                           @Lazy UserRepository userRepository,
-                          @Lazy PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+                          CustomOAuth2Service customOAuth2Service, @Lazy PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, UserOAuth2Service userOAuth2Service) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.corsFilter = corsFilter;
         this.customUseDetailsService = customUseDetailsService;
         this.jwtFilter = jwtFilter;
         this.userRepository = userRepository;
+        this.customOAuth2Service = customOAuth2Service;
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
+        this.userOAuth2Service = userOAuth2Service;
     }
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -50,8 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUseDetailsService customUseDetailsService;
     private final JwtFilter jwtFilter;
     private final UserRepository userRepository;
+
+    private final CustomOAuth2Service customOAuth2Service;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final UserOAuth2Service userOAuth2Service;
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Bean
@@ -85,20 +91,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+//                .and()
+//                .oauth2Login()
+//                .userInfoEndpoint() // OAuth2 로그인 성공 후 가져올 설정들
+//                .userService(customOAuth2Service); // 서버에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능 명시    }
+
+////                .authorizationEndpoint()
+//                .baseUri("/oauth/authorize")
+//                .and()
+//                .userInfoEndpoint();
+//                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
+//            .userService(userOAuth2Service);
 
         http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);
         http.addFilterBefore(
                 new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository,
                         passwordEncoder, mapper, userDetailsService),
                 UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(jwtFilter,
-                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-//                .antMatchers("/user/**").hasRole("USER")
-//                .and()
-////                .logout()
-//                .exceptionHandling()
-////                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+
 ////                .accessDeniedHandler(new CustomAccessDeniedHandler())
 //                .and()
 //                .oauth2Login() // oauth2
@@ -107,9 +119,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .successHandler(oAuth2AuthenticationSuccessHandler)
 //                .userInfoEndpoint()
-//                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
-////            .userService(userOAuth2Service);
+
+
     }
-
-
 }

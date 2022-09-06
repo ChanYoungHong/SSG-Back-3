@@ -7,7 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Code {
 
-
     // 토큰 예외 시, response되는 에러 목록들입니다.
     UNKNOWN_ERROR(1003, "토큰이 존재하지 않습니다."),
     EXPIRED_TOKEN(1005, "만료된 토큰입니다."),
@@ -19,6 +18,5 @@ public enum Code {
 
     private Integer code;
     private String message;
-
 
 }

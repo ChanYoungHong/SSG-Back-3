@@ -29,16 +29,12 @@ public class JwtTokenProvider implements AuthenticationProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간 1시간
-    private long tokenValidTime = 360000000000000L;
-
-    // 유효시간 30일
-//    private long RefreshtokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime = 1L;
 
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
 
     // secretKey를 Base64로 인코딩하는 것.
-
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -61,8 +57,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     }
 
     // JWT 토큰에서 인증 정보 조회
-    public Authentication getAuthenication(String token) {
-        log.info("this.getUserpk(token) : " + this.getUserPk(token)); // 1이 나온다
+    public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserId(token));
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), "",
             userDetails.getAuthorities());
@@ -104,7 +99,6 @@ public class JwtTokenProvider implements AuthenticationProvider {
         // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
         return !claims.getBody().getExpiration().before(new Date());
-
     }
 
     @Override

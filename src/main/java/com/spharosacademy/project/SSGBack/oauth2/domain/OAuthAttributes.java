@@ -92,7 +92,6 @@ public class OAuthAttributes {
             .userEmail(userEmail)
             .userPhone(mobile)
             .role(UserRole.ROLE_SOCIAL)
-            .fromSocial("NAVER")
             .build();
     }
 }

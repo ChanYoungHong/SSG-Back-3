@@ -3,7 +3,7 @@ package com.spharosacademy.project.SSGBack.user.controller;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserRemoveDto;
-import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
+import com.spharosacademy.project.SSGBack.user.dto.response.UserGetOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
 import com.spharosacademy.project.SSGBack.user.exception.NotMatchPassword;
@@ -11,13 +11,14 @@ import com.spharosacademy.project.SSGBack.user.exception.NotVerifyPassword;
 import com.spharosacademy.project.SSGBack.user.service.UserService;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -31,10 +32,10 @@ public class UserController {
     @PostMapping("/user/verify/password")
     public ResponseEntity<?> verifyPassword(HttpServletRequest request,
                                             @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
-
         String token = jwtTokenProvider.resolveToken(request);
+        String userId = jwtTokenProvider.getUserId(token);
 
-        if(userService.verifyPassword(jwtTokenProvider.getUserId(token), userChangePwdInputDto) == true){
+        if (userService.verifyPassword(userId, userChangePwdInputDto) == true) {
             return ResponseEntity.ok("비밀번호 검증이 완료되었습니다.");
         } else {
             throw new NotVerifyPassword();
@@ -45,7 +46,7 @@ public class UserController {
     // 비밀번호 변경
     @PutMapping("/user/change/password")
     public ResponseEntity<?> changeNewPassWord(HttpServletRequest request,
-                                            @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
+                                               @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
 
         String token = jwtTokenProvider.resolveToken(request); // User pk를 받아옴
         if (userService.changePassword(jwtTokenProvider.getUserId(token), userChangePwdInputDto) == true) {
@@ -71,11 +72,13 @@ public class UserController {
     // 회원정보 조회, 토큰으로 회원조회, memberId 지움
     @GetMapping("/user/get")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> findByUserId(HttpServletRequest request) {
+    public UserGetOutputDto findByUserId(HttpServletRequest request) {
         String token = jwtTokenProvider.resolveToken(request);
-
-        return userService.findByUserId(jwtTokenProvider.getUserId(token));
+        String userId = jwtTokenProvider.getUserId(token);
+        return userService.findByUserId(userId);
     }
+
+
 
 
     // 회원정보 수정, 토큰으로 수정 memberId 지움
@@ -101,6 +104,11 @@ public class UserController {
 
     @ExceptionHandler(DuplicatedUserIdCheck.class)
     public ResponseEntity<String> handleOutofStockException(DuplicatedUserIdCheck exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(NotVerifyPassword.class)
+    public ResponseEntity<String> NotVerifyPasswordException(NotVerifyPassword exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 

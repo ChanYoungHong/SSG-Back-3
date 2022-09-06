@@ -1,25 +1,18 @@
 package com.spharosacademy.project.SSGBack.security.filter;
 
-import com.amazonaws.util.IOUtils;
-import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.spharosacademy.project.SSGBack.security.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.dto.response.LoginUnSuccessfulOutputDto;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
-import com.spharosacademy.project.SSGBack.user.exception.NotMatchPassword;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -71,12 +64,10 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
 
         UserLoginDto userLoginDto = mapper.readValue(request.getReader(), UserLoginDto.class);
 
-        String userId = userLoginDto.getUserId();
-        Optional<User> user = userRepository.findByUserId(userId);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userLoginDto.getUserId());
-        log.info(userLoginDto.getUserPwd());
-        log.info(userDetails.getPassword());
-        log.info(user.get().getPassword());
+        Optional<User> user = userRepository.findByUserId(userLoginDto.getUserId());
+
+
         if (!passwordEncoder.matches(userLoginDto.getUserPwd(), user.get().getUserPwd())) {
             throw new BadCredentialsException("비밀번호가 일치하지않습니다.");
         }
@@ -85,13 +76,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
                 userDetails,
                 null,
                 userDetails.getAuthorities());
-
-
-//        UserDetails userDetails = customUseDetailsService.loadUserByUsername(userLoginDto.getUserId());
-//        Authentication user = jwtTokenProvider.getUser(userLoginDto.getUserId());
-//        jwtTokenProvider.createToken()
-//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//        return jwtTokenProvider.getUser(userLoginDto.getUserId());
     }
 
     @Override
@@ -99,20 +83,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
                                             HttpServletResponse response, FilterChain chain,
                                             Authentication authResult)
             throws IOException, ServletException {
-
-//        JsonFactory jsonFactory = new JsonFactory();
-//        jsonFactory.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-////        jsonFactory.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
-//        ObjectMapper mapper = new ObjectMapper(jsonFactory);
-
-//        mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-//        mapper.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
-//        mapper.disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
-
-//        ObjectReader r = new ObjectMapper().readerFor(UserLoginDto.class)
-//                .without(StreamReadFeature.AUTO_CLOSE_SOURCE);
-
-//        UserLoginDto userLoginDto = mapper.readValue(request.getReader(), UserLoginDto.class);
 
         UserDetails userDetails = (UserDetails) authResult.getPrincipal();
         User user = (User) userDetails;
@@ -156,61 +126,4 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
                         .build());
     }
 
-//    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        super.doFilter(request, response, chain);
-//
-//        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        HttpRequestWrapper requestWrapper = new HttpRequestWrapper(httpServletRequest);
-//        chain.doFilter((ServletRequest) requestWrapper, response);
-//    }
-//
-//    public class HttpRequestWrapper extends HttpServletRequestWrapper {
-//
-//
-//        public HttpRequestWrapper(HttpServletRequest request) throws IOException {
-//            super(request);
-//            InputStream is = super.getInputStream();
-//            byte[] userLoginDto = IOUtils.toByteArray(is);
-//        }
-//
-//        @Override
-//        public ServletInputStream getInputStream() throws IOException {
-//            final ByteArrayInputStream bis = new ByteArrayInputStream(user);
-//            return new ServletImpl(bis);
-//        }
-//    }
-//
-//    class ServletImpl extends ServletInputStream {
-//        private InputStream is;
-//
-//        public ServletImpl(InputStream bis) {
-//            is = bis;
-//        }
-//
-//        @Override
-//        public int read() throws IOException {
-//            return is.read();
-//        }
-//
-//        @Override
-//        public int read(byte[] b) throws IOException {
-//            return is.read(b);
-//        }
-//
-//        @Override
-//        public boolean isFinished() {
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean isReady() {
-//            return false;
-//        }
-//
-//        @Override
-//        public void setReadListener(ReadListener readListener) {
-//
-//        }
-//    }
 }
