@@ -3,6 +3,7 @@ package com.spharosacademy.project.SSGBack.user.service.Impl;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserRemoveDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User removeUserInfo(Long id, UserOutputDto userOutputDto) {
+    public User removeUserInfo(Long id, UserRemoveDto userRemoveDto) {
 
         Optional<User> check =
             Optional.ofNullable(
@@ -85,8 +86,8 @@ public class UserServiceImpl implements UserService {
                     MemberIdNotfound::new));
 
         if (check.isPresent()) {
-            if (userOutputDto.getUserDropCheck().equals(true)) {
-                userRepository.deleteById(userOutputDto.getId());
+            if (userRemoveDto.equals(true)) {
+                userRepository.deleteById(id);
             }
         } else {
             new UserdropCheckNotfound();

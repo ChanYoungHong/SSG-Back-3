@@ -18,13 +18,12 @@ public class UserOutputDto {
     private Long id;
     private String userId;
     private String userPwd;
-    private String userName;
+    private String name;
     private String userAddress;
     private String userEmail;
     private String userPhone;
     private String memberType;
     private UserRole role;
-    private String gender;
     private LocalDateTime userBirthDate, createdAt, updatedAt;
     private Boolean userDropCheck;
 

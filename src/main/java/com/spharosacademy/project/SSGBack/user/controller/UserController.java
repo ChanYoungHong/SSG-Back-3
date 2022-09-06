@@ -2,6 +2,7 @@ package com.spharosacademy.project.SSGBack.user.controller;
 
 import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
+import com.spharosacademy.project.SSGBack.user.dto.request.UserRemoveDto;
 import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.DuplicatedUserIdCheck;
@@ -92,10 +93,10 @@ public class UserController {
     // 회원 탈퇴, 삭제 + 토큰으로 삭제하기 memberId 지움
     @DeleteMapping("/user/remove")
     public User removeUserInfo(HttpServletRequest request,
-                               @RequestBody UserOutputDto userOutputDto) {
+                               @RequestBody UserRemoveDto userRemoveDto) {
         String token = jwtTokenProvider.resolveToken(request);
         Long id = Long.valueOf(jwtTokenProvider.getUserPk(token));
-        return userService.removeUserInfo(id, userOutputDto);
+        return userService.removeUserInfo(id, userRemoveDto);
     }
 
     @ExceptionHandler(DuplicatedUserIdCheck.class)
