@@ -1,25 +1,18 @@
 package com.spharosacademy.project.SSGBack.security.filter;
 
-import com.amazonaws.util.IOUtils;
-import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.spharosacademy.project.SSGBack.security.dto.response.LoginSuccessOutputDto;
 import com.spharosacademy.project.SSGBack.security.dto.response.LoginUnSuccessfulOutputDto;
 import com.spharosacademy.project.SSGBack.security.service.CustomUseDetailsService;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserLoginDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
-import com.spharosacademy.project.SSGBack.user.exception.NotMatchPassword;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import com.spharosacademy.project.SSGBack.util.JwtTokenProvider;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -72,8 +65,10 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter imple
         UserLoginDto userLoginDto = mapper.readValue(request.getReader(), UserLoginDto.class);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(userLoginDto.getUserId());
+        Optional<User> user = userRepository.findByUserId(userLoginDto.getUserId());
 
-        if (!passwordEncoder.matches(userLoginDto.getUserPwd(), userDetails.getPassword())) {
+
+        if (!passwordEncoder.matches(userLoginDto.getUserPwd(), user.get().getUserPwd())) {
             throw new BadCredentialsException("비밀번호가 일치하지않습니다.");
         }
 

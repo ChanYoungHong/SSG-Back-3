@@ -30,9 +30,6 @@ public class CustomUseDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String id)  {
 
         Optional<User> result = userRepository.findByUserId(id);
-//        Optional<User> result2 = userRepository.findById(Long.valueOf(id));
-
-        System.out.println(result);
 
         if (result.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
