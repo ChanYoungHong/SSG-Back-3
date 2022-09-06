@@ -31,10 +31,10 @@ public class UserController {
     @PostMapping("/user/verify/password")
     public ResponseEntity<?> verifyPassword(HttpServletRequest request,
                                             @RequestBody UserChangePwdInputDto userChangePwdInputDto) {
-
         String token = jwtTokenProvider.resolveToken(request);
+        String userId = jwtTokenProvider.getUserId(token);
 
-        if(userService.verifyPassword(jwtTokenProvider.getUserId(token), userChangePwdInputDto) == true){
+        if(userService.verifyPassword(userId, userChangePwdInputDto) == true){
             return ResponseEntity.ok("비밀번호 검증이 완료되었습니다.");
         } else {
             throw new NotVerifyPassword();
@@ -101,6 +101,11 @@ public class UserController {
 
     @ExceptionHandler(DuplicatedUserIdCheck.class)
     public ResponseEntity<String> handleOutofStockException(DuplicatedUserIdCheck exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(NotVerifyPassword.class)
+    public ResponseEntity<String> NotVerifyPasswordException(NotVerifyPassword exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
