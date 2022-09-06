@@ -37,4 +37,6 @@ public interface ProductService {
     List<ColorOutputDto> getProductColor(Long id);
 
     List<SizeOutputDto>  getProductSize(Long productId, Long colorId);
+
+    void addImages(Long id, List<MultipartFile> multipartFileList);
 }

@@ -23,6 +23,8 @@ import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import com.spharosacademy.project.SSGBack.review.sevice.ReviewService;
+import com.spharosacademy.project.SSGBack.s3.dto.ReviewImageS3Dto;
+import com.spharosacademy.project.SSGBack.s3.service.S3UploaderService;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class ReviewServiceImplement implements ReviewService {
     private final ReviewImageRepository reviewImageRepository;
     private final OrderListRepository orderListRepository;
     private final OptionRepository optionRepository;
+    private final S3UploaderService s3UploaderService;
 
     @Override
     @Transactional(rollbackFor = {NullPointerException.class, IllegalArgumentException.class})
@@ -136,22 +139,22 @@ public class ReviewServiceImplement implements ReviewService {
     public void addImages(Long id, List<MultipartFile> multipartFileList) {
         Review review = reviewRepository.findById(id).get();
 
-//        ReviewImageS3Dto reviewImageS3Dto;
-//        for (MultipartFile multipartFiles : multipartFileList) {
-//            try {
-//                reviewImageS3Dto = s3UploaderService.uploadReviewImage(multipartFiles, "myspharosbucket", "myDir");
-//
-//                reviewImageRepository.save(ReviewImage.builder()
-//                        .review(review)
-//                        .reviewImgUrl(reviewImageS3Dto.getImageUrl())
-//                        .reviewImgTxt(reviewImageS3Dto.getSaveFileName())
-//                        .productId(review.getProduct().getId())
-//                        .build());
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        ReviewImageS3Dto reviewImageS3Dto;
+        for (MultipartFile multipartFiles : multipartFileList) {
+            try {
+                reviewImageS3Dto = s3UploaderService.uploadReviewImage(multipartFiles, "myspharosbucket", "myDir");
+
+                reviewImageRepository.save(ReviewImage.builder()
+                        .review(review)
+                        .reviewImgUrl(reviewImageS3Dto.getImageUrl())
+                        .reviewImgTxt(reviewImageS3Dto.getSaveFileName())
+                        .productId(review.getProduct().getId())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
