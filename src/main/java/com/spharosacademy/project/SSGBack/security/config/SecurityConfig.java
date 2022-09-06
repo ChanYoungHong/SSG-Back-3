@@ -91,8 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository,
                         passwordEncoder, mapper, userDetailsService),
                 UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(jwtFilter,
-                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 //                .antMatchers("/user/**").hasRole("USER")
 //                .and()
