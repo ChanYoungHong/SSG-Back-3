@@ -32,7 +32,7 @@
   
 ### 인증
   * 담당자 : 홍찬영
-  * Spring Security & jwt 개발
+  * Spring Security & jwt 토큰 생성 개발
   
 ### 주문
   * 담당자 : 홍찬영
