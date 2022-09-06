@@ -4,7 +4,7 @@ import com.spharosacademy.project.SSGBack.user.dto.request.UserChangePwdInputDto
 import com.spharosacademy.project.SSGBack.user.dto.request.UserEditInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserInputDto;
 import com.spharosacademy.project.SSGBack.user.dto.request.UserRemoveDto;
-import com.spharosacademy.project.SSGBack.user.dto.response.UserOutputDto;
+import com.spharosacademy.project.SSGBack.user.dto.response.UserGetOutputDto;
 import com.spharosacademy.project.SSGBack.user.entity.User;
 import com.spharosacademy.project.SSGBack.user.exception.MemberIdNotfound;
 import com.spharosacademy.project.SSGBack.user.exception.UserIdNotFound;
@@ -37,8 +37,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
+    public UserGetOutputDto findByUserId(String userId) {
+        Optional<User> user = userRepository.findByUserId(userId);
+
+        return UserGetOutputDto.builder()
+                .userId(user.get().getUserId())
+                .name(user.get().getName())
+                .userAddress(user.get().getUserAddress())
+                .userEmail(user.get().getUserEmail())
+                .userPhone(user.get().getUserPhone())
+                .memberType(user.get().getMemberType())
+                .role(user.get().getRole())
+                .build();
     }
 
     @Override
