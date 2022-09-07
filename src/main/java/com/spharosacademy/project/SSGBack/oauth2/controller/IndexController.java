@@ -22,6 +22,6 @@ public class IndexController {
             model.addAttribute("userName", user.getUserName());
         }
 
-        return "naver2";
+        return "index";
     }
 }
