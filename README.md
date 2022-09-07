@@ -10,7 +10,7 @@
 
 ## 2. 사용기술 
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) 
-<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&amp;logo=java&amp;logoColor=white">
+<img src="https://img.shields.io/badge/JAVA11-007396?style=for-the-badge&amp;logo=java&amp;logoColor=white">
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&amp;logo=springboot&amp;logoColor=white">
 <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&amp;logo=spring security&amp;logoColor=white">
 <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&amp;logo=Amazon S3&amp;logoColor=white">
