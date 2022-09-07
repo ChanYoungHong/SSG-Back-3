@@ -1,0 +1,74 @@
+2022-09-07 15:10:32.674 [restartedMain] INFO o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@792af071, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5e3f5d7a, org.springframework.web.filter.CorsFilter@5818bf18, org.springframework.security.web.context.SecurityContextPersistenceFilter@7f6da900, org.springframework.security.web.header.HeaderWriterFilter@43f8799b, com.spharosacademy.project.SSGBack.security.filter.JwtLoginFilter@d37f6d6, com.spharosacademy.project.SSGBack.security.filter.JwtFilter@6cd519fd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4aebe4d4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b6f5972, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6719703c, org.springframework.security.web.session.SessionManagementFilter@78286296, org.springframework.security.web.access.ExceptionTranslationFilter@7c307784, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@55068570] 
+2022-09-07 15:10:33.164 [restartedMain] INFO o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729 
+2022-09-07 15:10:33.202 [restartedMain] INFO o.s.b.w.e.t.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path '' 
+2022-09-07 15:10:33.209 [restartedMain] INFO c.s.p.S.SsgBackApplication - Started SsgBackApplication in 7.527 seconds (JVM running for 8.484) 
+2022-09-07 15:10:37.676 [http-nio-8080-exec-1] INFO o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet' 
+2022-09-07 15:10:37.679 [http-nio-8080-exec-1] INFO o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet' 
+2022-09-07 15:10:37.680 [http-nio-8080-exec-1] INFO o.s.w.s.DispatcherServlet - Completed initialization in 1 ms 
+2022-09-07 15:10:37.706 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerInterceptor - ======================================          START         ====================================== 
+2022-09-07 15:10:37.706 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerInterceptor -  Request URI 	:  /product/nonmember/get/1 
+2022-09-07 15:10:37.722 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Controller  	:  com.spharosacademy.project.SSGBack.product.controller.ProductController.getProduct() 
+2022-09-07 15:10:37.725 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - ServiceImpl  	:  com.spharosacademy.project.SSGBack.product.service.imple.ProductServiceImple.getByProductId() 
+2022-09-07 15:10:37.730 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:10:37.774 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository.findAllByProduct() 
+2022-09-07 15:10:37.789 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.repo.ReviewRepository.findFirst5ByProductId() 
+2022-09-07 15:10:37.802 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.repo.ReviewRepository.collectByProductId() 
+2022-09-07 15:10:37.809 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.qna.repository.QnaRepository.countByProductId() 
+2022-09-07 15:10:37.813 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:10:37.823 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:10:37.825 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:10:37.827 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:10:37.830 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:10:37.831 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:10:37.832 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:10:37.833 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:10:37.835 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:10:37.836 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:10:37.837 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.qna.repository.QnaRepository.findFirst5ByProductId() 
+2022-09-07 15:10:37.840 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.Image.repository.ProductTitleImgRepository.findAllByProduct() 
+2022-09-07 15:10:37.844 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository.findAllByProduct() 
+2022-09-07 15:10:37.853 [http-nio-8080-exec-1] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:10:37.854 [http-nio-8080-exec-1] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:10:37.855 [http-nio-8080-exec-1] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:10:37.855 [http-nio-8080-exec-1] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:10:37.855 [http-nio-8080-exec-1] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:10:37.855 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository.findAllByProduct() 
+2022-09-07 15:10:37.863 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findFirst8ByProductId() 
+2022-09-07 15:10:37.866 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository.getColorId() 
+2022-09-07 15:10:37.937 [http-nio-8080-exec-1] WARN c.s.p.S.l.LoggerInterceptor - ======================================           END          ======================================
+ 
+2022-09-07 15:11:04.378 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerInterceptor - ======================================          START         ====================================== 
+2022-09-07 15:11:04.378 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerInterceptor -  Request URI 	:  /product/nonmember/get/1 
+2022-09-07 15:11:04.379 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Controller  	:  com.spharosacademy.project.SSGBack.product.controller.ProductController.getProduct() 
+2022-09-07 15:11:04.379 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - ServiceImpl  	:  com.spharosacademy.project.SSGBack.product.service.imple.ProductServiceImple.getByProductId() 
+2022-09-07 15:11:04.379 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:11:04.385 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.Image.repository.ProductDetailImgRepository.findAllByProduct() 
+2022-09-07 15:11:04.387 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.repo.ReviewRepository.findFirst5ByProductId() 
+2022-09-07 15:11:04.390 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.repo.ReviewRepository.collectByProductId() 
+2022-09-07 15:11:04.391 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.qna.repository.QnaRepository.countByProductId() 
+2022-09-07 15:11:04.392 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:11:04.396 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:11:04.398 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:11:04.399 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:11:04.400 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:11:04.402 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:11:04.404 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:11:04.405 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:11:04.407 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findAllByReviewId() 
+2022-09-07 15:11:04.408 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  org.springframework.data.repository.CrudRepository.findById() 
+2022-09-07 15:11:04.410 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.qna.repository.QnaRepository.findFirst5ByProductId() 
+2022-09-07 15:11:04.413 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.Image.repository.ProductTitleImgRepository.findAllByProduct() 
+2022-09-07 15:11:04.415 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository.findAllByProduct() 
+2022-09-07 15:11:04.421 [http-nio-8080-exec-3] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:11:04.422 [http-nio-8080-exec-3] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:11:04.422 [http-nio-8080-exec-3] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:11:04.422 [http-nio-8080-exec-3] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:11:04.422 [http-nio-8080-exec-3] INFO c.s.p.S.p.s.i.ProductServiceImple - ROOT 
+2022-09-07 15:11:04.422 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.category.repository.CategoryProductListRepository.findAllByProduct() 
+2022-09-07 15:11:04.424 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository.findFirst8ByProductId() 
+2022-09-07 15:11:04.426 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerAspect - Repository  		:  com.spharosacademy.project.SSGBack.product.option.repository.OptionRepository.getColorId() 
+2022-09-07 15:11:04.431 [http-nio-8080-exec-3] WARN c.s.p.S.l.LoggerInterceptor - ======================================           END          ======================================
+ 
+2022-09-07 15:13:05.694 [SpringApplicationShutdownHook] INFO o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default' 
+2022-09-07 15:13:05.698 [SpringApplicationShutdownHook] INFO c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated... 
+2022-09-07 15:13:05.709 [SpringApplicationShutdownHook] INFO c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed. 
