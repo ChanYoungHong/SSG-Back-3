@@ -3,8 +3,6 @@
 
 ## 바로가기 
 1. [ERD설계](https://www.erdcloud.com/d/p8ThG9EDiKuHoBR9b)
-2. [발표 ppt](https://docs.google.com/presentation/d/1BysIy9GPCD1t2iTpbi8rxEZLubQsccwi-sn1GBdbAoQ/edit#slide=id.p5)
-3. [API정의서](https://docs.google.com/document/d/1wCX44Vst85y8aOBa9aw0ajHZV2HYsakXYe67_KfOqkU/edit)
 <br>
 
 ## 1. 참여 인원
