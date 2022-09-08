@@ -11,7 +11,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggerAspect {
 
-    @Around("execution(* com.spharosacademy.project.SSGBack.*..*Controller.*(..)) or execution(* com.spharosacademy.project.SSGBack.*..*Service.*(..)) or execution(* com.spharosacademy.project.SSGBack.*..*Repository.*(..)) ")
+    @Around("execution(* com.spharosacademy.project.SSGBack.*..*Controller.*(..)) " +
+            "or execution(* com.spharosacademy.project.SSGBack.*..*Service.*(..)) " +
+            "or execution(* com.spharosacademy.project.SSGBack.*..*Repository.*(..)) ")
+
     public Object logPrint(ProceedingJoinPoint joinPoint) throws Throwable {
         String type = "";
         String name = joinPoint.getSignature().getDeclaringTypeName();

@@ -29,7 +29,7 @@ public class JwtTokenProvider implements AuthenticationProvider {
     private String secretKey = "charlie12345";
 
     // 유효시간
-    private long tokenValidTime = 36000000000000L;
+    private long tokenValidTime = 1000L;
 
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
