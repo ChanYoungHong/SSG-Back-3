@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p from Product AS p where p.name like %:query% " +
+    @Query(value = "SELECT p from Product AS p where p.name like %:query% " +
         "or p.brand like %:query%")
     Page<Product> searchBysearchWord(@Param("query") String query, Pageable pageable);
 }

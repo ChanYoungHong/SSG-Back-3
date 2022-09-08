@@ -3,8 +3,6 @@
 
 ## 바로가기 
 1. [ERD설계](https://www.erdcloud.com/d/p8ThG9EDiKuHoBR9b)
-2. [발표 ppt](https://docs.google.com/presentation/d/1BysIy9GPCD1t2iTpbi8rxEZLubQsccwi-sn1GBdbAoQ/edit#slide=id.p5)
-3. [API정의서](https://docs.google.com/document/d/1wCX44Vst85y8aOBa9aw0ajHZV2HYsakXYe67_KfOqkU/edit)
 <br>
 
 ## 1. 참여 인원
@@ -12,7 +10,7 @@
 
 ## 2. 사용기술 
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) 
-<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&amp;logo=java&amp;logoColor=white">
+<img src="https://img.shields.io/badge/JAVA11-007396?style=for-the-badge&amp;logo=java&amp;logoColor=white">
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&amp;logo=springboot&amp;logoColor=white">
 <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&amp;logo=spring security&amp;logoColor=white">
 <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&amp;logo=Amazon S3&amp;logoColor=white">
