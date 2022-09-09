@@ -90,6 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+        http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);
+        http.addFilterBefore(
+                new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository,
+                        passwordEncoder, mapper, userDetailsService),
+                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 //                .and()
 //                .oauth2Login()
 //                .userInfoEndpoint() // OAuth2 로그인 성공 후 가져올 설정들
@@ -101,13 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .userInfoEndpoint();
 //                .userService(customOAuth2Service);// ouath2 로그인데 성공하면, 유저 데이터를 가지고 우리가 생성한 custom ~기를 처리하
 //            .userService(userOAuth2Service);
-
-        http.addFilterBefore(corsFilter, SecurityContextPersistenceFilter.class);
-        http.addFilterBefore(
-                new JwtLoginFilter("/login", customUseDetailsService, jwtTokenProvider, userRepository,
-                        passwordEncoder, mapper, userDetailsService),
-                UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 
 ////                .accessDeniedHandler(new CustomAccessDeniedHandler())

@@ -9,5 +9,10 @@
       "name": "spring.servlet.multipart.data.web.pageable.default-page-size",
       "type": "java.lang.String",
       "description": "Description for spring.servlet.multipart.data.web.pageable.default-page-size."
+    },
+    {
+      "name": "api.security.oauth2.client.registration.naver.client-secret",
+      "type": "java.lang.String",
+      "description": "Description for api.security.oauth2.client.registration.naver.client-secret."
     }
   ] }

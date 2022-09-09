@@ -45,6 +45,7 @@ import com.spharosacademy.project.SSGBack.review.image.entity.ReviewImage;
 import com.spharosacademy.project.SSGBack.review.image.repo.ReviewImageRepository;
 import com.spharosacademy.project.SSGBack.review.repo.ReviewRepository;
 import com.spharosacademy.project.SSGBack.s3.dto.DetailImageS3Dto;
+import com.spharosacademy.project.SSGBack.s3.dto.ReviewImageS3Dto;
 import com.spharosacademy.project.SSGBack.s3.dto.S3ProductImageDto;
 import com.spharosacademy.project.SSGBack.s3.service.S3UploaderService;
 import com.spharosacademy.project.SSGBack.user.entity.User;
@@ -301,6 +302,27 @@ public class ProductServiceImple implements ProductService {
     @Override
     public List<SizeOutputDto> getProductSize(Long productId, Long colorId) {
         return optionRepository.getSizeId(productId, colorId);
+    }
+
+    @Override
+    public void addImages(Long id, List<MultipartFile> multipartFileList) {
+        Product product = productRepository.findById(id).get();
+
+        ReviewImageS3Dto reviewImageS3Dto;
+        for (MultipartFile multipartFiles : multipartFileList) {
+            try {
+                reviewImageS3Dto = s3UploaderService.uploadReviewImage(multipartFiles, "myspharosbucket", "myDir");
+
+                productTitleImgRepository.save(ProductTitleImage.builder()
+                        .product(product)
+                        .productTitleImgUrl(reviewImageS3Dto.getImageUrl())
+                        .productTitleImgTxt(reviewImageS3Dto.getSaveFileName())
+                        .build());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

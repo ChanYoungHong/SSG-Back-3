@@ -43,6 +43,13 @@ public class ProductController {
         return "상품 등록이 완료되었습니다";
     }
 
+    @PostMapping("/images/{id}")
+    public String addImages(@PathVariable Long id,
+                            @RequestPart(value = "reviewImages", required = false) List<MultipartFile> multipartFileList) {
+        productService.addImages(id, multipartFileList);
+        return "리뷰 사진 추가";
+    }
+
     //모든 상품들에 대한 정보 조회
     @GetMapping("/getall")
     public ResponseEntity<List<ResponseProductDto>> getAll() {
