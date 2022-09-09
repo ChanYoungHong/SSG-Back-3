@@ -32,11 +32,13 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = getToken(request);
-
+        log.info(token +  "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         try {
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+                log.info(String.valueOf(jwtTokenProvider.validateToken(token)) + "1541541541541");
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 System.out.println(authentication);
+                log.info(authentication + "()()()()()()()()()()()()()");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (SecurityException | MalformedJwtException e) {
@@ -64,9 +66,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private String getToken(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION_HEADER);
+        log.info(token + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$111111");
         if (StringUtils.hasText(token)) {
+            log.info(token + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$222222");
             return token;
         }
+        log.info(token + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$3333333");
         return null;
     }
+
 }

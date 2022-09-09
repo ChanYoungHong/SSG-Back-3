@@ -97,8 +97,10 @@ public class JwtTokenProvider implements AuthenticationProvider {
 
         // 토큰이 만료됐는지 여부를 확인해주는 부분이다.
         // 현재 시각보다 만료가 먼저 됐을 경우에 예외를 발생시킨다.
+        log.info(jwtToken + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
         return !claims.getBody().getExpiration().before(new Date());
+
     }
 
     @Override
